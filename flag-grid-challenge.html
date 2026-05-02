@@ -1,0 +1,1479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flag Grid Challenge</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1623;
+    --bg2: #162032;
+    --card: #1c2b3a;
+    --card2: #243447;
+    --border: #2e4460;
+    --text: #e8edf5;
+    --muted: #7a96b0;
+    --accent: #4a9eff;
+    --easy: #2ecc71;
+    --medium: #f0c419;
+    --hard: #e05252;
+    --fire-bg: #5a0000;
+    --fire1: #ff6b00;
+    --fire2: #ff2200;
+    --cell-empty: #162032;
+    --cell-hover: #1e3348;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background-image:
+      radial-gradient(ellipse at 20% 20%, rgba(74,158,255,0.04) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 80%, rgba(255,107,0,0.03) 0%, transparent 60%);
+  }
+
+  .screen { display: none; width: 100%; max-width: 900px; }
+  .screen.active { display: flex; flex-direction: column; align-items: center; }
+
+  /* ─── LOAD SCREEN ─── */
+  .load-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 52px 48px;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    width: 100%;
+    max-width: 460px;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .load-card .globe { font-size: 52px; margin-bottom: 16px; animation: spin 8s linear infinite; display: inline-block; }
+  @keyframes spin { 0%,100%{transform:rotate(-5deg)} 50%{transform:rotate(5deg)} }
+
+  .load-card h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 900;
+    letter-spacing: -0.5px;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, #e8edf5 40%, #4a9eff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .load-card p { color: var(--muted); margin-bottom: 32px; font-size: 0.95rem; }
+
+  .file-label {
+    display: inline-block;
+    background: var(--accent);
+    color: #fff;
+    font-weight: 600;
+    padding: 14px 28px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    font-size: 0.95rem;
+    box-shadow: 0 4px 16px rgba(74,158,255,0.3);
+    margin-bottom: 14px;
+  }
+  .file-label:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(74,158,255,0.4); }
+  .file-label input { display: none; }
+
+  .sample-link {
+    display: block;
+    color: var(--muted);
+    font-size: 0.85rem;
+    cursor: pointer;
+    text-decoration: underline;
+    margin-top: 4px;
+    transition: color 0.15s;
+  }
+  .sample-link:hover { color: var(--text); }
+
+  .load-status {
+    margin-top: 18px;
+    font-size: 0.85rem;
+    color: var(--easy);
+    min-height: 20px;
+  }
+
+  /* ─── DIFFICULTY SCREEN ─── */
+  .diff-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 52px 48px;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    width: 100%;
+    max-width: 500px;
+    animation: fadeUp 0.4s ease both;
+  }
+
+  .diff-card h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .diff-counts {
+    color: var(--muted);
+    font-size: 0.82rem;
+    margin-bottom: 36px;
+    letter-spacing: 0.3px;
+  }
+  .diff-counts span { margin: 0 6px; }
+
+  .btn-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .diff-btn {
+    border: none;
+    border-radius: 14px;
+    padding: 16px 24px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s, filter 0.15s;
+    letter-spacing: 0.3px;
+    position: relative;
+    overflow: hidden;
+  }
+  .diff-btn:hover { transform: translateY(-2px); filter: brightness(1.1); }
+  .diff-btn:active { transform: translateY(0); }
+
+  .diff-btn.easy {
+    background: var(--easy);
+    color: #0a2a18;
+    box-shadow: 0 4px 18px rgba(46,204,113,0.35);
+  }
+  .diff-btn.medium {
+    background: var(--medium);
+    color: #2a2000;
+    box-shadow: 0 4px 18px rgba(240,196,25,0.35);
+  }
+  .diff-btn.hard {
+    background: var(--hard);
+    color: #fff;
+    box-shadow: 0 4px 18px rgba(224,82,82,0.35);
+  }
+  .diff-btn.hitme {
+    background: var(--fire-bg);
+    color: #fff;
+    border: 2px solid var(--fire1);
+    box-shadow: 0 0 18px var(--fire1), 0 0 40px rgba(255,34,0,0.3);
+    animation: firePulse 1.8s ease-in-out infinite;
+  }
+  @keyframes firePulse {
+    0%,100% { box-shadow: 0 0 18px var(--fire1), 0 0 40px rgba(255,34,0,0.3); }
+    50%      { box-shadow: 0 0 28px var(--fire1), 0 0 60px rgba(255,34,0,0.5), 0 0 80px rgba(255,34,0,0.15); }
+  }
+
+  /* ─── GAME SCREEN ─── */
+  .game-wrap {
+    width: 100%;
+    max-width: 900px;
+    animation: fadeUp 0.4s ease both;
+  }
+
+  .game-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  .game-topbar .flag-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .diff-badge {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .diff-badge.easy   { background: rgba(46,204,113,0.15); color: var(--easy); border: 1px solid rgba(46,204,113,0.3); }
+  .diff-badge.medium { background: rgba(240,196,25,0.15); color: var(--medium); border: 1px solid rgba(240,196,25,0.3); }
+  .diff-badge.hard   { background: rgba(224,82,82,0.15);  color: var(--hard);   border: 1px solid rgba(224,82,82,0.3); }
+  .diff-badge.hitme  { background: rgba(255,107,0,0.15);  color: var(--fire1);  border: 1px solid rgba(255,107,0,0.3); }
+
+  .back-btn {
+    background: var(--card2);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 8px 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .back-btn:hover { color: var(--text); border-color: var(--accent); }
+
+  /* Loading spinner */
+  .loading-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    padding: 80px 0;
+    color: var(--muted);
+  }
+  .spinner {
+    width: 40px; height: 40px;
+    border: 3px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin2 0.8s linear infinite;
+  }
+  @keyframes spin2 { to { transform: rotate(360deg); } }
+
+  /* ─── GRID ─── */
+  .grid-outer {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: 0 16px 50px rgba(0,0,0,0.4);
+    overflow-x: auto;
+  }
+
+  .grid-table {
+    display: grid;
+    gap: 8px;
+    width: fit-content;
+    min-width: 100%;
+  }
+
+  .grid-corner {
+    background: transparent;
+  }
+
+  .col-header, .row-header {
+    background: var(--card2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    text-align: center;
+    min-width: 110px;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+    position: relative;
+  }
+  .col-header:hover, .row-header:hover {
+    border-color: var(--accent);
+    background: var(--bg2);
+  }
+  .col-header::after, .row-header::after {
+    content: 'ℹ️';
+    position: absolute;
+    top: 4px;
+    right: 6px;
+    font-size: 0.6rem;
+    opacity: 0.4;
+  }
+  .col-header:hover::after, .row-header:hover::after { opacity: 1; }
+  .col-header { min-height: 80px; }
+  .row-header { min-width: 130px; min-height: 80px; }
+
+  .header-emoji { font-size: 1.5rem; line-height: 1; }
+  .header-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.3;
+    letter-spacing: 0.2px;
+  }
+  .header-code {
+    font-size: 0.62rem;
+    color: var(--muted);
+    font-family: monospace;
+    letter-spacing: 0.3px;
+  }
+
+  .grid-cell {
+    background: var(--cell-empty);
+    border: 1.5px dashed var(--border);
+    border-radius: 12px;
+    min-height: 80px;
+    min-width: 110px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, transform 0.1s;
+    color: var(--muted);
+    font-size: 1.2rem;
+    position: relative;
+  }
+  .grid-cell:hover {
+    background: var(--cell-hover);
+    border-color: var(--accent);
+    border-style: solid;
+    transform: scale(1.02);
+    color: var(--text);
+  }
+  .grid-cell.filled {
+    background: var(--card2);
+    border-style: solid;
+    border-color: var(--accent);
+    flex-direction: column;
+    gap: 4px;
+    padding: 8px;
+  }
+  .cell-flag-img {
+    width: 56px;
+    height: 38px;
+    object-fit: cover;
+    border-radius: 4px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+  }
+  .cell-flag-name {
+    font-size: 0.65rem;
+    color: var(--text);
+    text-align: center;
+    line-height: 1.2;
+    font-weight: 500;
+  }
+
+  /* Unused items list */
+  .unused-items {
+    margin-top: 18px;
+    padding: 14px 18px;
+    background: var(--card2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+  }
+  .unused-title {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--muted);
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  .unused-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .unused-tag {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 4px 10px;
+    font-size: 0.72rem;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  /* Error */
+  .error-box {
+    background: rgba(224,82,82,0.1);
+    border: 1px solid rgba(224,82,82,0.3);
+    border-radius: 12px;
+    padding: 16px 20px;
+    color: var(--hard);
+    font-size: 0.9rem;
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  /* ─── CORRECT / INCORRECT CELL STATES ─── */
+  .grid-cell.correct {
+    background: rgba(46,204,113,0.12);
+    border: 2px solid var(--easy);
+    border-style: solid;
+    flex-direction: column;
+    gap: 4px;
+    padding: 8px;
+    cursor: default;
+  }
+  .grid-cell.correct:hover {
+    transform: none;
+    background: rgba(46,204,113,0.18);
+    border-color: var(--easy);
+  }
+  .grid-cell.wrong-flash {
+    animation: wrongFlash 0.5s ease both;
+  }
+  @keyframes wrongFlash {
+    0%,100% { border-color: var(--border); background: var(--cell-empty); }
+    25%,75%  { border-color: var(--hard); background: rgba(224,82,82,0.12); border-style: solid; }
+  }
+
+  /* ─── SEARCH MODAL ─── */
+  .search-modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.78);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .search-modal-overlay.open { display: flex; }
+
+  .search-modal {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    width: 100%;
+    max-width: 540px;
+    box-shadow: 0 28px 80px rgba(0,0,0,0.65);
+    animation: fadeUp 0.2s ease both;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    max-height: 90vh;
+  }
+
+  /* Header bar */
+  .search-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px 14px 18px;
+    border-bottom: 1px solid var(--border);
+    background: var(--card2);
+    gap: 12px;
+    flex-shrink: 0;
+  }
+  .search-criteria {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    flex: 1;
+    min-width: 0;
+  }
+  .criteria-chip {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 4px 10px 4px 8px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text);
+    white-space: nowrap;
+  }
+  .criteria-chip .chip-emoji { font-size: 1rem; }
+  .criteria-sep {
+    color: var(--muted);
+    font-size: 1rem;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .search-modal-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+  .preview-toggle {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: var(--bg2);
+    border: 1.5px solid var(--border);
+    border-radius: 20px;
+    padding: 5px 11px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--easy);
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+  }
+  .preview-toggle:hover { border-color: var(--easy); }
+  .preview-toggle.off { color: var(--muted); }
+  .preview-toggle.off:hover { border-color: var(--muted); }
+  .preview-toggle .toggle-flag { font-size: 0.95rem; }
+  .search-close-btn {
+    background: transparent;
+    border: none;
+    color: var(--muted);
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 4px 6px;
+    border-radius: 6px;
+    transition: color 0.15s, background 0.15s;
+    line-height: 1;
+  }
+  .search-close-btn:hover { color: var(--text); background: var(--bg2); }
+
+  /* Search input */
+  .search-input-wrap {
+    padding: 14px 16px 10px;
+    flex-shrink: 0;
+  }
+  .search-input-wrap input {
+    width: 100%;
+    background: var(--bg2);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .search-input-wrap input::placeholder { color: var(--muted); }
+  .search-input-wrap input:focus { border-color: var(--accent); }
+
+  /* Results — fixed height = exactly 7 rows so modal never resizes */
+  .search-results {
+    overflow-y: auto;
+    flex-shrink: 0;
+    padding: 4px 8px 8px;
+    height: 364px;   /* 7 × ~52px per row */
+  }
+  .search-results::-webkit-scrollbar { width: 6px; }
+  .search-results::-webkit-scrollbar-track { background: transparent; }
+  .search-results::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  .search-result-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 9px 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.12s;
+    border-bottom: 1px solid rgba(46,68,96,0.5);
+  }
+  .search-result-item:last-child { border-bottom: none; }
+  .search-result-item:hover { background: var(--card2); }
+  .search-result-item.shake {
+    animation: shakeRow 0.35s ease;
+  }
+  @keyframes shakeRow {
+    0%,100% { transform: translateX(0); }
+    25%      { transform: translateX(-6px); }
+    75%      { transform: translateX(6px); }
+  }
+
+  .search-result-item.used {
+    opacity: 0.38;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+  .result-used-badge {
+    font-size: 0.68rem;
+    color: var(--muted);
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2px 8px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .result-flag-img {
+    width: 48px;
+    height: 32px;
+    object-fit: cover;
+    border-radius: 4px;
+    flex-shrink: 0;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.4);
+    background: var(--bg2);
+  }
+  .result-flag-placeholder {
+    font-size: 1.4rem;
+    width: 48px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+  .result-flag-name {
+    font-size: 0.92rem;
+    font-weight: 500;
+    color: var(--text);
+    flex: 1;
+  }
+  .result-wrong-badge {
+    font-size: 0.72rem;
+    color: var(--hard);
+    background: rgba(224,82,82,0.12);
+    border: 1px solid rgba(224,82,82,0.3);
+    border-radius: 12px;
+    padding: 2px 8px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .search-state-msg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 28px 16px;
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+  .spinner-sm {
+    width: 20px; height: 20px;
+    border: 2px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin2 0.7s linear infinite;
+    flex-shrink: 0;
+  }
+
+  /* ─── DESCRIPTION MODAL ─── */
+  .desc-modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.75);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .desc-modal-overlay.open {
+    display: flex;
+  }
+  .desc-modal {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 30px 32px;
+    max-width: 440px;
+    width: 100%;
+    box-shadow: 0 24px 70px rgba(0,0,0,0.6);
+    animation: fadeUp 0.2s ease both;
+  }
+  .desc-modal-emoji {
+    font-size: 2.2rem;
+    line-height: 1;
+    margin-bottom: 10px;
+  }
+  .desc-modal-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+  .desc-modal-category {
+    font-size: 0.72rem;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    font-weight: 600;
+    margin-bottom: 14px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .desc-modal-body {
+    color: var(--muted);
+    font-size: 0.9rem;
+    line-height: 1.7;
+    white-space: pre-line;
+  }
+  .desc-modal-close {
+    margin-top: 22px;
+    background: var(--card2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 11px 22px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: border-color 0.15s, background 0.15s;
+    display: block;
+    width: 100%;
+    text-align: center;
+  }
+  .desc-modal-close:hover { border-color: var(--accent); background: var(--bg2); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── SCREEN 1: LOAD ── -->
+<div id="screen-load" class="screen active">
+  <div class="load-card">
+    <div class="globe">🌍</div>
+    <h1>Flag Grid Challenge</h1>
+    <p>Load your puzzle JSON to begin, or try the sample data.</p>
+    <label class="file-label">
+      📂 Load JSON File
+      <input type="file" id="file-input" accept=".json">
+    </label>
+    <span class="sample-link" onclick="useSampleData()">Use sample data instead</span>
+    <div class="load-status" id="load-status"></div>
+  </div>
+</div>
+
+<!-- ── SCREEN 2: DIFFICULTY ── -->
+<div id="screen-difficulty" class="screen">
+  <div class="diff-card">
+    <h2>Select your challenge:</h2>
+    <div class="diff-counts" id="diff-counts"></div>
+    <div class="btn-group">
+      <button class="diff-btn easy"   onclick="selectDifficulty('easy')">🟢 Easy</button>
+      <button class="diff-btn medium" onclick="selectDifficulty('medium')">🟡 Medium</button>
+      <button class="diff-btn hard"   onclick="selectDifficulty('hard')">🔴 Hard</button>
+      <button class="diff-btn hitme"  onclick="selectDifficulty('hitme')">🔥 Hit me!</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── SCREEN 3: GAME ── -->
+<div id="screen-game" class="screen">
+  <div class="game-wrap" id="game-wrap"></div>
+</div>
+
+<!-- ── SEARCH / GUESS MODAL ── -->
+<div class="search-modal-overlay" id="search-modal-overlay">
+  <div class="search-modal" onclick="event.stopPropagation()">
+    <div class="search-modal-header">
+      <div class="search-criteria">
+        <div class="criteria-chip">
+          <span class="chip-emoji" id="sm-row-emoji"></span>
+          <span id="sm-row-label"></span>
+        </div>
+        <span class="criteria-sep">/</span>
+        <div class="criteria-chip">
+          <span class="chip-emoji" id="sm-col-emoji"></span>
+          <span id="sm-col-label"></span>
+        </div>
+      </div>
+      <div class="search-modal-controls">
+        <button class="preview-toggle" id="preview-toggle-btn" onclick="togglePreview()">
+          <span class="toggle-flag">🏳️</span>
+          <span id="preview-toggle-label">ON</span>
+        </button>
+        <button class="search-close-btn" onclick="closeSearchModal()">✕</button>
+      </div>
+    </div>
+    <div class="search-input-wrap">
+      <input type="text" id="search-input" placeholder="Type a flag name…" autocomplete="off" spellcheck="false">
+    </div>
+    <div class="search-results" id="search-results">
+      <div class="search-state-msg">Start typing to search flags</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── DESCRIPTION MODAL ── -->
+<div class="desc-modal-overlay" id="desc-modal-overlay" onclick="closeModal()">
+  <div class="desc-modal" onclick="event.stopPropagation()">
+    <div class="desc-modal-emoji" id="modal-emoji"></div>
+    <div class="desc-modal-title" id="modal-title"></div>
+    <div class="desc-modal-category" id="modal-category"></div>
+    <div class="desc-modal-body" id="modal-body"></div>
+    <button class="desc-modal-close" onclick="closeModal()">Close</button>
+  </div>
+</div>
+
+<script>
+// ─── DATA ───────────────────────────────────────────────────────────────────
+let countries = { easy: [], medium: [], hard: [] };
+let currentDifficulty = '';
+let flagDescriptions = null;       // Loaded from flagca.txt
+
+// ─── EASY / MEDIUM / HARD LISTS ─────────────────────────────────────────────
+const EASY_LIST = [
+  "Spain","Italy","Brazil","Portugal","United States","Belgium","Argentina","Mexico",
+  "Seychelles","Colombia","Wales","Ghana","Costa Rica","Gabon","North Korea","Germany",
+  "South Africa","Bolivia","Burkina Faso","France","Venezuela","Mauritius",
+  "Bosnia and Herzegovina","United Kingdom","Uruguay","Bulgaria","Uzbekistan","Serbia",
+  "Congo","Libya","Chad","Lithuania","Lesotho","Cuba","Pakistan","Togo","Yemen",
+  "Kiribati","Uganda","Liberia","Burundi","Netherlands","Suriname","Egypt","Tanzania",
+  "Brunei","Nigeria","Tajikistan","Zimbabwe","Canada","Georgia","Gambia","Syria",
+  "Greece","Madagascar","Japan","Cyprus","Estonia","Azerbaijan","Benin","England",
+  "Vietnam","Kyrgyzstan","Austria","Hungary","Oman","Cameroon","China","Rwanda",
+  "Armenia","Finland","Kazakhstan","Latvia","Comoros","Turkmenistan","Scotland",
+  "North Macedonia","Barbados","Taiwan","Honduras","Botswana","Monaco","Philippines",
+  "Faroe Islands","Romania","Thailand","Aland","New Zealand","Papua New Guinea",
+  "Montenegro","Ukraine","St Pierre et Miquelon","Afghanistan (2013-2021)","Kosovo",
+  "Jamaica","Malta","Norway","Guinea","Denmark","Maldives","Vatican City","Ethiopia",
+  "Cura\u00e7ao","Poland","Malaysia","Sweden","Luxembourg","Mozambique","Sudan","Peru",
+  "Algeria","Slovakia","Iran","Switzerland","South Sudan","Iceland","Gibraltar",
+  "Belarus","Bangladesh","Singapore","Moldova","[JPN] Osaka","Czech Republic","Iraq",
+  "[·] Chequered Flag","Lebanon","Albania","Turkey","Christmas Island",
+  "United Arab Emirates","Andorra","Indonesia","Russia","Liechtenstein","Slovenia",
+  "Dominican Republic","San Marino"
+];
+
+const MEDIUM_LIST = [
+  "India","South Korea","Mongolia","Angola","Sri Lanka","Ecuador","Laos","Ireland",
+  "Palau","Micronesia","Grenada","Zambia","Somalia","Saudi Arabia","Guyana","Saba",
+  "Democratic Republic Of The Congo","Kenya","Aruba","Ivory Coast","Eswatini",
+  "Senegal","Bahamas","Central African Republic","Tunisia","Guam","Morocco","Mali",
+  "Malawi","Dominica","Myanmar","Sierra Leone","Saint Vincent and the Grenadines",
+  "Timor-Leste","New Caledonia","[CHI] Macau","Trinidad and Tobago","Guernsey",
+  "Belize","Northern Ireland","Nepal","Niue","[·] Antarctica","Bahrain",
+  "[CAN] Quebec","Antigua and Barbuda","Cocos Islands","Nicaragua","Mayotte",
+  "Greenland","Norfolk Island","[CHI] Tibet","Equatorial Guinea","Palestine",
+  "Tuvalu","Haiti","Martinique","Puerto Rico","[·] Progress Pride Flag","Kuwait",
+  "[·] Buddhist Flag","Jordan","[AUS] Australian Naval Ensign","Qatar","Vanuatu",
+  "Paraguay","Afghanistan","Mauritania","[CHI] Hong Kong","Chile"
+];
+
+const HARD_LIST = [
+  "Marshall Islands","[POR] Azores","[PAK] Azad Kashmir","[ESP] Canary Islands",
+  "Anguilla","[·] Olympic Flag","Sao Tome and Pr\u00edncipe","Fiji","Bhutan",
+  "Cambodia","[USA] Alaska","[ESP] Basque Country","[GEO] South Ossetia",
+  "[JPN] Kyoto","[GER] Berlin","Cape Verde","Australia","Niger","Samoa",
+  "United States Virgin Islands","Guinea-Bissau","[·] European Union","Jersey",
+  "Wallis and Futuna","Eritrea","Northern Mariana Islands","Nauru",
+  "[ESP] Valencian Community","Saint Kitts and Nevis","[LIB] Libya (1977-2011)",
+  "Croatia","Saint Lucia","Panama","Cook Islands","Sint Maarten","French Polynesia",
+  "Guatemala","[SCO] Orkney","Namibia","American Samoa","Falkland Islands",
+  "Djibouti","Bermuda","[·] Jolly Roger","Solomon Islands","Cayman Islands",
+  "[MHL] Ebon Atoll","[RUS] Bryansk Oblast","[GEO] Borjomi Municipality",
+  "[·] Seto People","[BGR] Bulgaria Naval Jack","[CZE] Hlub\u00f3\u010dec",
+  "[CHL] [ANT] Magallanes","[USA] North Pole","El Salvador",
+  "British Indian Ocean Territory","[NED] Amsterdam","Sint Eustatius","Montserrat",
+  "[·] Pride Flag","[USA] Minnesota","Tonga","[UKR] Donetsk Oblast",
+  "[SRB] Yugoslavia (1946-1992)","Isle of Man","Reunion","Israel",
+  "Turks and Caicos Islands","[ANT] French Southern and Antarctic Lands",
+  "[ESP] Tenerife","Saint Helena","[·] United Nations","Bonaire","Pitcairn Islands",
+  "French Guiana","[USA] California","Guadeloupe","[ITA] Sardinia",
+  "British Virgin Islands","Saint Barth\u00e9lemy"
+];
+
+const SAMPLE_DATA = [
+  ...EASY_LIST.map(c   => [{dff:"Easy", ctry:c}]),
+  ...MEDIUM_LIST.map(c => [{dff:"Med",  ctry:c}]),
+  ...HARD_LIST.map(c   => [{dff:"Hard", ctry:c}])
+];
+
+// ─── ITEM LABEL MAP ──────────────────────────────────────────────────────────
+// Priority: 3=high, 2=medium, 1=low, 0=skip
+const ITEM_MAP = {
+  // Colors
+  'cl_BLA': { label:'Black',           emoji:'⬛', p:3 },
+  'cl_BLU': { label:'Blue',            emoji:'🔵', p:3 },
+  'cl_GRE': { label:'Green',           emoji:'🟢', p:3 },
+  'cl_ORA': { label:'Orange',          emoji:'🟠', p:3 },
+  'cl_PUR': { label:'Purple',          emoji:'🟣', p:3 },
+  'cl_RED': { label:'Red',             emoji:'🔴', p:3 },
+  'cl_WHI': { label:'White',           emoji:'⬜', p:3 },
+  'cl_YEL': { label:'Yellow',          emoji:'🟡', p:3 },
+  'cl_PIN': { label:'Pink',            emoji:'🩷', p:3 },
+  'cl_BRO': { label:'Brown',           emoji:'🟤', p:3 },
+  // Regions
+  'rgn_Africa':        { label:'Africa',         emoji:'🌍', p:3 },
+  'rgn_Asia':          { label:'Asia',            emoji:'🌏', p:3 },
+  'rgn_Europe':        { label:'Europe',          emoji:'🌍', p:3 },
+  'rgn_North America': { label:'North America',   emoji:'🌎', p:3 },
+  'rgn_South America': { label:'South America',   emoji:'🌎', p:3 },
+  'rgn_Oceania':       { label:'Oceania',         emoji:'🌏', p:3 },
+  // Sub-regions
+  'rg2_AF_East':    { label:'East Africa',      emoji:'🌍', p:2 },
+  'rg2_AF_West':    { label:'West Africa',      emoji:'🌍', p:2 },
+  'rg2_AF_North':   { label:'North Africa',     emoji:'🌍', p:2 },
+  'rg2_AF_South':   { label:'Southern Africa',  emoji:'🌍', p:2 },
+  'rg2_AF_Central': { label:'Central Africa',   emoji:'🌍', p:2 },
+  'rg2_AS_East':    { label:'East Asia',        emoji:'🌏', p:2 },
+  'rg2_AS_West':    { label:'West Asia',        emoji:'🌏', p:2 },
+  'rg2_AS_South':   { label:'South Asia',       emoji:'🌏', p:2 },
+  'rg2_AS_SE':      { label:'SE Asia',          emoji:'🌏', p:2 },
+  'rg2_AS_Central': { label:'Central Asia',     emoji:'🌏', p:2 },
+  'rg2_Na_Caribbean':{ label:'Caribbean',       emoji:'🏝️', p:2 },
+  'rg2_Na_CeAm':    { label:'Central America',  emoji:'🌎', p:2 },
+  'rg2_OC_AUNZ':    { label:'Aus/NZ Region',    emoji:'🦘', p:2 },
+  'rg2_OC_Poly':    { label:'Polynesia',        emoji:'🏝️', p:2 },
+  'rg2_OC_Micro':   { label:'Micronesia',       emoji:'🏝️', p:2 },
+  'rg2_EU_West':    { label:'Western Europe',   emoji:'🇪🇺', p:2 },
+  'rg2_EU_East':    { label:'Eastern Europe',   emoji:'🌍', p:2 },
+  'rg2_EU_North':   { label:'Northern Europe',  emoji:'🌍', p:2 },
+  'rg2_EU_South':   { label:'Southern Europe',  emoji:'🌍', p:2 },
+  'rg2_SA_Cone':    { label:'Southern Cone',    emoji:'🌎', p:2 },
+  'rg2_SA_North':   { label:'Northern S.Am.',   emoji:'🌎', p:2 },
+  // Features
+  'HasSta': { label:'Has Stars',          emoji:'⭐', p:3 },
+  'HasSun': { label:'Has Sun',            emoji:'☀️', p:3 },
+  'IsMoon': { label:'Has Crescent',       emoji:'🌙', p:3 },
+  'Animal': { label:'Has Animal',         emoji:'🦁', p:3 },
+  'Plants': { label:'Has Plants',         emoji:'🌿', p:3 },
+  'Weapon': { label:'Has Weapon',         emoji:'⚔️', p:3 },
+  'Circle': { label:'Has Circle',         emoji:'⭕', p:2 },
+  'Canton': { label:'Has Canton',         emoji:'🏴', p:2 },
+  'Center': { label:'Centered Emblem',    emoji:'🎯', p:3 },
+  'Trside': { label:'Triangle/Sidebar',   emoji:'📐', p:2 },
+  'Crosse': { label:'Has Cross',          emoji:'✝️',  p:2 },
+  'southc': { label:'Southern Cross',     emoji:'✨', p:2 },
+  'NoStar': { label:'No Stars',           emoji:'🚫', p:1 },
+  // Stars
+  '1Stars': { label:'1 Star',   emoji:'⭐', p:2 },
+  '2Stars': { label:'2 Stars',  emoji:'⭐', p:2 },
+  '3+Star': { label:'3+ Stars', emoji:'✨', p:2 },
+  // Band design
+  'Horizo': { label:'Horizontal Bands', emoji:'〰️', p:2 },
+  'Vertic': { label:'Vertical Bands',   emoji:'🟦', p:2 },
+  '2Bands': { label:'2 Bands',          emoji:'2️⃣', p:2 },
+  '3Bands': { label:'3 Bands',          emoji:'3️⃣', p:2 },
+  '4+Band': { label:'4+ Bands',         emoji:'4️⃣', p:2 },
+  'dgband': { label:'Diagonal Band',    emoji:'↗️', p:2 },
+  'Radial': { label:'Radial Design',    emoji:'💫', p:3 },
+  'OnlyBa': { label:'Only Bands',       emoji:'🚫', p:1 },
+  // Color counts
+  '2Color': { label:'2 Colors',  emoji:'🎨', p:2 },
+  '3Color': { label:'3 Colors',  emoji:'🎨', p:2 },
+  '4Color': { label:'4 Colors',  emoji:'🎨', p:3 },
+  '5+Color':{ label:'5+ Colors', emoji:'🌈', p:3 },
+  // Special
+  'chopGB':   { label:'Gained UK Independence', emoji:'🚫🇬🇧', p:3 },
+  'island':   { label:'Island Nation',           emoji:'🏝️',    p:3 },
+  'monarchy': { label:'Monarchy',                emoji:'👑',    p:2 },
+  'republic': { label:'Republic',                emoji:'🏛️',    p:2 },
+  'eunion':   { label:'EU Member',               emoji:'🇪🇺',   p:2 },
+  'retrique': { label:'Radiating Tricolor',      emoji:'🌈',    p:2 },
+  'terr_us':  { label:'US Territory',            emoji:'🇺🇸',   p:2 },
+  'terr_all': { label:'Territory',               emoji:'📍',    p:1 },
+  'femalepm': { label:'Female Head of State',    emoji:'👩',    p:2 },
+  // Language
+  'englis': { label:'English Speaking', emoji:'🗣️', p:2 },
+  'french': { label:'French Speaking',  emoji:'🗣️', p:2 },
+  'spanis': { label:'Spanish Speaking', emoji:'🗣️', p:2 },
+  'arabic': { label:'Arabic Speaking',  emoji:'🗣️', p:2 },
+  'portug': { label:'Portuguese Speaking',emoji:'🗣️',p:2 },
+  'russi':  { label:'Russian Speaking', emoji:'🗣️', p:2 },
+  'swahi':  { label:'Swahili Speaking', emoji:'🗣️', p:2 },
+  // Currency
+  'cur_Dollar': { label:'Dollar Currency', emoji:'💵', p:1 },
+  'cur_Euro':   { label:'Euro Currency',   emoji:'💶', p:1 },
+  'cur_Pound':  { label:'Pound Currency',  emoji:'💷', p:1 },
+  'cur_Franc':  { label:'Franc Currency',  emoji:'💰', p:1 },
+  // Size
+  'nn_mikro': { label:'Microstate', emoji:'🔬', p:2 },
+  'nn_small': { label:'Small Nation',emoji:'🗺️', p:1 },
+};
+
+// Skip prefixes (too technical/specific for grid headers)
+const SKIP_PREFIXES = ['myr','bnd_','001','002','003','004','005','nt','pm_','capi_','area_','geo_','pol_','_'];
+
+function getItemInfo(code) {
+  if (ITEM_MAP[code]) return ITEM_MAP[code];
+  // Dynamic fallbacks
+  if (code.startsWith('rg2_')) return { label: code.replace('rg2_','').replace(/_/g,' '), emoji:'🗺️', p:1 };
+  return null;
+}
+
+function shouldSkip(code) {
+  return SKIP_PREFIXES.some(p => code.startsWith(p));
+}
+
+function scoreItems(items) {
+  return items
+    .filter(c => !shouldSkip(c))
+    .map(c => ({ code: c, info: getItemInfo(c) }))
+    .filter(x => x.info !== null)
+    .sort((a,b) => b.info.p - a.info.p);
+}
+
+// ─── DESCRIPTION LOADING ─────────────────────────────────────────────────────
+async function loadFlagDescriptions() {
+  if (flagDescriptions) return flagDescriptions;
+  try {
+    const res = await fetch('https://raw.githubusercontent.com/zbz31/zbz31.github.io/refs/heads/main/flagca.txt');
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const text = await res.text();
+    flagDescriptions = JSON.parse(text);
+  } catch(e) {
+    console.warn('Could not load flag descriptions:', e);
+    flagDescriptions = {};
+  }
+  return flagDescriptions;
+}
+
+// ─── MODAL ───────────────────────────────────────────────────────────────────
+function showDescModal(code, label, emoji) {
+  const desc = flagDescriptions && flagDescriptions[code];
+  let bodyText = 'No description available for this category.';
+  let category = '';
+  if (desc) {
+    // desc[2] has the description (may start with <br>), desc[3] is the category
+    bodyText = (desc[2] || '')
+      .replace(/<br\s*\/?>/gi, '\n')
+      .replace(/<[^>]+>/g, '')
+      .trim();
+    category = desc[3] || '';
+  }
+  document.getElementById('modal-emoji').textContent = emoji;
+  document.getElementById('modal-title').textContent = label;
+  document.getElementById('modal-category').textContent = category || code;
+  document.getElementById('modal-body').textContent = bodyText;
+  document.getElementById('desc-modal-overlay').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('desc-modal-overlay').classList.remove('open');
+}
+
+// Close modal on Escape key
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+// ─── FILE LOADING ────────────────────────────────────────────────────────────
+document.getElementById('file-input').addEventListener('change', e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    try {
+      parseAndLoad(ev.target.result, file.name);
+    } catch(err) {
+      document.getElementById('load-status').textContent = '❌ Failed to parse JSON: ' + err.message;
+    }
+  };
+  reader.readAsText(file);
+});
+
+function parseAndLoad(jsonText, filename) {
+  const parsed = JSON.parse(jsonText);
+  const records = [].concat(...parsed); // flatten [[{}],[{}]] → [{}]
+  countries = { easy: [], medium: [], hard: [] };
+  for (const r of records) {
+    const dff = (r.dff || '').toLowerCase().trim();
+    const name = r.ctry;
+    if (!name) continue;
+    if (dff === 'easy')                countries.easy.push(name);
+    else if (dff === 'med' || dff === 'medium') countries.medium.push(name);
+    else if (dff === 'hard')           countries.hard.push(name);
+  }
+  const total = countries.easy.length + countries.medium.length + countries.hard.length;
+  document.getElementById('load-status').textContent =
+    `✅ Loaded ${total} countries from ${filename}`;
+  setTimeout(showDifficulty, 700);
+}
+
+function useSampleData() {
+  parseAndLoad(JSON.stringify(SAMPLE_DATA), 'sample data');
+}
+
+// ─── SCREENS ─────────────────────────────────────────────────────────────────
+function show(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function showDifficulty() {
+  document.getElementById('diff-counts').innerHTML =
+    `<span>🟢 ${countries.easy.length} easy</span>` +
+    `<span>🟡 ${countries.medium.length} medium</span>` +
+    `<span>🔴 ${countries.hard.length} hard</span>`;
+  show('screen-difficulty');
+}
+
+// ─── DIFFICULTY SELECTION ────────────────────────────────────────────────────
+function selectDifficulty(diff) {
+  currentDifficulty = diff;
+  let pool;
+  if (diff === 'hitme') {
+    const allPools = [
+      { list: countries.easy, diff: 'easy' },
+      { list: countries.medium, diff: 'medium' },
+      { list: countries.hard, diff: 'hard' }
+    ].filter(p => p.list.length > 0);
+    if (!allPools.length) { alert('No countries loaded!'); return; }
+    const chosen = allPools[Math.floor(Math.random() * allPools.length)];
+    pool = chosen.list;
+    currentDifficulty = chosen.diff + '+hitme';
+  } else {
+    pool = countries[diff];
+  }
+  if (!pool || pool.length === 0) {
+    alert(`No countries in the ${diff} list! Load your JSON first.`);
+    return;
+  }
+  const flag = pool[Math.floor(Math.random() * pool.length)];
+  show('screen-game');
+  loadGame(flag);
+}
+
+// ─── GAME LOGIC ──────────────────────────────────────────────────────────────
+async function loadGame(flagName) {
+  const wrap = document.getElementById('game-wrap');
+  const badgeDiff = currentDifficulty.replace('+hitme','');
+  const badgeLabel = currentDifficulty.includes('hitme') ? '🔥 Hit me!' :
+    badgeDiff.charAt(0).toUpperCase() + badgeDiff.slice(1);
+
+  wrap.innerHTML = `
+    <div class="game-topbar">
+      <div class="flag-name">
+        🏳️ ${flagName}
+        <span class="diff-badge ${badgeDiff}">${badgeLabel}</span>
+      </div>
+      <button class="back-btn" onclick="showDifficulty()">← Back</button>
+    </div>
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <span>Fetching flag data…</span>
+    </div>`;
+
+  // Pre-load descriptions in parallel
+  loadFlagDescriptions();
+
+  try {
+    const items = await fetchFlagItems(flagName);
+    if (!items || !items.length) throw new Error('No items returned for this flag.');
+    buildGrid(wrap, flagName, items, badgeDiff, badgeLabel);
+  } catch (err) {
+    wrap.innerHTML += `<div class="error-box">⚠️ ${err.message}<br><small>Check console for details. CORS might be an issue in some browsers.</small></div>`;
+    console.error(err);
+  }
+}
+
+async function fetchFlagItems(flagName) {
+  // encodeURIComponent converts spaces to %20 automatically
+  const url = `https://new-databases-012n12.replit.app/searchto355-flags` +
+    `?filter=${encodeURIComponent(flagName)}&fields=ExtraItems-couname|ExtraItems-Items&nolimit=true`;
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`API error: ${res.status}`);
+  const data = await res.json();
+  if (!Array.isArray(data) || data.length === 0) throw new Error('No results from API.');
+  // Find exact match first, else fallback to first result
+  const exact = data.find(f => f.couname === flagName) || data[0];
+  return exact.Items || [];
+}
+
+// ─── GRID SIZING ─────────────────────────────────────────────────────────────
+// Given N total items, find the most-square split into (cols, rows)
+// such that cols + rows = N, cols >= rows >= 1.
+function bestGridSplit(n) {
+  if (n < 2) return { cols: n, rows: 1 };
+  // cols = ceil(n/2), rows = floor(n/2) gives the most-square rectangle
+  const cols = Math.ceil(n / 2);
+  const rows = Math.floor(n / 2);
+  return { cols, rows };
+}
+
+function buildGrid(wrap, flagName, rawItems, badgeDiff, badgeLabel) {
+  const scored = scoreItems(rawItems);
+  usedFlags = new Set(); // reset for fresh game
+
+  if (scored.length < 4) {
+    const topbar = wrap.querySelector('.game-topbar').outerHTML;
+    wrap.innerHTML = topbar + `<div class="error-box">Not enough displayable items (got ${scored.length}, need ≥ 4).</div>`;
+    return;
+  }
+
+  // Use ALL scored items — split as squarely as possible
+  const { cols, rows } = bestGridSplit(scored.length);
+  const colItems = scored.slice(0, cols);
+  const rowItems = scored.slice(cols, cols + rows);
+
+  // Build grid HTML
+  let gridHTML = `<div class="grid-outer">
+    <div class="grid-table" style="grid-template-columns: 140px repeat(${cols}, 1fr);">
+
+      <!-- Corner -->
+      <div class="grid-corner"></div>`;
+
+  // Column headers
+  colItems.forEach(item => {
+    const safeCode = item.code.replace(/'/g, "\\'");
+    const safeLabel = item.info.label.replace(/'/g, "\\'");
+    const safeEmoji = item.info.emoji.replace(/'/g, "\\'");
+    gridHTML += `
+      <div class="col-header" onclick="headerClick('${safeCode}','${safeLabel}','${safeEmoji}')" title="Click for description">
+        <span class="header-emoji">${item.info.emoji}</span>
+        <span class="header-label">${item.info.label}</span>
+        <span class="header-code">${item.code}</span>
+      </div>`;
+  });
+
+  // Rows
+  rowItems.forEach(rowItem => {
+    const safeCode = rowItem.code.replace(/'/g, "\\'");
+    const safeLabel = rowItem.info.label.replace(/'/g, "\\'");
+    const safeEmoji = rowItem.info.emoji.replace(/'/g, "\\'");
+
+    // Row header
+    gridHTML += `
+      <div class="row-header" onclick="headerClick('${safeCode}','${safeLabel}','${safeEmoji}')" title="Click for description">
+        <span class="header-emoji">${rowItem.info.emoji}</span>
+        <span class="header-label">${rowItem.info.label}</span>
+        <span class="header-code">${rowItem.code}</span>
+      </div>`;
+    // Cells
+    colItems.forEach(colItem => {
+      const rCode  = rowItem.code.replace(/'/g, "\\'");
+      const cCode  = colItem.code.replace(/'/g, "\\'");
+      const rLabel = rowItem.info.label.replace(/'/g, "\\'");
+      const cLabel = colItem.info.label.replace(/'/g, "\\'");
+      const rEmoji = rowItem.info.emoji.replace(/'/g, "\\'");
+      const cEmoji = colItem.info.emoji.replace(/'/g, "\\'");
+      gridHTML += `
+        <div class="grid-cell" title="${rowItem.info.label} + ${colItem.info.label}"
+             onclick="cellClick(this,'${rCode}','${cCode}','${rLabel}','${cLabel}','${rEmoji}','${cEmoji}')">
+          <span>?</span>
+        </div>`;
+    });
+  });
+
+  gridHTML += `</div></div>`;
+
+  // Show any items that couldn't fit (shouldn't happen with the new approach, but just in case)
+  const unusedItems = scored.slice(cols + rows);
+  if (unusedItems.length > 0) {
+    gridHTML += `<div class="unused-items">
+      <div class="unused-title">Additional attributes not shown in grid</div>
+      <div class="unused-tags">`;
+    unusedItems.forEach(item => {
+      gridHTML += `<span class="unused-tag">${item.info.emoji} ${item.info.label}</span>`;
+    });
+    gridHTML += `</div></div>`;
+  }
+
+  // Replace loading state
+  const topbar = wrap.querySelector('.game-topbar').outerHTML;
+  wrap.innerHTML = topbar + gridHTML;
+}
+
+function headerClick(code, label, emoji) {
+  showDescModal(code, label, emoji);
+}
+
+// ─── SEARCH MODAL STATE ───────────────────────────────────────────────────────
+let currentSearchCell  = null;
+let currentRowCode     = '';
+let currentColCode     = '';
+let previewEnabled     = true;
+let searchDebounce     = null;
+let lastSearchResults  = [];   // cache to re-render without re-fetching on toggle
+let usedFlags          = new Set(); // counames already placed on the grid (lowercase)
+
+function cellClick(cell, rowCode, colCode, rowLabel, colLabel, rowEmoji, colEmoji) {
+  // Don't re-open if already correctly filled
+  if (cell.classList.contains('correct')) return;
+
+  currentSearchCell = cell;
+  currentRowCode    = rowCode;
+  currentColCode    = colCode;
+
+  document.getElementById('sm-row-emoji').textContent  = rowEmoji;
+  document.getElementById('sm-row-label').textContent  = rowLabel;
+  document.getElementById('sm-col-emoji').textContent  = colEmoji;
+  document.getElementById('sm-col-label').textContent  = colLabel;
+
+  const input = document.getElementById('search-input');
+  input.value = '';
+  lastSearchResults = [];
+  document.getElementById('search-results').innerHTML =
+    '<div class="search-state-msg">Start typing to search flags</div>';
+
+  updatePreviewBtn();
+  document.getElementById('search-modal-overlay').classList.add('open');
+  setTimeout(() => input.focus(), 60);
+}
+
+function closeSearchModal() {
+  document.getElementById('search-modal-overlay').classList.remove('open');
+  clearTimeout(searchDebounce);
+}
+
+function togglePreview() {
+  previewEnabled = !previewEnabled;
+  updatePreviewBtn();
+  if (lastSearchResults.length > 0) renderResults(lastSearchResults);
+}
+
+function updatePreviewBtn() {
+  const btn = document.getElementById('preview-toggle-btn');
+  const lbl = document.getElementById('preview-toggle-label');
+  lbl.textContent = previewEnabled ? 'ON' : 'OFF';
+  btn.classList.toggle('off', !previewEnabled);
+}
+
+// ─── SEARCH INPUT ─────────────────────────────────────────────────────────────
+document.getElementById('search-input').addEventListener('input', function() {
+  clearTimeout(searchDebounce);
+  const q = this.value.trim();
+  if (!q) {
+    lastSearchResults = [];
+    document.getElementById('search-results').innerHTML =
+      '<div class="search-state-msg">Start typing to search flags</div>';
+    return;
+  }
+  searchDebounce = setTimeout(() => doSearch(q), 220);
+});
+
+document.getElementById('search-input').addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeSearchModal();
+});
+
+async function doSearch(query) {
+  const el = document.getElementById('search-results');
+  el.innerHTML = '<div class="search-state-msg"><div class="spinner-sm"></div> Searching…</div>';
+  try {
+    const url = `https://new-databases-012n12.replit.app/searchto355-flags` +
+      `?filter=${encodeURIComponent(query)}&fields=ExtraItems-couname|ExtraItems-Items|ExtraItems-HDFlag|ExtraItems-Flag`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('API error ' + res.status);
+    const data = await res.json();
+    lastSearchResults = Array.isArray(data) ? data : [];
+    renderResults(lastSearchResults);
+  } catch(e) {
+    el.innerHTML = `<div class="search-state-msg" style="color:var(--hard)">⚠️ ${e.message}</div>`;
+  }
+}
+
+function renderResults(data) {
+  const el = document.getElementById('search-results');
+  if (!data.length) {
+    el.innerHTML = '<div class="search-state-msg">No flags found</div>';
+    return;
+  }
+  el.innerHTML = '';
+
+  data.forEach(flag => {
+    const row = document.createElement('div');
+    const isUsed = usedFlags.has((flag.couname || '').toLowerCase());
+    row.className = 'search-result-item' + (isUsed ? ' used' : '');
+
+    // ── Flag image with HDFlag → Flag fallback ──
+    if (previewEnabled) {
+      const hdSrc = flag.HDFlag || '';
+      const fbSrc = flag.Flag   || '';
+      const firstSrc = hdSrc || fbSrc;
+
+      if (firstSrc) {
+        const img = document.createElement('img');
+        img.className = 'result-flag-img';
+        img.alt = '';
+        img.src = firstSrc;
+        // If HDFlag fails, try Flag; if that also fails, swap in placeholder emoji
+        img.onerror = () => {
+          if (img.src !== fbSrc && fbSrc) {
+            img.src = fbSrc;
+          } else {
+            const ph = document.createElement('span');
+            ph.className = 'result-flag-placeholder';
+            ph.textContent = '🏳️';
+            img.replaceWith(ph);
+          }
+          img.onerror = null;
+        };
+        row.appendChild(img);
+      } else {
+        const ph = document.createElement('span');
+        ph.className = 'result-flag-placeholder';
+        ph.textContent = '🏳️';
+        row.appendChild(ph);
+      }
+    } else {
+      const ph = document.createElement('span');
+      ph.className = 'result-flag-placeholder';
+      ph.textContent = '🏳️';
+      row.appendChild(ph);
+    }
+
+    // Name
+    const name = document.createElement('span');
+    name.className = 'result-flag-name';
+    name.textContent = flag.couname || '?';
+    row.appendChild(name);
+
+    // "Already used" badge
+    if (isUsed) {
+      const badge = document.createElement('span');
+      badge.className = 'result-used-badge';
+      badge.textContent = 'Already used';
+      row.appendChild(badge);
+    }
+
+    if (!isUsed) {
+      row.addEventListener('click', () => handleGuess(flag, row));
+    }
+    el.appendChild(row);
+  });
+}
+
+// ─── GUESS HANDLING ───────────────────────────────────────────────────────────
+function handleGuess(flag, rowEl) {
+  const items = (flag.Items || []).map(i => i.toLowerCase());
+  const hasRow = items.includes(currentRowCode.toLowerCase());
+  const hasCol = items.includes(currentColCode.toLowerCase());
+
+  if (hasRow && hasCol) {
+    // ✅ Correct!
+    closeSearchModal();
+    markCellCorrect(currentSearchCell, flag);
+  } else {
+    // ❌ Wrong — shake + show missing label
+    rowEl.classList.remove('shake');
+    void rowEl.offsetWidth; // reflow to restart animation
+    rowEl.classList.add('shake');
+
+    // Remove old wrong badge if present
+    rowEl.querySelector('.result-wrong-badge')?.remove();
+
+    const missing = [];
+    if (!hasRow) missing.push(document.getElementById('sm-row-label').textContent);
+    if (!hasCol) missing.push(document.getElementById('sm-col-label').textContent);
+
+    const badge = document.createElement('span');
+    badge.className = 'result-wrong-badge';
+    badge.textContent = '✗ ' + missing.join(', ');
+    rowEl.appendChild(badge);
+
+    // Flash the cell briefly
+    if (currentSearchCell) {
+      currentSearchCell.classList.add('wrong-flash');
+      setTimeout(() => currentSearchCell.classList.remove('wrong-flash'), 500);
+    }
+  }
+}
+
+function markCellCorrect(cell, flag) {
+  cell.classList.add('correct');
+  cell.classList.remove('filled');
+  cell.innerHTML = flag.HDFlag
+    ? `<img class="cell-flag-img" src="${flag.HDFlag}" alt="${(flag.couname||'').replace(/"/g,'')}">`
+    : '';
+  const nameEl = document.createElement('span');
+  nameEl.className = 'cell-flag-name';
+  nameEl.textContent = flag.couname || '?';
+  cell.appendChild(nameEl);
+}
+</script>
+</body>
+</html>
