@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -45,69 +45,36 @@
   .screen { display: none; width: 100%; max-width: 900px; }
   .screen.active { display: flex; flex-direction: column; align-items: center; }
 
-  /* ─── LOAD SCREEN ─── */
-  .load-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 24px;
-    padding: 52px 48px;
+  /* ─── DIFFICULTY SCREEN ─── */
+  .diff-header {
     text-align: center;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
-    width: 100%;
-    max-width: 460px;
+    margin-bottom: 28px;
     animation: fadeUp 0.5s ease both;
   }
-
-  .load-card .globe { font-size: 52px; margin-bottom: 16px; animation: spin 8s linear infinite; display: inline-block; }
-  @keyframes spin { 0%,100%{transform:rotate(-5deg)} 50%{transform:rotate(5deg)} }
-
-  .load-card h1 {
+  .diff-header .globe {
+    font-size: 52px;
+    margin-bottom: 14px;
+    animation: spinWobble 8s linear infinite;
+    display: inline-block;
+  }
+  @keyframes spinWobble { 0%,100%{transform:rotate(-5deg)} 50%{transform:rotate(5deg)} }
+  .diff-header h1 {
     font-family: 'Playfair Display', serif;
-    font-size: 2rem;
+    font-size: 2.2rem;
     font-weight: 900;
     letter-spacing: -0.5px;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
     background: linear-gradient(135deg, #e8edf5 40%, #4a9eff);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
-  .load-card p { color: var(--muted); margin-bottom: 32px; font-size: 0.95rem; }
-
-  .file-label {
-    display: inline-block;
-    background: var(--accent);
-    color: #fff;
-    font-weight: 600;
-    padding: 14px 28px;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: transform 0.15s, box-shadow 0.15s;
-    font-size: 0.95rem;
-    box-shadow: 0 4px 16px rgba(74,158,255,0.3);
-    margin-bottom: 14px;
-  }
-  .file-label:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(74,158,255,0.4); }
-  .file-label input { display: none; }
-
-  .sample-link {
-    display: block;
+  .diff-header p {
     color: var(--muted);
-    font-size: 0.85rem;
-    cursor: pointer;
-    text-decoration: underline;
-    margin-top: 4px;
-    transition: color 0.15s;
+    font-size: 0.92rem;
+    line-height: 1.65;
+    max-width: 420px;
+    margin: 0 auto;
   }
-  .sample-link:hover { color: var(--text); }
-
-  .load-status {
-    margin-top: 18px;
-    font-size: 0.85rem;
-    color: var(--easy);
-    min-height: 20px;
-  }
-
-  /* ─── DIFFICULTY SCREEN ─── */
   .diff-card {
     background: var(--card);
     border: 1px solid var(--border);
@@ -408,6 +375,182 @@
     margin-top: 20px;
   }
 
+  .give-up-btn {
+    background: rgba(224,82,82,0.1);
+    border: 1px solid rgba(224,82,82,0.35);
+    color: var(--hard);
+    padding: 8px 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .give-up-btn:hover { background: rgba(224,82,82,0.2); border-color: var(--hard); }
+  .give-up-btn:disabled { opacity: 0.45; cursor: default; pointer-events: none; }
+
+  /* Topbar main-flag reveal area */
+  .main-flag-reveal {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(46,204,113,0.1);
+    border: 1px solid rgba(46,204,113,0.35);
+    border-radius: 12px;
+    padding: 6px 12px;
+    animation: fadeUp 0.3s ease both;
+  }
+  .main-flag-reveal img {
+    height: 28px;
+    border-radius: 3px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.4);
+  }
+  .main-flag-reveal span {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--easy);
+  }
+
+  /* Stat pill in topbar */
+  .stat-pill {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: var(--card2);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: 0.78rem;
+    color: var(--muted);
+    font-weight: 500;
+  }
+  .stat-pill b { color: var(--text); }
+
+  /* ─── MAIN FLAG TOAST ─── */
+  .main-flag-toast-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    z-index: 3000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .main-flag-toast-overlay.open { display: flex; }
+  .main-flag-toast {
+    background: var(--card);
+    border: 2px solid var(--medium);
+    border-radius: 20px;
+    padding: 36px 38px;
+    max-width: 380px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 0 40px rgba(240,196,25,0.25), 0 20px 60px rgba(0,0,0,0.5);
+    animation: fadeUp 0.25s ease both;
+  }
+  .main-flag-toast .toast-emoji { font-size: 2.6rem; margin-bottom: 10px; }
+  .main-flag-toast h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--medium);
+    margin-bottom: 8px;
+  }
+  .main-flag-toast p { color: var(--muted); font-size: 0.9rem; line-height: 1.6; margin-bottom: 22px; }
+  .main-flag-toast button {
+    background: var(--medium);
+    color: #2a2000;
+    border: none;
+    border-radius: 12px;
+    padding: 12px 28px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: filter 0.15s;
+    width: 100%;
+  }
+  .main-flag-toast button:hover { filter: brightness(1.1); }
+
+  /* ─── COMPLETION MODAL ─── */
+  .completion-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.8);
+    z-index: 3000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .completion-overlay.open { display: flex; }
+  .completion-modal {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 44px 40px;
+    max-width: 420px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.6);
+    animation: fadeUp 0.3s ease both;
+  }
+  .completion-modal .trophy { font-size: 3rem; margin-bottom: 12px; }
+  .completion-modal h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.7rem;
+    font-weight: 900;
+    margin-bottom: 6px;
+  }
+  .completion-modal .subtitle { color: var(--muted); font-size: 0.88rem; margin-bottom: 28px; }
+  .completion-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+  .stat-box {
+    background: var(--card2);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px 10px;
+  }
+  .stat-box .stat-val {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-box .stat-lbl {
+    font-size: 0.72rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    font-weight: 600;
+  }
+  .completion-btns { display: flex; flex-direction: column; gap: 10px; }
+  .comp-btn {
+    border: none;
+    border-radius: 12px;
+    padding: 14px 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: filter 0.15s, transform 0.1s;
+  }
+  .comp-btn:hover { filter: brightness(1.1); transform: translateY(-1px); }
+  .comp-btn.primary { background: var(--accent); color: #fff; }
+  .comp-btn.secondary {
+    background: var(--card2);
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+
   /* ─── CORRECT / INCORRECT CELL STATES ─── */
   .grid-cell.correct {
     background: rgba(46,204,113,0.12);
@@ -422,6 +565,20 @@
     transform: none;
     background: rgba(46,204,113,0.18);
     border-color: var(--easy);
+  }
+  .grid-cell.correct.main-flag {
+    background: rgba(240,196,25,0.13);
+    border-color: var(--medium);
+    box-shadow: 0 0 10px rgba(240,196,25,0.35), 0 0 24px rgba(240,196,25,0.2);
+    animation: goldPulse 2s ease-in-out infinite;
+  }
+  .grid-cell.correct.main-flag:hover {
+    background: rgba(240,196,25,0.2);
+    border-color: var(--medium);
+  }
+  @keyframes goldPulse {
+    0%,100% { box-shadow: 0 0 10px rgba(240,196,25,0.35), 0 0 24px rgba(240,196,25,0.2); }
+    50%      { box-shadow: 0 0 18px rgba(240,196,25,0.6), 0 0 40px rgba(240,196,25,0.3); }
   }
   .grid-cell.wrong-flash {
     animation: wrongFlash 0.5s ease both;
@@ -733,23 +890,13 @@
 </head>
 <body>
 
-<!-- ── SCREEN 1: LOAD ── -->
-<div id="screen-load" class="screen active">
-  <div class="load-card">
+<!-- ── SCREEN 1: DIFFICULTY ── -->
+<div id="screen-difficulty" class="screen active">
+  <div class="diff-header">
     <div class="globe">🌍</div>
     <h1>Flag Grid Challenge</h1>
-    <p>Load your puzzle JSON to begin, or try the sample data.</p>
-    <label class="file-label">
-      📂 Load JSON File
-      <input type="file" id="file-input" accept=".json">
-    </label>
-    <span class="sample-link" onclick="useSampleData()">Use sample data instead</span>
-    <div class="load-status" id="load-status"></div>
+    <p>Each cell on the grid requires a flag that satisfies <em>both</em> its row and column attribute. Search by name, pick your flag — but every flag can only be used once across the whole board!</p>
   </div>
-</div>
-
-<!-- ── SCREEN 2: DIFFICULTY ── -->
-<div id="screen-difficulty" class="screen">
   <div class="diff-card">
     <h2>Select your challenge:</h2>
     <div class="diff-counts" id="diff-counts"></div>
@@ -762,7 +909,7 @@
   </div>
 </div>
 
-<!-- ── SCREEN 3: GAME ── -->
+<!-- ── SCREEN 2: GAME ── -->
 <div id="screen-game" class="screen">
   <div class="game-wrap" id="game-wrap"></div>
 </div>
@@ -795,6 +942,39 @@
     </div>
     <div class="search-results" id="search-results">
       <div class="search-state-msg">Start typing to search flags</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── MAIN FLAG TOAST ── -->
+<div class="main-flag-toast-overlay" id="main-flag-toast-overlay">
+  <div class="main-flag-toast" onclick="event.stopPropagation()">
+    <div class="toast-emoji">🎯</div>
+    <h3>You found the main flag!</h3>
+    <p>That's the flag this grid is based on — it can't be placed in a cell. Keep searching for other flags that match!</p>
+    <button onclick="closeMainFlagToast()">Got it, keep playing!</button>
+  </div>
+</div>
+
+<!-- ── COMPLETION MODAL ── -->
+<div class="completion-overlay" id="completion-overlay">
+  <div class="completion-modal" onclick="event.stopPropagation()">
+    <div class="trophy">🏆</div>
+    <h2>Board Complete!</h2>
+    <p class="subtitle" id="comp-subtitle">You filled every cell.</p>
+    <div class="completion-stats">
+      <div class="stat-box">
+        <div class="stat-val" id="comp-time">—</div>
+        <div class="stat-lbl">Time</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-val" id="comp-guesses">—</div>
+        <div class="stat-lbl">Total Guesses</div>
+      </div>
+    </div>
+    <div class="completion-btns">
+      <button class="comp-btn primary" id="comp-same-btn">🔄 Same Challenge</button>
+      <button class="comp-btn secondary" onclick="document.getElementById('completion-overlay').classList.remove('open'); showDifficulty()">🌍 Different Challenge</button>
     </div>
   </div>
 </div>
@@ -989,17 +1169,15 @@ const ITEM_MAP = {
 
 // Skip prefixes (too technical/specific for grid headers)
 const SKIP_PREFIXES = ['myr','bnd_','001','002','003','004','005','nt','pm_','capi_','area_','geo_','pol_','_'];
+const SKIP_RE = new RegExp('^(' + SKIP_PREFIXES.map(p => p.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('|') + ')');
 
 function getItemInfo(code) {
   if (ITEM_MAP[code]) return ITEM_MAP[code];
-  // Dynamic fallbacks
   if (code.startsWith('rg2_')) return { label: code.replace('rg2_','').replace(/_/g,' '), emoji:'🗺️', p:1 };
   return null;
 }
 
-function shouldSkip(code) {
-  return SKIP_PREFIXES.some(p => code.startsWith(p));
-}
+function shouldSkip(code) { return SKIP_RE.test(code); }
 
 function scoreItems(items) {
   return items
@@ -1051,42 +1229,17 @@ function closeModal() {
 // Close modal on Escape key
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
-// ─── FILE LOADING ────────────────────────────────────────────────────────────
-document.getElementById('file-input').addEventListener('change', e => {
-  const file = e.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = ev => {
-    try {
-      parseAndLoad(ev.target.result, file.name);
-    } catch(err) {
-      document.getElementById('load-status').textContent = '❌ Failed to parse JSON: ' + err.message;
-    }
-  };
-  reader.readAsText(file);
-});
-
-function parseAndLoad(jsonText, filename) {
-  const parsed = JSON.parse(jsonText);
-  const records = [].concat(...parsed); // flatten [[{}],[{}]] → [{}]
+// ─── AUTO-INIT WITH BUILT-IN DATA ───────────────────────────────────────────
+(function initData() {
   countries = { easy: [], medium: [], hard: [] };
-  for (const r of records) {
-    const dff = (r.dff || '').toLowerCase().trim();
-    const name = r.ctry;
-    if (!name) continue;
-    if (dff === 'easy')                countries.easy.push(name);
-    else if (dff === 'med' || dff === 'medium') countries.medium.push(name);
-    else if (dff === 'hard')           countries.hard.push(name);
-  }
-  const total = countries.easy.length + countries.medium.length + countries.hard.length;
-  document.getElementById('load-status').textContent =
-    `✅ Loaded ${total} countries from ${filename}`;
-  setTimeout(showDifficulty, 700);
-}
-
-function useSampleData() {
-  parseAndLoad(JSON.stringify(SAMPLE_DATA), 'sample data');
-}
+  EASY_LIST.forEach(c   => countries.easy.push(c));
+  MEDIUM_LIST.forEach(c => countries.medium.push(c));
+  HARD_LIST.forEach(c   => countries.hard.push(c));
+  document.getElementById('diff-counts').innerHTML =
+    `<span>🟢 ${countries.easy.length} easy</span>` +
+    `<span>🟡 ${countries.medium.length} medium</span>` +
+    `<span>🔴 ${countries.hard.length} hard</span>`;
+})();
 
 // ─── SCREENS ─────────────────────────────────────────────────────────────────
 function show(id) {
@@ -1095,10 +1248,6 @@ function show(id) {
 }
 
 function showDifficulty() {
-  document.getElementById('diff-counts').innerHTML =
-    `<span>🟢 ${countries.easy.length} easy</span>` +
-    `<span>🟡 ${countries.medium.length} medium</span>` +
-    `<span>🔴 ${countries.hard.length} hard</span>`;
   show('screen-difficulty');
 }
 
@@ -1129,26 +1278,48 @@ function selectDifficulty(diff) {
 }
 
 // ─── GAME LOGIC ──────────────────────────────────────────────────────────────
+let currentMainFlag = '';   // couname of the grid's main flag
+let gameStartTime   = 0;
+let totalGuesses    = 0;
+let totalCells      = 0;
+let filledCells     = 0;
+let gaveUp          = false;
+let timerInterval   = null;
+let lastDiff        = '';
+let lastMainFlag    = '';
+
 async function loadGame(flagName) {
   const wrap = document.getElementById('game-wrap');
-  const badgeDiff = currentDifficulty.replace('+hitme','');
-  const badgeLabel = currentDifficulty.includes('hitme') ? '🔥 Hit me!' :
-    badgeDiff.charAt(0).toUpperCase() + badgeDiff.slice(1);
+  const badgeDiff  = currentDifficulty.replace('+hitme','');
+  const badgeLabel = currentDifficulty.includes('hitme') ? '🔥 Hit me!'
+    : badgeDiff.charAt(0).toUpperCase() + badgeDiff.slice(1);
+
+  currentMainFlag = flagName;
+  lastDiff        = currentDifficulty;
+  lastMainFlag    = flagName;
+  totalGuesses    = 0;
+  filledCells     = 0;
+  gaveUp          = false;
+  clearInterval(timerInterval);
 
   wrap.innerHTML = `
     <div class="game-topbar">
       <div class="flag-name">
-        🏳️ ${flagName}
+        🔍 Hidden Flag
         <span class="diff-badge ${badgeDiff}">${badgeLabel}</span>
       </div>
-      <button class="back-btn" onclick="showDifficulty()">← Back</button>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div class="stat-pill">
+          ⏱ <b id="timer-display">0:00</b>&nbsp;&nbsp;|&nbsp;&nbsp;🎯 <b id="guess-display">0</b> guesses
+        </div>
+        <button class="back-btn" onclick="showDifficulty()">← Back</button>
+      </div>
     </div>
     <div class="loading-state">
       <div class="spinner"></div>
       <span>Fetching flag data…</span>
     </div>`;
 
-  // Pre-load descriptions in parallel
   loadFlagDescriptions();
 
   try {
@@ -1156,7 +1327,7 @@ async function loadGame(flagName) {
     if (!items || !items.length) throw new Error('No items returned for this flag.');
     buildGrid(wrap, flagName, items, badgeDiff, badgeLabel);
   } catch (err) {
-    wrap.innerHTML += `<div class="error-box">⚠️ ${err.message}<br><small>Check console for details. CORS might be an issue in some browsers.</small></div>`;
+    wrap.innerHTML += `<div class="error-box">⚠️ ${err.message}</div>`;
     console.error(err);
   }
 }
@@ -1175,19 +1346,18 @@ async function fetchFlagItems(flagName) {
 }
 
 // ─── GRID SIZING ─────────────────────────────────────────────────────────────
-// Given N total items, find the most-square split into (cols, rows)
-// such that cols + rows = N, cols >= rows >= 1.
+// Max 6 columns; any extra items spill into additional rows.
 function bestGridSplit(n) {
   if (n < 2) return { cols: n, rows: 1 };
-  // cols = ceil(n/2), rows = floor(n/2) gives the most-square rectangle
-  const cols = Math.ceil(n / 2);
-  const rows = Math.floor(n / 2);
+  const cols = Math.min(Math.ceil(n / 2), 6);
+  const rows = n - cols;
   return { cols, rows };
 }
 
 function buildGrid(wrap, flagName, rawItems, badgeDiff, badgeLabel) {
   const scored = scoreItems(rawItems);
-  usedFlags = new Set(); // reset for fresh game
+  usedFlags   = new Set();
+  searchCache = new Map();   // clear per-game so stale used-state doesn't linger
 
   if (scored.length < 4) {
     const topbar = wrap.querySelector('.game-topbar').outerHTML;
@@ -1195,21 +1365,23 @@ function buildGrid(wrap, flagName, rawItems, badgeDiff, badgeLabel) {
     return;
   }
 
-  // Use ALL scored items — split as squarely as possible
   const { cols, rows } = bestGridSplit(scored.length);
   const colItems = scored.slice(0, cols);
   const rowItems = scored.slice(cols, cols + rows);
+  totalCells  = cols * rows;
+  filledCells = 0;
 
-  // Build grid HTML
+  // Start timer
+  gameStartTime = Date.now();
+  clearInterval(timerInterval);
+  timerInterval = setInterval(updateTimer, 1000);
+
   let gridHTML = `<div class="grid-outer">
     <div class="grid-table" style="grid-template-columns: 140px repeat(${cols}, 1fr);">
-
-      <!-- Corner -->
       <div class="grid-corner"></div>`;
 
-  // Column headers
   colItems.forEach(item => {
-    const safeCode = item.code.replace(/'/g, "\\'");
+    const safeCode  = item.code.replace(/'/g, "\\'");
     const safeLabel = item.info.label.replace(/'/g, "\\'");
     const safeEmoji = item.info.emoji.replace(/'/g, "\\'");
     gridHTML += `
@@ -1220,20 +1392,16 @@ function buildGrid(wrap, flagName, rawItems, badgeDiff, badgeLabel) {
       </div>`;
   });
 
-  // Rows
   rowItems.forEach(rowItem => {
-    const safeCode = rowItem.code.replace(/'/g, "\\'");
+    const safeCode  = rowItem.code.replace(/'/g, "\\'");
     const safeLabel = rowItem.info.label.replace(/'/g, "\\'");
     const safeEmoji = rowItem.info.emoji.replace(/'/g, "\\'");
-
-    // Row header
     gridHTML += `
       <div class="row-header" onclick="headerClick('${safeCode}','${safeLabel}','${safeEmoji}')" title="Click for description">
         <span class="header-emoji">${rowItem.info.emoji}</span>
         <span class="header-label">${rowItem.info.label}</span>
         <span class="header-code">${rowItem.code}</span>
       </div>`;
-    // Cells
     colItems.forEach(colItem => {
       const rCode  = rowItem.code.replace(/'/g, "\\'");
       const cCode  = colItem.code.replace(/'/g, "\\'");
@@ -1251,7 +1419,6 @@ function buildGrid(wrap, flagName, rawItems, badgeDiff, badgeLabel) {
 
   gridHTML += `</div></div>`;
 
-  // Show any items that couldn't fit (shouldn't happen with the new approach, but just in case)
   const unusedItems = scored.slice(cols + rows);
   if (unusedItems.length > 0) {
     gridHTML += `<div class="unused-items">
@@ -1263,9 +1430,18 @@ function buildGrid(wrap, flagName, rawItems, badgeDiff, badgeLabel) {
     gridHTML += `</div></div>`;
   }
 
-  // Replace loading state
   const topbar = wrap.querySelector('.game-topbar').outerHTML;
   wrap.innerHTML = topbar + gridHTML;
+
+  // Give Up button
+  const topbarEl = wrap.querySelector('.game-topbar');
+  const rightGroup = topbarEl.querySelector('div[style]');
+  const giveUpBtn = document.createElement('button');
+  giveUpBtn.className = 'give-up-btn';
+  giveUpBtn.id = 'give-up-btn';
+  giveUpBtn.textContent = 'Give Up 🏳️';
+  giveUpBtn.onclick = confirmGiveUp;
+  rightGroup.appendChild(giveUpBtn);
 }
 
 function headerClick(code, label, emoji) {
@@ -1278,12 +1454,19 @@ let currentRowCode     = '';
 let currentColCode     = '';
 let previewEnabled     = true;
 let searchDebounce     = null;
-let lastSearchResults  = [];   // cache to re-render without re-fetching on toggle
-let usedFlags          = new Set(); // counames already placed on the grid (lowercase)
+let lastSearchResults  = [];
+let usedFlags          = new Set();
+let searchCache        = new Map();   // query → results[]
+let searchAbort        = null;        // AbortController for in-flight request
+
+// Shrink Wikipedia thumbnail URLs for search previews (saves ~95% bandwidth)
+function thumbUrl(url, px = 160) {
+  if (!url) return '';
+  return url.replace(/\/\d+px-/, `/${px}px-`);
+}
 
 function cellClick(cell, rowCode, colCode, rowLabel, colLabel, rowEmoji, colEmoji) {
-  // Don't re-open if already correctly filled
-  if (cell.classList.contains('correct')) return;
+  if (cell.classList.contains('correct') || gaveUp) return;
 
   currentSearchCell = cell;
   currentRowCode    = rowCode;
@@ -1329,11 +1512,12 @@ document.getElementById('search-input').addEventListener('input', function() {
   const q = this.value.trim();
   if (!q) {
     lastSearchResults = [];
+    if (searchAbort) { searchAbort.abort(); searchAbort = null; }
     document.getElementById('search-results').innerHTML =
       '<div class="search-state-msg">Start typing to search flags</div>';
     return;
   }
-  searchDebounce = setTimeout(() => doSearch(q), 220);
+  searchDebounce = setTimeout(() => doSearch(q), 130);
 });
 
 document.getElementById('search-input').addEventListener('keydown', function(e) {
@@ -1342,17 +1526,33 @@ document.getElementById('search-input').addEventListener('keydown', function(e) 
 
 async function doSearch(query) {
   const el = document.getElementById('search-results');
+
+  // Cache hit — render instantly, no spinner
+  if (searchCache.has(query)) {
+    lastSearchResults = searchCache.get(query);
+    renderResults(lastSearchResults);
+    return;
+  }
+
+  // Cancel any in-flight request
+  if (searchAbort) searchAbort.abort();
+  searchAbort = new AbortController();
+
   el.innerHTML = '<div class="search-state-msg"><div class="spinner-sm"></div> Searching…</div>';
   try {
     const url = `https://new-databases-012n12.replit.app/searchto355-flags` +
       `?filter=${encodeURIComponent(query)}&fields=ExtraItems-couname|ExtraItems-Items|ExtraItems-HDFlag|ExtraItems-Flag`;
-    const res = await fetch(url);
+    const res = await fetch(url, { signal: searchAbort.signal });
     if (!res.ok) throw new Error('API error ' + res.status);
     const data = await res.json();
     lastSearchResults = Array.isArray(data) ? data : [];
+    searchCache.set(query, lastSearchResults);
     renderResults(lastSearchResults);
   } catch(e) {
+    if (e.name === 'AbortError') return;   // stale request — ignore
     el.innerHTML = `<div class="search-state-msg" style="color:var(--hard)">⚠️ ${e.message}</div>`;
+  } finally {
+    searchAbort = null;
   }
 }
 
@@ -1362,100 +1562,80 @@ function renderResults(data) {
     el.innerHTML = '<div class="search-state-msg">No flags found</div>';
     return;
   }
-  el.innerHTML = '';
 
-  data.forEach(flag => {
-    const row = document.createElement('div');
-    const isUsed = usedFlags.has((flag.couname || '').toLowerCase());
-    row.className = 'search-result-item' + (isUsed ? ' used' : '');
+  // Build entire list as one innerHTML string — far faster than createElement loop
+  const rows = data.map(flag => {
+    const name    = (flag.couname || '?').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    const isUsed  = usedFlags.has((flag.couname || '').toLowerCase());
+    const usedCls = isUsed ? ' used' : '';
 
-    // ── Flag image with HDFlag → Flag fallback ──
+    let imgHtml;
     if (previewEnabled) {
-      const hdSrc = flag.HDFlag || '';
-      const fbSrc = flag.Flag   || '';
-      const firstSrc = hdSrc || fbSrc;
-
-      if (firstSrc) {
-        const img = document.createElement('img');
-        img.className = 'result-flag-img';
-        img.alt = '';
-        img.src = firstSrc;
-        // If HDFlag fails, try Flag; if that also fails, swap in placeholder emoji
-        img.onerror = () => {
-          if (img.src !== fbSrc && fbSrc) {
-            img.src = fbSrc;
-          } else {
-            const ph = document.createElement('span');
-            ph.className = 'result-flag-placeholder';
-            ph.textContent = '🏳️';
-            img.replaceWith(ph);
-          }
-          img.onerror = null;
-        };
-        row.appendChild(img);
+      // Use a small thumbnail for search previews; HDFlag then Flag fallback
+      const hdSrc  = thumbUrl(flag.HDFlag, 160);
+      const fbSrc  = flag.Flag || '';
+      const src    = hdSrc || fbSrc;
+      if (src) {
+        const hd2  = hdSrc.replace(/'/g,"\\'");
+        const fb2  = fbSrc.replace(/'/g,"\\'");
+        imgHtml = `<img class="result-flag-img" loading="lazy" decoding="async" alt=""
+          src="${src.replace(/"/g,'&quot;')}"
+          onerror="this.src!='${fb2}'&&'${fb2}'?(this.src='${fb2}',this.onerror=null):(this.outerHTML='<span class=result-flag-placeholder>🏳️</span>')">`;
       } else {
-        const ph = document.createElement('span');
-        ph.className = 'result-flag-placeholder';
-        ph.textContent = '🏳️';
-        row.appendChild(ph);
+        imgHtml = `<span class="result-flag-placeholder">🏳️</span>`;
       }
     } else {
-      const ph = document.createElement('span');
-      ph.className = 'result-flag-placeholder';
-      ph.textContent = '🏳️';
-      row.appendChild(ph);
+      imgHtml = `<span class="result-flag-placeholder">🏳️</span>`;
     }
 
-    // Name
-    const name = document.createElement('span');
-    name.className = 'result-flag-name';
-    name.textContent = flag.couname || '?';
-    row.appendChild(name);
+    const badgeHtml = isUsed ? `<span class="result-used-badge">Already used</span>` : '';
 
-    // "Already used" badge
-    if (isUsed) {
-      const badge = document.createElement('span');
-      badge.className = 'result-used-badge';
-      badge.textContent = 'Already used';
-      row.appendChild(badge);
-    }
+    return `<div class="search-result-item${usedCls}" data-idx="${data.indexOf(flag)}"${isUsed ? '' : ' role="button" tabindex="0"'}>${imgHtml}<span class="result-flag-name">${name}</span>${badgeHtml}</div>`;
+  }).join('');
 
-    if (!isUsed) {
-      row.addEventListener('click', () => handleGuess(flag, row));
-    }
-    el.appendChild(row);
-  });
+  el.innerHTML = rows;
+
+  // Single delegated click listener instead of one per row
+  el.onclick = e => {
+    const row = e.target.closest('.search-result-item:not(.used)');
+    if (!row) return;
+    const idx = parseInt(row.dataset.idx, 10);
+    handleGuess(data[idx], row);
+  };
 }
 
 // ─── GUESS HANDLING ───────────────────────────────────────────────────────────
 function handleGuess(flag, rowEl) {
-  const items = (flag.Items || []).map(i => i.toLowerCase());
-  const hasRow = items.includes(currentRowCode.toLowerCase());
-  const hasCol = items.includes(currentColCode.toLowerCase());
+  totalGuesses++;
+  updateGuessDisplay();
+
+  const items    = (flag.Items || []).map(i => i.toLowerCase());
+  const hasRow   = items.includes(currentRowCode.toLowerCase());
+  const hasCol   = items.includes(currentColCode.toLowerCase());
+  const isMain   = (flag.couname || '').toLowerCase() === currentMainFlag.toLowerCase();
 
   if (hasRow && hasCol) {
-    // ✅ Correct!
+    // ✅ Correct — main flag gets yellow glow, others get green
     closeSearchModal();
-    markCellCorrect(currentSearchCell, flag);
+    markCellCorrect(currentSearchCell, flag, isMain);
   } else {
-    // ❌ Wrong — shake + show missing label
-    rowEl.classList.remove('shake');
-    void rowEl.offsetWidth; // reflow to restart animation
-    rowEl.classList.add('shake');
+    // ❌ Wrong
+    if (rowEl) {
+      rowEl.classList.remove('shake');
+      void rowEl.offsetWidth;
+      rowEl.classList.add('shake');
+      rowEl.querySelector('.result-wrong-badge')?.remove();
 
-    // Remove old wrong badge if present
-    rowEl.querySelector('.result-wrong-badge')?.remove();
+      const missing = [];
+      if (!hasRow) missing.push(document.getElementById('sm-row-label').textContent);
+      if (!hasCol) missing.push(document.getElementById('sm-col-label').textContent);
 
-    const missing = [];
-    if (!hasRow) missing.push(document.getElementById('sm-row-label').textContent);
-    if (!hasCol) missing.push(document.getElementById('sm-col-label').textContent);
+      const badge = document.createElement('span');
+      badge.className = 'result-wrong-badge';
+      badge.textContent = '✗ ' + missing.join(', ');
+      rowEl.appendChild(badge);
+    }
 
-    const badge = document.createElement('span');
-    badge.className = 'result-wrong-badge';
-    badge.textContent = '✗ ' + missing.join(', ');
-    rowEl.appendChild(badge);
-
-    // Flash the cell briefly
     if (currentSearchCell) {
       currentSearchCell.classList.add('wrong-flash');
       setTimeout(() => currentSearchCell.classList.remove('wrong-flash'), 500);
@@ -1463,16 +1643,130 @@ function handleGuess(flag, rowEl) {
   }
 }
 
-function markCellCorrect(cell, flag) {
+function markCellCorrect(cell, flag, isMain = false) {
+  usedFlags.add((flag.couname || '').toLowerCase());
+
   cell.classList.add('correct');
+  if (isMain) cell.classList.add('main-flag');
   cell.classList.remove('filled');
-  cell.innerHTML = flag.HDFlag
-    ? `<img class="cell-flag-img" src="${flag.HDFlag}" alt="${(flag.couname||'').replace(/"/g,'')}">`
-    : '';
+  cell.innerHTML = '';
+
+  // Flag image: use a reasonable cell size (640px) with HDFlag → Flag fallback
+  const hdSrc = thumbUrl(flag.HDFlag, 640);
+  const fbSrc = flag.Flag || '';
+  const firstSrc = hdSrc || fbSrc;
+  if (firstSrc) {
+    const img = document.createElement('img');
+    img.className = 'cell-flag-img';
+    img.alt = flag.couname || '';
+    img.decoding = 'async';
+    img.src = firstSrc;
+    img.onerror = () => {
+      if (img.src !== fbSrc && fbSrc) { img.src = fbSrc; img.onerror = null; }
+      else { img.replaceWith(document.createTextNode('🏳️')); }
+    };
+    cell.appendChild(img);
+  }
   const nameEl = document.createElement('span');
   nameEl.className = 'cell-flag-name';
   nameEl.textContent = flag.couname || '?';
   cell.appendChild(nameEl);
+
+  filledCells++;
+  if (filledCells >= totalCells) {
+    setTimeout(showCompletion, 400);
+  }
+}
+
+// ─── TIMER ───────────────────────────────────────────────────────────────────
+function updateTimer() {
+  const el = document.getElementById('timer-display');
+  if (!el) { clearInterval(timerInterval); return; }
+  const secs = Math.floor((Date.now() - gameStartTime) / 1000);
+  el.textContent = formatTime(secs);
+}
+
+function updateGuessDisplay() {
+  const el = document.getElementById('guess-display');
+  if (el) el.textContent = totalGuesses;
+}
+
+function formatTime(totalSecs) {
+  const m = Math.floor(totalSecs / 60);
+  const s = totalSecs % 60;
+  return `${m}:${String(s).padStart(2,'0')}`;
+}
+
+// ─── MAIN FLAG TOAST ─────────────────────────────────────────────────────────
+function showMainFlagToast() {
+  document.getElementById('main-flag-toast-overlay').classList.add('open');
+}
+function closeMainFlagToast() {
+  document.getElementById('main-flag-toast-overlay').classList.remove('open');
+}
+
+// ─── GIVE UP ─────────────────────────────────────────────────────────────────
+function confirmGiveUp() {
+  if (gaveUp) return;
+  if (!confirm(`Give up and reveal the hidden flag?\n\nYour unsolved cells will be locked.`)) return;
+  gaveUp = true;
+  clearInterval(timerInterval);
+  closeSearchModal();
+
+  const btn = document.getElementById('give-up-btn');
+  if (btn) { btn.disabled = true; btn.textContent = 'Given up'; }
+
+  // Reveal main flag in topbar
+  const topbarLeft = document.querySelector('.game-topbar .flag-name');
+  if (topbarLeft) {
+    topbarLeft.innerHTML = `<span style="color:var(--muted);font-size:0.85rem;">Revealed:</span> ${currentMainFlag}`;
+  }
+  // Optionally fetch and show the main flag image inline
+  fetchMainFlagImage();
+
+  // Lock unsolved cells
+  document.querySelectorAll('.grid-cell:not(.correct)').forEach(cell => {
+    cell.style.pointerEvents = 'none';
+    cell.style.opacity = '0.4';
+  });
+}
+
+async function fetchMainFlagImage() {
+  try {
+    const url = `https://new-databases-012n12.replit.app/searchto355-flags` +
+      `?filter=${encodeURIComponent(currentMainFlag)}&fields=ExtraItems-couname|ExtraItems-HDFlag|ExtraItems-Flag`;
+    const res = await fetch(url);
+    if (!res.ok) return;
+    const data = await res.json();
+    if (!Array.isArray(data) || !data.length) return;
+    const f = data.find(d => (d.couname||'').toLowerCase() === currentMainFlag.toLowerCase()) || data[0];
+    const src = f.HDFlag || f.Flag;
+    if (!src) return;
+    const topbarLeft = document.querySelector('.game-topbar .flag-name');
+    if (!topbarLeft) return;
+    const img = document.createElement('img');
+    img.src = src;
+    img.style.cssText = 'height:24px;border-radius:3px;box-shadow:0 1px 4px rgba(0,0,0,.4);vertical-align:middle;margin-right:4px;';
+    img.onerror = () => img.remove();
+    topbarLeft.prepend(img);
+  } catch(e) { /* silent */ }
+}
+
+// ─── COMPLETION SCREEN ───────────────────────────────────────────────────────
+function showCompletion() {
+  clearInterval(timerInterval);
+  const elapsed = Math.floor((Date.now() - gameStartTime) / 1000);
+  document.getElementById('comp-time').textContent    = formatTime(elapsed);
+  document.getElementById('comp-guesses').textContent = totalGuesses;
+  document.getElementById('comp-subtitle').textContent =
+    `You completed the "${currentMainFlag}" grid!`;
+  document.getElementById('comp-same-btn').onclick = () => {
+    document.getElementById('completion-overlay').classList.remove('open');
+    currentDifficulty = lastDiff;
+    show('screen-game');
+    loadGame(lastMainFlag);
+  };
+  document.getElementById('completion-overlay').classList.add('open');
 }
 </script>
 </body>
