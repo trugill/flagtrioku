@@ -6,6 +6,7 @@
 <title>Flag Grid Challenge</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 <style>
   :root {
     --bg: #0f1623;
@@ -886,6 +887,82 @@
     from { opacity: 0; transform: translateY(18px); }
     to   { opacity: 1; transform: translateY(0); }
   }
+
+  /* ─── SEARCH MODAL FOOTER ─── */
+  .search-modal-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 10px 16px;
+    border-top: 1px solid var(--border);
+    background: var(--card2);
+    flex-shrink: 0;
+    border-radius: 0 0 20px 20px;
+  }
+  .cell-count-display {
+    display: flex;
+    align-items: baseline;
+    gap: 5px;
+    color: var(--muted);
+    font-size: 0.82rem;
+    font-weight: 500;
+  }
+  .cell-count-display .count-number {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--accent);
+    min-width: 24px;
+    text-align: right;
+  }
+  .give-up-cell-btn {
+    background: var(--hard);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 8px 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: filter 0.15s, transform 0.1s;
+    letter-spacing: 0.2px;
+    white-space: nowrap;
+  }
+  .give-up-cell-btn:hover { filter: brightness(1.15); transform: translateY(-1px); }
+  .give-up-cell-btn:active { transform: translateY(0); }
+  .give-up-cell-btn:disabled { opacity: 0.4; cursor: default; pointer-events: none; }
+
+  /* ─── GIVEN-UP CELL ─── */
+  .grid-cell.given-up {
+    background: rgba(224,82,82,0.12);
+    border: 2px solid var(--hard);
+    border-style: solid;
+    flex-direction: column;
+    gap: 4px;
+    padding: 8px;
+    cursor: default;
+  }
+  .grid-cell.given-up:hover {
+    transform: none;
+    background: rgba(224,82,82,0.18);
+    border-color: var(--hard);
+  }
+  .given-up-flag-img {
+    width: 56px;
+    height: 38px;
+    object-fit: cover;
+    border-radius: 4px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+    border: 1px solid rgba(224,82,82,0.5);
+  }
+  .given-up-flag-name {
+    font-size: 0.65rem;
+    color: var(--hard);
+    text-align: center;
+    line-height: 1.2;
+    font-weight: 600;
+  }
 </style>
 </head>
 <body>
@@ -942,6 +1019,13 @@
     </div>
     <div class="search-results" id="search-results">
       <div class="search-state-msg">Start typing to search flags</div>
+    </div>
+    <div class="search-modal-footer">
+      <div class="cell-count-display">
+        <span class="count-number" id="cell-count-number">—</span>
+        <span>valid flags</span>
+      </div>
+      <button class="give-up-cell-btn" id="give-up-cell-btn" onclick="giveUpThisCell()">Give up this cell</button>
     </div>
   </div>
 </div>
@@ -1165,16 +1249,67 @@ const ITEM_MAP = {
   // Size
   'nn_mikro': { label:'Microstate', emoji:'🔬', p:2 },
   'nn_small': { label:'Small Nation',emoji:'🗺️', p:1 },
+  // Band layout extras
+  'Rotate':   { label:'Rotatable Flag',   emoji:'🔄', p:1 },
+  'Egually':  { label:'Equal-width Bands',emoji:'📏', p:1 },
+  // Political / cultural
+  'bolivarian':{ label:'Bolivarian State', emoji:'🦅', p:2 },
+  'orinoc':   { label:'Orinoco Region',    emoji:'🌊', p:1 },
+  'md_deno_n':{ label:'Nation-State',      emoji:'🏳️', p:1 },
+  'rg2_AM_South':{ label:'AM South',       emoji:'🌎', p:2 },
 };
 
-// Skip prefixes (too technical/specific for grid headers)
-const SKIP_PREFIXES = ['myr','bnd_','001','002','003','004','005','nt','pm_','capi_','area_','geo_','pol_','_'];
+// Skip prefixes — only truly unplayable metadata (PM names, capitals, exact area, geo coords, policies)
+const SKIP_PREFIXES = ['nt','pm_','capi_','area_','geo_','pol_','_'];
 const SKIP_RE = new RegExp('^(' + SKIP_PREFIXES.map(p => p.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('|') + ')');
 
+// Map short color codes to display emoji
+const COLOR_EMOJI = {
+  RED:'🔴', WHI:'⬜', BLU:'🔵', GRE:'🟢', YEL:'🟡', ORA:'🟠',
+  BLA:'⬛', PUR:'🟣', PIN:'🩷', BRO:'🟤', GOL:'🟡', SIL:'⬜', TUR:'🩵'
+};
+function colorEmojiFor(col) { return COLOR_EMOJI[col] || '🎨'; }
+
 function getItemInfo(code) {
+  // 1. ITEM_MAP — hardcoded priority values override everything
   if (ITEM_MAP[code]) return ITEM_MAP[code];
+
+  // 2. flagca.txt — the live database is authoritative for label & emoji
+  //    entry[1] format: "🔄<br>180° Symmetry"  or  "🟦<br>Vertical<br>Bands"
+  if (flagDescriptions && flagDescriptions[code]) {
+    const parts = flagDescriptions[code][1].split('<br>');
+    const emoji = parts[0].trim() || '🏷️';
+    const label = parts.slice(1).join(' ').trim() || flagDescriptions[code][0] || code;
+    return { label, emoji, p: 2 };
+  }
+
+  // 3. Dynamic patterns for codes the database may not enumerate exhaustively
+
+  // Sub-region  e.g. rg2_AM_South → "AM South"
   if (code.startsWith('rg2_')) return { label: code.replace('rg2_','').replace(/_/g,' '), emoji:'🗺️', p:1 };
-  return null;
+
+  // Majority color  e.g. myrRED → "Mostly Red"
+  if (code.startsWith('myr')) {
+    const col = code.slice(3);
+    return { label: `Mostly ${col}`, emoji: colorEmojiFor(col), p:2 };
+  }
+
+  // Band has color  e.g. bnd_RED → "Has Red Band"
+  if (code.startsWith('bnd_')) {
+    const col = code.slice(4);
+    return { label: `Has ${col} Band`, emoji: colorEmojiFor(col), p:2 };
+  }
+
+  // Positional band color  e.g. 001RED → "Band 1: Red"
+  const bandMatch = code.match(/^(\d{3})([A-Z]+)$/);
+  if (bandMatch) {
+    const pos = parseInt(bandMatch[1], 10);
+    const col = bandMatch[2];
+    return { label: `Band ${pos}: ${col}`, emoji: colorEmojiFor(col), p:1 };
+  }
+
+  // 4. Last-resort fallback — show raw code rather than silently drop it
+  return { label: code, emoji: '🏷️', p:0 };
 }
 
 function shouldSkip(code) { return SKIP_RE.test(code); }
@@ -1320,10 +1455,12 @@ async function loadGame(flagName) {
       <span>Fetching flag data…</span>
     </div>`;
 
-  loadFlagDescriptions();
-
   try {
-    const items = await fetchFlagItems(flagName);
+    // Fetch descriptions and flag items in parallel — both must be ready before buildGrid
+    const [items] = await Promise.all([
+      fetchFlagItems(flagName),
+      loadFlagDescriptions()
+    ]);
     if (!items || !items.length) throw new Error('No items returned for this flag.');
     buildGrid(wrap, flagName, items, badgeDiff, badgeLabel);
   } catch (err) {
@@ -1486,6 +1623,22 @@ function cellClick(cell, rowCode, colCode, rowLabel, colLabel, rowEmoji, colEmoj
   updatePreviewBtn();
   document.getElementById('search-modal-overlay').classList.add('open');
   setTimeout(() => input.focus(), 60);
+
+  // Update count from CSV data (may show '…' if still loading)
+  updateCellCount(rowCode, colCode);
+
+  // If CSV not loaded yet, update once it is
+  if (!crosscountData) {
+    loadCsvData().then(() => {
+      if (document.getElementById('search-modal-overlay').classList.contains('open')) {
+        updateCellCount(rowCode, colCode);
+      }
+    });
+  }
+
+  // Reset give-up-cell button state
+  const gucBtn = document.getElementById('give-up-cell-btn');
+  if (gucBtn) gucBtn.disabled = false;
 }
 
 function closeSearchModal() {
@@ -1767,6 +1920,155 @@ function showCompletion() {
     loadGame(lastMainFlag);
   };
   document.getElementById('completion-overlay').classList.add('open');
+}
+
+// ─── CSV DATA ─────────────────────────────────────────────────────────────────
+let crosscountData = null; // { rowLabel: { colLabel: number } }
+let crosstabData   = null; // { rowLabel: { colLabel: "flag1|flag2|…" } }
+let csvLoadPromise = null;
+
+function loadCsvData() {
+  if (csvLoadPromise) return csvLoadPromise;
+  csvLoadPromise = (async () => {
+    try {
+      const [ccRes, ctRes] = await Promise.all([
+        fetch('flags_crosscount.csv'),
+        fetch('flags_crosstab.csv')
+      ]);
+      const [ccText, ctText] = await Promise.all([ccRes.text(), ctRes.text()]);
+
+      const ccParsed = Papa.parse(ccText, { header: true, skipEmptyLines: true, dynamicTyping: true });
+      const ctParsed = Papa.parse(ctText, { header: true, skipEmptyLines: true, dynamicTyping: false });
+
+      crosscountData = {};
+      ccParsed.data.forEach(row => {
+        const label = String(row['Label'] || '').trim();
+        if (!label) return;
+        crosscountData[label] = {};
+        Object.keys(row).forEach(k => {
+          if (k !== 'Label') crosscountData[label][k.trim()] = Number(row[k]) || 0;
+        });
+      });
+
+      crosstabData = {};
+      ctParsed.data.forEach(row => {
+        const label = String(row['Label'] || '').trim();
+        if (!label) return;
+        crosstabData[label] = {};
+        Object.keys(row).forEach(k => {
+          if (k !== 'Label') crosstabData[label][k.trim()] = String(row[k] || '').trim();
+        });
+      });
+    } catch(e) {
+      console.error('Failed to load CSV data:', e);
+    }
+  })();
+  return csvLoadPromise;
+}
+
+// Kick off CSV loading immediately so it's ready when the user first clicks a cell
+loadCsvData();
+
+function updateCellCount(rowCode, colCode) {
+  const el = document.getElementById('cell-count-number');
+  if (!el) return;
+  if (!crosscountData) { el.textContent = '…'; return; }
+  const val = crosscountData[rowCode]?.[colCode];
+  el.textContent = (val !== undefined && val !== null) ? val : '?';
+}
+
+async function giveUpThisCell() {
+  const btn = document.getElementById('give-up-cell-btn');
+  if (btn) btn.disabled = true;
+
+  // Make sure CSV is loaded
+  await loadCsvData();
+
+  if (!crosstabData) {
+    alert('Data not loaded yet — please try again in a moment.');
+    if (btn) btn.disabled = false;
+    return;
+  }
+
+  const entry = crosstabData[currentRowCode]?.[currentColCode] || '';
+  const allFlags = entry.split('|').map(f => f.trim()).filter(Boolean);
+
+  // Filter out the main flag (case-insensitive) and already-used flags
+  const candidates = allFlags.filter(f =>
+    f.toLowerCase() !== currentMainFlag.toLowerCase() &&
+    !usedFlags.has(f.toLowerCase())
+  );
+
+  // Fallback: only exclude main flag if all are used
+  const fallback = allFlags.filter(f => f.toLowerCase() !== currentMainFlag.toLowerCase());
+
+  const pool = candidates.length ? candidates : fallback;
+
+  if (!pool.length) {
+    const msg = allFlags.length
+      ? 'The only valid flag(s) for this cell are the main flag or already used!'
+      : 'No valid flags found for this cell in the data.';
+    alert(msg);
+    if (btn) btn.disabled = false;
+    return;
+  }
+
+  const chosen = pool[Math.floor(Math.random() * pool.length)];
+  closeSearchModal();
+
+  // Mark the cell (currentSearchCell captured before modal closed)
+  if (currentSearchCell) {
+    markCellGivenUp(currentSearchCell, chosen);
+  }
+}
+
+async function markCellGivenUp(cell, flagName) {
+  // Lock the cell immediately
+  cell.classList.add('given-up');
+  cell.onclick = null;
+  cell.style.cursor = 'default';
+  cell.innerHTML = '<div class="spinner" style="width:20px;height:20px;border-width:2px;"></div>';
+
+  // Try to fetch the flag image from the API
+  let imgSrc = null;
+  try {
+    const url = 'https://new-databases-012n12.replit.app/searchto355-flags' +
+      '?filter=' + encodeURIComponent(flagName) +
+      '&fields=ExtraItems-couname|ExtraItems-HDFlag|ExtraItems-Flag';
+    const res = await fetch(url);
+    if (res.ok) {
+      const data = await res.json();
+      if (Array.isArray(data) && data.length) {
+        const match = data.find(d => (d.couname || '').toLowerCase() === flagName.toLowerCase()) || data[0];
+        imgSrc = thumbUrl(match.HDFlag, 640) || match.Flag || null;
+      }
+    }
+  } catch(e) { /* silent — fall back to name only */ }
+
+  // Add to usedFlags so it won't appear as an option elsewhere
+  usedFlags.add(flagName.toLowerCase());
+
+  cell.innerHTML = '';
+
+  if (imgSrc) {
+    const img = document.createElement('img');
+    img.className = 'given-up-flag-img';
+    img.alt = flagName;
+    img.decoding = 'async';
+    img.src = imgSrc;
+    img.onerror = () => img.remove();
+    cell.appendChild(img);
+  }
+
+  const nameEl = document.createElement('span');
+  nameEl.className = 'given-up-flag-name';
+  nameEl.textContent = flagName;
+  cell.appendChild(nameEl);
+
+  filledCells++;
+  if (filledCells >= totalCells) {
+    setTimeout(showCompletion, 400);
+  }
 }
 </script>
 </body>
