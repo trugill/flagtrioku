@@ -2029,25 +2029,39 @@ async function markCellGivenUp(cell, flagName) {
   cell.style.cursor = 'default';
   cell.innerHTML = '<div class="spinner" style="width:20px;height:20px;border-width:2px;"></div>';
 
-  // Try to fetch the flag image from the API
+  // Strip bracket country-code prefix for API search
+  // e.g. "[MAR] Western Sahara" → "Western Sahara", "Antigua and Barbuda" → unchanged
+  const searchQuery = flagName.replace(/^\[.*?\]\s*/, '') || flagName;
+
   let imgSrc = null;
   try {
-    const url = 'https://new-databases-012n12.replit.app/searchto355-flags' +
-      '?filter=' + encodeURIComponent(flagName) +
-      '&fields=ExtraItems-couname|ExtraItems-HDFlag|ExtraItems-Flag';
-    const res = await fetch(url);
-    if (res.ok) {
-      const data = await res.json();
-      if (Array.isArray(data) && data.length) {
-        const match = data.find(d => (d.couname || '').toLowerCase() === flagName.toLowerCase()) || data[0];
-        imgSrc = thumbUrl(match.HDFlag, 640) || match.Flag || null;
+    // Hit the search cache first (user may have already searched this name)
+    let results = searchCache.get(searchQuery) || searchCache.get(flagName);
+
+    if (!results) {
+      const url = 'https://new-databases-012n12.replit.app/searchto355-flags' +
+        '?filter=' + encodeURIComponent(searchQuery) +
+        '&fields=ExtraItems-couname|ExtraItems-HDFlag|ExtraItems-Flag';
+      const res = await fetch(url);
+      if (res.ok) {
+        results = await res.json();
+        if (Array.isArray(results)) searchCache.set(searchQuery, results);
       }
     }
-  } catch(e) { /* silent — fall back to name only */ }
 
-  // Add to usedFlags so it won't appear as an option elsewhere
+    if (Array.isArray(results) && results.length) {
+      // Best match: exact full name → exact stripped name → first result
+      const match =
+        results.find(d => (d.couname || '').toLowerCase() === flagName.toLowerCase()) ||
+        results.find(d => (d.couname || '').toLowerCase() === searchQuery.toLowerCase()) ||
+        results[0];
+
+      // Use raw URLs — no thumbUrl() to avoid Wikipedia resize issues
+      imgSrc = match.HDFlag || match.Flag || null;
+    }
+  } catch(e) { /* silent — name-only fallback below */ }
+
   usedFlags.add(flagName.toLowerCase());
-
   cell.innerHTML = '';
 
   if (imgSrc) {
