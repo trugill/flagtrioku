@@ -2056,21 +2056,31 @@ async function markCellGivenUp(cell, flagName) {
         results.find(d => (d.couname || '').toLowerCase() === searchQuery.toLowerCase()) ||
         results[0];
 
-      // Use raw URLs — no thumbUrl() to avoid Wikipedia resize issues
-      imgSrc = match.HDFlag || match.Flag || null;
+      // Mirror markCellCorrect: thumbUrl on HDFlag (handles Wikipedia resize),
+      // plain Flag URL as onerror fallback
+      const hdSrc = thumbUrl(match.HDFlag, 640);
+      const fbSrc = match.Flag || '';
+      imgSrc = { primary: hdSrc || fbSrc, fallback: fbSrc };
     }
   } catch(e) { /* silent — name-only fallback below */ }
 
   usedFlags.add(flagName.toLowerCase());
   cell.innerHTML = '';
 
-  if (imgSrc) {
+  if (imgSrc && imgSrc.primary) {
     const img = document.createElement('img');
     img.className = 'given-up-flag-img';
     img.alt = flagName;
     img.decoding = 'async';
-    img.src = imgSrc;
-    img.onerror = () => img.remove();
+    img.src = imgSrc.primary;
+    img.onerror = () => {
+      if (img.src !== imgSrc.fallback && imgSrc.fallback) {
+        img.src = imgSrc.fallback;
+        img.onerror = null;
+      } else {
+        img.remove();
+      }
+    };
     cell.appendChild(img);
   }
 
