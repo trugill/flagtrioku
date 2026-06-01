@@ -1179,8 +1179,8 @@
   /* ─── THEME TOGGLE ─── */
   #theme-toggle-btn {
     position: fixed;
-    top: 18px;
-    right: 18px;
+    bottom: 18px;
+    left: 18px;
     z-index: 500;
     width: 42px;
     height: 42px;
@@ -1203,8 +1203,8 @@
   }
   #theme-panel {
     position: fixed;
-    top: 68px;
-    right: 18px;
+    bottom: 68px;
+    left: 18px;
     z-index: 500;
     background: var(--card);
     border: 1.5px solid var(--border);
@@ -1820,9 +1820,6 @@ const ITEM_MAP = {
   'rg2_EU_South':      { label:'Southern Europe',  emoji:'🌍', p:2 },
   'rg2_SA_Cone':       { label:'Southern Cone',    emoji:'🌎', p:2 },
   'rg2_SA_North':      { label:'Northern S.Am.',   emoji:'🌎', p:2 },
-  // Historical regions
-  'rg3_romanempire':   { label:'Roman Empire',     emoji:'🏛️', p:2 },
-  'rg3_austrohungary': { label:'Austro-Hungarian Empire', emoji:'🇦🇹', p:2 },
   // Features
   'HasSta': { label:'Has Stars',          emoji:'⭐', p:3 },
   'HasSun': { label:'Has Sun',            emoji:'☀️', p:3 },
@@ -1903,8 +1900,6 @@ const ITEM_MAP = {
   'md_egal':      { label:'Winged Animal',        emoji:'🦅', p:2 },  // typo of md_egl
   'md_lion':      { label:'Non-Winged Animal',    emoji:'🦁', p:2 },  // typo of md_lio
   'md_slavi':     { label:'Slavic Language',      emoji:'🇺🇦', p:2 }, // wrong prefix (nn_slavi)
-  'md_LOTRNation':{ label:'LOTR Nation',          emoji:'💍', p:1 },
-  'md_acreed123': { label:'Assassin\'s Creed',    emoji:'🗡️', p:1 },
   'md_stun_bla':  { label:'Star over Black',      emoji:'⚛⚫', p:1 },
   // Bare color codes missing their cl_ prefix
   'BLU':          { label:'Blue',                 emoji:'🔵', p:2 },
@@ -1947,14 +1942,155 @@ const BLOCKED_ITEMS = new Set([
   '001NON', '002NON', '003NON',
   '002x',   '002X',
   'bnd_NON', 'bnd_X',
-  // Pop-culture song-lyric categories (fun facts but bad puzzle axes)
-  'orinoc',   // Orinoco Flow (Enya)
-  'kokomo',   // Kokomo (The Beach Boys)
+  // Pop-culture song-lyric categories — countries mentioned in song lyrics,
+  // not a meaningful geographical or flag-design axis for a puzzle
+  'orinoc',   // 🎵 Orinoco Flow (Enya) — lists countries from the song, not a real category
+  'kokomo',   // 🎵 Kokomo (The Beach Boys) — lists island destinations from the song
+  // Pop-culture / fictional universe categories — fun trivia but not suitable puzzle axes
+  'md_LOTRNation',  // 💍 Lord of the Rings fictional nations (not real countries)
+  'md_acreed123',   // 🗡️ Assassin's Creed game settings (fictional/anachronistic)
+  'md_tekken7',     // 🥊 Tekken 7 fighter nationalities (video game, not geography)
+  'locate_MI',      // 📍 Unresolvable location code — data artefact
+  // Historical empires — removed as puzzle axes (too niche / overlapping region coverage)
+  'rg3_romanempire',   // 🏛️ Roman Empire
+  'rg3_austrohungary', // 🇦🇹 Austro-Hungarian Empire
   // Checkered / pattern category (Artifact was a mis-mapping; Checkd is valid but Artifact itself is junk)
   'Artifact',
   // Pure data errors / placeholder codes
   'Bloemfontein',
 ]);
+
+// ─── DESCRIPTION MAP ─────────────────────────────────────────────────────────
+// Manual descriptions for ITEM_MAP entries that aren't in flagca.txt.
+// Format: code → description string shown in the info modal.
+const DESC_MAP = {
+  // Colors
+  'cl_BLA': 'Flags that prominently feature the color black.',
+  'cl_BLU': 'Flags that prominently feature the color blue.',
+  'cl_GRE': 'Flags that prominently feature the color green.',
+  'cl_ORA': 'Flags that prominently feature the color orange.',
+  'cl_PUR': 'Flags that prominently feature the color purple.',
+  'cl_RED': 'Flags that prominently feature the color red.',
+  'cl_WHI': 'Flags that prominently feature the color white.',
+  'cl_YEL': 'Flags that prominently feature the color yellow.',
+  'cl_PIN': 'Flags that prominently feature the color pink.',
+  'cl_BRO': 'Flags that prominently feature the color brown.',
+  // Sub-region aliases not in flagca.txt
+  'rg2_Na_Caribbean':  'Island and coastal nations of the Caribbean Sea.',
+  'rg2_NA_Caribbean':  'Island and coastal nations of the Caribbean Sea.',
+  'rg2_Na_CeAm':       'Nations of Central America, connecting North and South America.',
+  'rg2_AM_Central':    'Nations of Central America, connecting North and South America.',
+  'rg2_AM_North':      'Countries of North America: Canada, USA, Mexico and nearby.',
+  'rg2_AM_South':      'Countries of South America.',
+  'rg2_As_SouthOnly':  'Nations of South and Southeast Asia.',
+  'rg2_OC_Micronesia': 'Micronesian island nations of the Pacific Ocean.',
+  'rg2_Oc_Polynesia':  'Polynesian island nations of the Pacific Ocean.',
+  'rg2_AF_Mid':        'Nations of Central/Middle Africa.',
+  'rg2_SA_Cone':       'Southern Cone nations of South America: Chile, Argentina, Uruguay.',
+  'rg2_SA_North':      'Northern nations of South America including Colombia, Venezuela and Peru.',
+  // Currency
+  'cur_Dollar': 'Countries whose official currency is a dollar (USD, AUD, CAD, etc.).',
+  'cur_dollar': 'Countries whose official currency is a dollar (USD, AUD, CAD, etc.).',
+  'cur_Euro':   'Eurozone countries that use the Euro (€) as their official currency.',
+  'cur_EUR':    'Eurozone countries that use the Euro (€) as their official currency.',
+  'cur_eur':    'Eurozone countries that use the Euro (€) as their official currency.',
+  'cur_Pound':  'Countries whose official currency is a pound (GBP, EGP, etc.).',
+  'cur_Franc':  'Countries whose official currency is a franc (CHF, CFA, etc.).',
+  // Size
+  'nn_mikro': 'Microstates — countries with a very small land area or population (e.g. Monaco, Vatican, San Marino).',
+  'nn_small': 'Small nations with limited land area or population.',
+  // Features
+  'HasSta': 'Flags that include one or more stars in their design.',
+  'HasSun': 'Flags that feature a sun or sunburst symbol.',
+  'IsMoon': 'Flags that feature a crescent moon symbol.',
+  'Animal': 'Flags that depict an animal (eagle, lion, dragon, bird, etc.).',
+  'Plants': 'Flags that include plant imagery such as leaves, trees, or flowers.',
+  'Weapon': 'Flags that include a weapon such as a sword, spear, or AK-47.',
+  'Circle': 'Flags that feature a circle or disc element.',
+  'Canton': 'Flags that include a canton — a distinct rectangular area in the top-left corner.',
+  'Center': 'Flags with a coat of arms, emblem, or symbol placed at or near the center.',
+  'centered_items': 'Flags with a coat of arms, emblem, or symbol placed at or near the center.',
+  'Trside': 'Flags featuring a triangle or sidebar (hoist-side triangle or vertical stripe).',
+  'Crosse': 'Flags that feature a cross design (not just a canton cross).',
+  'southc': 'Flags that include the Southern Cross constellation, common in the Southern Hemisphere.',
+  'NoStar': 'Flags that contain no star symbols in their design.',
+  'Diagon': 'Flags featuring a diagonal band or stripe.',
+  'dgband': 'Flags featuring a diagonal band or stripe.',
+  'Radial': 'Flags with a radial or starburst design emanating from a central point.',
+  'OnlyBa': 'Flags consisting only of horizontal or vertical bands, with no additional emblems.',
+  'Rotate': 'Flags that look the same when rotated 180° (rotationally symmetric).',
+  'Egually': 'Flags where all horizontal or vertical bands are of equal width.',
+  // Stars
+  '1Stars': 'Flags that feature exactly one star.',
+  '2Stars': 'Flags that feature exactly two stars.',
+  '3+Star': 'Flags that feature three or more stars.',
+  // Band design
+  'Horizo': 'Flags with horizontal bands or stripes.',
+  'Vertic': 'Flags with vertical bands or stripes.',
+  '2Bands': 'Flags divided into two horizontal or vertical bands.',
+  '3Bands': 'Flags divided into three horizontal or vertical bands.',
+  '4+Band': 'Flags divided into four or more bands or stripes.',
+  // Color counts
+  '2Color': 'Flags using exactly two distinct colors.',
+  '3Color': 'Flags using exactly three distinct colors.',
+  '4Color': 'Flags using exactly four distinct colors.',
+  '5+Color': 'Flags using five or more distinct colors.',
+  // Special
+  'chopGB':   'Countries that gained independence from the United Kingdom (former British colonies).',
+  'island':   'Island nations — countries entirely on one or more islands.',
+  'monarchy': 'Countries with a monarchy as their form of government.',
+  'republic': 'Countries officially designated as republics.',
+  'eunion':   'Countries that are full members of the European Union.',
+  'retrique': 'Flags using a radiating tricolor design (stripes fan out from a point).',
+  'terr_us':  'US territories and associated states (e.g. Puerto Rico, Guam).',
+  'terr_all': 'Territories, dependencies, and non-sovereign entities.',
+  'femalepm': 'Countries currently led by a female head of state or government.',
+  // Language
+  'englis': 'Countries where English is an official or de facto national language.',
+  'french': 'Countries where French is an official or widely spoken language.',
+  'spanis': 'Countries where Spanish is an official language.',
+  'arabic': 'Countries where Arabic is an official language.',
+  'portug': 'Countries where Portuguese is an official language.',
+  'russi':  'Countries where Russian is an official or widely spoken language.',
+  'swahi':  'Countries where Swahili is an official or widely spoken language.',
+  // Political
+  'bolivarian': 'States inspired by the Bolivarian Revolution or Simon Bolívar\'s legacy (Venezuela, Bolivia, etc.).',
+  'md_deno_n':  'Sovereign nation-states (as opposed to territories or dependencies).',
+  // Misc
+  'Ships':     'Flags that feature a ship or maritime vessel in their design.',
+  'Crown':     'Flags that include a crown symbol.',
+  'nolrgcrs':  'Flags that do not feature a large cross design.',
+  'notlargecrs':'Flags that do not feature a large cross design.',
+  'md_eqtor':  'Countries located on or very near the geographic equator.',
+  'md_egal':   'Flags that depict a winged animal such as an eagle or condor.',
+  'md_lion':   'Flags that depict a non-winged animal such as a lion, bear, or bull.',
+  'md_slavi':  'Countries with a Slavic language as an official or primary language.',
+  'md_stun_bla': 'Flags featuring a star or celestial symbol over a black background or band.',
+  // Band color aliases
+  'BLU':       'Flags where blue is a dominant color.',
+  'WHI':       'Flags where white is a dominant color.',
+  // Concatenated codes
+  'HasSun,':         'Flags that feature a sun — includes all sun/sunburst varieties.',
+  'nn_mikro,':       'Microstates — very small countries by area or population.',
+  'myrGRA, BLA':     'Flags whose main or dominant colors are gray and black.',
+  'Center,hascoa,Quartr': 'Flags with a centered coat of arms, or a quartered design.',
+  'won_lioEgually':  'Flags depicting a non-winged animal with equal-width bands.',
+  // Malformed bnd_ codes
+  'bnd_BLUE':   'Flags that contain a blue band or stripe.',
+  'bnd_GREEN':  'Flags that contain a green band or stripe.',
+  'bnd_WHITE':  'Flags that contain a white band or stripe.',
+  'bnd_YELLOW': 'Flags that contain a yellow band or stripe.',
+  'bnd_001WHI': 'Flags where the first (top or left) band is white.',
+  'bnd_002BLU': 'Flags where the second band is blue.',
+  'bnd_003WHI': 'Flags where the third band is white.',
+  'bnd_GR':     'Flags that contain a green band or stripe.',
+  'bnd_BRORA':  'Flags that contain a brown or orange band.',
+  'bnd_PURED':  'Flags that contain a purple band or stripe.',
+  'bnd_E YEL':  'Flags that contain a yellow band or stripe.',
+  'bnd_RED YEL':'Flags that contain both red and yellow bands.',
+  'bnd_WHIÇ':   'Flags that contain a white band or stripe.',
+  'Bloemfontein': 'Data error — this entry should not appear in gameplay.',
+};
 
 // Skip prefixes — only truly unplayable metadata (PM names, capitals, exact area, geo coords, policies)
 const SKIP_PREFIXES = ['nt','pm_','capi_','area_','geo_','pol_','_'];
@@ -1972,7 +2108,12 @@ function getItemInfo(code) {
   if (BLOCKED_ITEMS.has(code)) return null;
 
   // 1. ITEM_MAP — hardcoded priority values override everything
-  if (ITEM_MAP[code]) return ITEM_MAP[code];
+  if (ITEM_MAP[code]) {
+    const base = ITEM_MAP[code];
+    // Attach a manual description if we have one, so the modal can show it
+    if (!base.desc && DESC_MAP[code]) return Object.assign({}, base, { desc: DESC_MAP[code] });
+    return base;
+  }
 
   // 2. flagca.txt — the live database is authoritative for label & emoji
   //    entry[1] format: "🔄<br>180° Symmetry"  or  "🟦<br>Vertical<br>Bands"
@@ -1980,18 +2121,23 @@ function getItemInfo(code) {
     const parts = flagDescriptions[code][1].split('<br>');
     const emoji = parts[0].trim() || '🏷️';
     const label = parts.slice(1).join(' ').trim() || flagDescriptions[code][0] || code;
-    return { label, emoji, p: 2 };
+    // flagca.txt may also have a description field [2]; fall back to DESC_MAP
+    const desc = (flagDescriptions[code][2] || '').trim() || DESC_MAP[code] || '';
+    return { label, emoji, p: 2, desc };
   }
 
   // 3. Dynamic patterns for codes the database may not enumerate exhaustively
 
   // Sub-region  e.g. rg2_AM_South → "AM South"
-  if (code.startsWith('rg2_')) return { label: code.replace('rg2_','').replace(/_/g,' '), emoji:'🗺️', p:1 };
+  if (code.startsWith('rg2_')) {
+    const label = code.replace('rg2_','').replace(/_/g,' ');
+    return { label, emoji:'🗺️', p:1, desc: DESC_MAP[code] || '' };
+  }
 
   // Majority color  e.g. myrRED → "Mostly Red"
   if (code.startsWith('myr')) {
     const col = code.slice(3);
-    return { label: `Mostly ${col}`, emoji: colorEmojiFor(col), p:2 };
+    return { label: `Mostly ${col}`, emoji: colorEmojiFor(col), p:2, desc: DESC_MAP[code] || `Flags where ${col.toLowerCase()} is the dominant color.` };
   }
 
   // Band has color  e.g. bnd_RED → "Has Red Band"
@@ -1999,8 +2145,8 @@ function getItemInfo(code) {
   if (code.startsWith('bnd_')) {
     const col = code.slice(4).toUpperCase();
     const knownColors = new Set(['RED','BLU','WHI','GRE','YEL','ORA','BLA','BRO','PUR','PIN','GRA']);
-    if (knownColors.has(col)) return { label: `Has ${col[0]+col.slice(1).toLowerCase()} Band`, emoji: colorEmojiFor(col), p:2 };
-    return { label: `Has ${col} Band`, emoji: '🏳️', p:0 };
+    if (knownColors.has(col)) return { label: `Has ${col[0]+col.slice(1).toLowerCase()} Band`, emoji: colorEmojiFor(col), p:2, desc: DESC_MAP[code] || `Flags that include a ${col.toLowerCase()} band or stripe.` };
+    return { label: `Has ${col} Band`, emoji: '🏳️', p:0, desc: DESC_MAP[code] || '' };
   }
 
   // Positional band color  e.g. 001RED → "Band 1: Red"
@@ -2011,11 +2157,11 @@ function getItemInfo(code) {
     const col = bandMatch[2];
     const knownColors = new Set(['RED','BLU','WHI','GRE','YEL','ORA','BLA','BRO','PUR','PIN','GRA']);
     if (!knownColors.has(col)) return null; // e.g. 001NON — block silently
-    return { label: `Band ${pos}: ${col[0]+col.slice(1).toLowerCase()}`, emoji: colorEmojiFor(col), p:1 };
+    return { label: `Band ${pos}: ${col[0]+col.slice(1).toLowerCase()}`, emoji: colorEmojiFor(col), p:1, desc: `Flags where band number ${pos} (from the top or left) is ${col.toLowerCase()}.` };
   }
 
   // 4. Last-resort fallback — show raw code rather than silently drop it
-  return { label: code, emoji: '🏷️', p:0 };
+  return { label: code, emoji: '🏷️', p:0, desc: DESC_MAP[code] || '' };
 }
 
 function shouldSkip(code) { return SKIP_RE.test(code); }
@@ -2046,14 +2192,15 @@ async function loadFlagDescriptions() {
 // ─── MODAL ───────────────────────────────────────────────────────────────────
 function showDescModal(code, label, emoji) {
   const desc = flagDescriptions && flagDescriptions[code];
-  let bodyText = 'No description available for this category.';
+  let bodyText = DESC_MAP[code] || 'No description available for this category.';
   let category = '';
   if (desc) {
     // desc[2] has the description (may start with <br>), desc[3] is the category
-    bodyText = (desc[2] || '')
+    const fromDB = (desc[2] || '')
       .replace(/<br\s*\/?>/gi, '\n')
       .replace(/<[^>]+>/g, '')
       .trim();
+    bodyText = fromDB || DESC_MAP[code] || 'No description available for this category.';
     category = desc[3] || '';
   }
   document.getElementById('modal-emoji').textContent = emoji;
