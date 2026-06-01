@@ -3,10 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Flag Grid Challenge</title>
+<title>Flagtrioku</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
 <style>
   :root {
     --bg: #0f1623;
@@ -25,7 +26,10 @@
     --fire2: #ff2200;
     --cell-empty: #162032;
     --cell-hover: #1e3348;
+    --title-color: #4a9eff;
   }
+
+  /* ── CUSTOM THEME (written by JS) ── */
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -34,92 +38,324 @@
     font-family: 'DM Sans', sans-serif;
     color: var(--text);
     min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
+    overflow: hidden;
     background-image:
       radial-gradient(ellipse at 20% 20%, rgba(74,158,255,0.04) 0%, transparent 60%),
       radial-gradient(ellipse at 80% 80%, rgba(255,107,0,0.03) 0%, transparent 60%);
   }
 
-  .screen { display: none; width: 100%; max-width: 900px; }
-  .screen.active { display: flex; flex-direction: column; align-items: center; }
+  /* ─── PAN VIEWPORT ─── */
+  #pan-viewport {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    transition: transform 0.7s cubic-bezier(0.77,0,0.18,1);
+    will-change: transform;
+  }
+
+  /* Hub layout: 2D grid of zones
+     campaign = bottom-left (-100vw, 100vh)
+     hub      = center      (0, 0)
+     world    = bottom      (0, 100vh)
+     custom   = right       (100vw, 0)
+  */
+  .pan-zone {
+    position: absolute;
+    width: 100vw; height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  #zone-campaign { left: -100vw; top: 100vh;  }
+  #zone-hub      { left: 0;      top: 0;      }
+  #zone-world    { left: 0;      top: 100vh;  }
+  #zone-custom   { left: 100vw;  top: 100vh;  }
+
+  .screen { display: none; width: 100%; max-width: 900px; flex-direction: column; align-items: center; }
+  .screen.active { display: flex; }
+
+  /* ─── HUB SCREEN ─── */
+  #screen-hub {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    width: 100%;
+  }
+  .hub-hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: var(--hub-hero-bg, rgba(15,22,35,0.62));
+    backdrop-filter: blur(12px) saturate(1.3);
+    -webkit-backdrop-filter: blur(12px) saturate(1.3);
+    border: 1px solid var(--hub-hero-border, rgba(74,158,255,0.18));
+    border-radius: 22px;
+    padding: 28px 38px 22px;
+    margin-bottom: 44px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.28);
+  }
+  .hub-title {
+    font-family: 'Comic Sans MS', 'Comic Sans', cursive;
+    font-size: clamp(2.4rem, 6vw, 3.8rem);
+    font-weight: 900;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+    color: var(--title-color);
+    text-align: center;
+  }
+  .hub-subtitle {
+    color: var(--title-color);
+    font-size: 0.9rem;
+    margin-bottom: 0;
+    text-align: center;
+    max-width: 340px;
+    opacity: 0.8;
+  }
+
+  /* Three mode buttons in a row */
+  .hub-modes {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 0;
+    width: 100%;
+    max-width: 620px;
+    position: relative;
+  }
+
+  /* Connecting SVG line behind the buttons */
+  .hub-connector {
+    position: absolute;
+    top: 50%;
+    left: 0; right: 0;
+    height: 3px;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .mode-btn-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    z-index: 1;
+    flex: 1;
+  }
+
+  .mode-icon {
+    font-size: 2rem;
+    color: var(--accent);
+    opacity: 0.85;
+    transition: opacity 0.2s, transform 0.2s;
+  }
+
+  .mode-btn {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    border: 2.5px solid var(--accent);
+    background: var(--card);
+    color: var(--text);
+    font-family: 'Comic Sans MS', 'Comic Sans', cursive;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: border-color 0.2s, background 0.2s, transform 0.18s, box-shadow 0.2s;
+    box-shadow: 0 8px 28px rgba(0,0,0,0.35);
+    position: relative;
+    letter-spacing: 0.3px;
+  }
+  .mode-btn:hover {
+    border-color: var(--accent);
+    background: var(--card2);
+    transform: translateY(-4px);
+    box-shadow: 0 14px 36px rgba(0,0,0,0.25);
+  }
+  .mode-btn:hover ~ .mode-icon,
+  .mode-btn-wrap:hover .mode-icon {
+    opacity: 1;
+    transform: translateY(-3px);
+  }
+  .mode-btn:active { transform: translateY(-1px); }
+
+  /* SVG lines overlay in hub */
+  #hub-lines-svg {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: visible;
+    z-index: 0;
+  }
+  #hub-lines-svg line, #hub-lines-svg path {
+    stroke: var(--border);
+    stroke-width: 2.5;
+    opacity: 0.65;
+    fill: none;
+    transition: stroke 0.3s;
+  }
+
+  /* ─── CAMPAIGN ZONE ─── */
+  #zone-campaign .diff-header {
+    text-align: center;
+    margin-bottom: 24px;
+    animation: none;
+  }
+  #zone-campaign .diff-header h1 {
+    font-family: 'Comic Sans MS', 'Comic Sans', cursive;
+    font-size: 1.9rem;
+    font-weight: 900;
+    color: var(--title-color);
+    margin-bottom: 8px;
+  }
+  #zone-campaign .diff-header p {
+    color: var(--muted);
+    font-size: 0.87rem;
+    max-width: 380px;
+    margin: 0 auto;
+  }
+
+  /* ─── DIRECTIONAL BACK BUTTONS ─── */
+  .zone-back-btn {
+    position: absolute;
+    z-index: 10;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    border: 3px solid var(--accent);
+    background: var(--card);
+    color: var(--accent);
+    font-size: 1.4rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.35), 0 0 0 6px var(--card2);
+    transition: background 0.18s, border-color 0.18s, transform 0.18s, box-shadow 0.18s;
+  }
+  .zone-back-btn:hover {
+    background: var(--card2);
+    transform: scale(1.10);
+    box-shadow: 0 8px 28px rgba(0,0,0,0.4), 0 0 0 6px var(--card2);
+  }
+  .zone-back-btn:active { transform: scale(0.97); }
+
+  /* Campaign: hub is up-right → button top-right corner (overridden by JS to line endpoint) */
+  /* World: hub is up → button top-center (overridden by JS to line endpoint) */
+  /* Custom: hub is up-left → button top-left corner (overridden by JS to line endpoint) */
+  #zone-world .zone-back-btn:hover { transform: scale(1.10) !important; }
+
+  /* Chevron icon rotation per direction */
+  #zone-campaign .zone-back-btn i { transform: rotate(45deg);  }  /* ↗ */
+  #zone-world    .zone-back-btn i { transform: rotate(0deg);   }  /* ↑ */
+  #zone-custom   .zone-back-btn i { transform: rotate(-45deg); }  /* ↖ */
+
+  /* ─── SCREEN (GAME) overrides for non-hub screens ─── */
+  #zone-game-container {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    display: none;
+    align-items: flex-start;
+    justify-content: center;
+    overflow-y: auto;
+    padding: 20px;
+    z-index: 100;
+    background: var(--bg);
+    background-image:
+      radial-gradient(ellipse at 20% 20%, rgba(74,158,255,0.04) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 80%, rgba(255,107,0,0.03) 0%, transparent 60%);
+  }
+  #zone-game-container.active { display: flex; }
 
   /* ─── DIFFICULTY SCREEN ─── */
   .diff-header {
     text-align: center;
-    margin-bottom: 28px;
+    margin-bottom: 16px;
     animation: fadeUp 0.5s ease both;
   }
   .diff-header .globe {
-    font-size: 52px;
-    margin-bottom: 14px;
+    font-size: 36px;
+    margin-bottom: 8px;
     animation: spinWobble 8s linear infinite;
     display: inline-block;
   }
   @keyframes spinWobble { 0%,100%{transform:rotate(-5deg)} 50%{transform:rotate(5deg)} }
   .diff-header h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: 2.2rem;
+    font-family: 'Comic Sans MS', 'Comic Sans', cursive;
+    font-size: 1.6rem;
     font-weight: 900;
-    letter-spacing: -0.5px;
-    margin-bottom: 10px;
-    background: linear-gradient(135deg, #e8edf5 40%, #4a9eff);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    letter-spacing: 0px;
+    margin-bottom: 6px;
+    color: var(--title-color);
   }
   .diff-header p {
     color: var(--muted);
-    font-size: 0.92rem;
-    line-height: 1.65;
-    max-width: 420px;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    max-width: 380px;
     margin: 0 auto;
   }
   .diff-card {
     background: var(--card);
     border: 1px solid var(--border);
-    border-radius: 24px;
-    padding: 52px 48px;
+    border-radius: 18px;
+    padding: 24px 28px;
     text-align: center;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.35);
     width: 100%;
-    max-width: 500px;
+    max-width: 380px;
     animation: fadeUp 0.4s ease both;
   }
 
   .diff-card h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.6rem;
-    font-weight: 700;
-    margin-bottom: 6px;
+    font-family: 'Comic Sans MS', 'Comic Sans', cursive;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--muted);
+    margin-bottom: 4px;
+    letter-spacing: 0.5px;
   }
   .diff-counts {
     color: var(--muted);
     font-size: 0.82rem;
-    margin-bottom: 36px;
+    margin-bottom: 18px;
     letter-spacing: 0.3px;
   }
   .diff-counts span { margin: 0 6px; }
 
   .btn-group {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
     gap: 12px;
   }
 
   .diff-btn {
     border: none;
-    border-radius: 14px;
-    padding: 16px 24px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 1rem;
-    font-weight: 600;
+    border-radius: 12px;
+    width: 90px;
+    height: 90px;
+    font-family: 'Comic Sans MS', 'Comic Sans', cursive;
+    font-size: 0.88rem;
+    font-weight: 700;
     cursor: pointer;
     transition: transform 0.15s, box-shadow 0.15s, filter 0.15s;
     letter-spacing: 0.3px;
     position: relative;
     overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   .diff-btn:hover { transform: translateY(-2px); filter: brightness(1.1); }
   .diff-btn:active { transform: translateY(0); }
@@ -165,7 +401,7 @@
     margin-bottom: 20px;
   }
   .game-topbar .flag-name {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Comic Sans MS', 'Comic Sans', cursive;
     font-size: 1.3rem;
     font-weight: 700;
     display: flex;
@@ -185,6 +421,7 @@
   .diff-badge.medium { background: rgba(240,196,25,0.15); color: var(--medium); border: 1px solid rgba(240,196,25,0.3); }
   .diff-badge.hard   { background: rgba(224,82,82,0.15);  color: var(--hard);   border: 1px solid rgba(224,82,82,0.3); }
   .diff-badge.hitme  { background: rgba(255,107,0,0.15);  color: var(--fire1);  border: 1px solid rgba(255,107,0,0.3); }
+  .diff-badge.custom { background: rgba(180,122,254,0.15); color: #b47afe;       border: 1px solid rgba(180,122,254,0.3); }
 
   .back-btn {
     background: var(--card2);
@@ -453,7 +690,7 @@
   }
   .main-flag-toast .toast-emoji { font-size: 2.6rem; margin-bottom: 10px; }
   .main-flag-toast h3 {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Comic Sans MS', 'Comic Sans', cursive;
     font-size: 1.3rem;
     font-weight: 700;
     color: var(--medium);
@@ -500,7 +737,7 @@
   }
   .completion-modal .trophy { font-size: 3rem; margin-bottom: 12px; }
   .completion-modal h2 {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Comic Sans MS', 'Comic Sans', cursive;
     font-size: 1.7rem;
     font-weight: 900;
     margin-bottom: 6px;
@@ -519,7 +756,7 @@
     padding: 16px 10px;
   }
   .stat-box .stat-val {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Comic Sans MS', 'Comic Sans', cursive;
     font-size: 2rem;
     font-weight: 900;
     color: var(--accent);
@@ -843,7 +1080,7 @@
     margin-bottom: 10px;
   }
   .desc-modal-title {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Comic Sans MS', 'Comic Sans', cursive;
     font-size: 1.25rem;
     font-weight: 700;
     color: var(--text);
@@ -883,12 +1120,247 @@
   }
   .desc-modal-close:hover { border-color: var(--accent); background: var(--bg2); }
 
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(18px); }
-    to   { opacity: 1; transform: translateY(0); }
+  /* ─── CUSTOM ZONE ─── */
+  .custom-search-wrap {
+    width: 100%;
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
   }
+  .custom-search-title {
+    font-family: 'Comic Sans MS', 'Comic Sans', cursive;
+    font-size: 1.9rem;
+    font-weight: 900;
+    color: var(--title-color);
+    text-align: center;
+    margin-bottom: 2px;
+  }
+  .custom-search-sub {
+    color: var(--muted);
+    font-size: 0.87rem;
+    text-align: center;
+    line-height: 1.5;
+  }
+  .custom-search-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 16px 50px rgba(0,0,0,0.4);
+  }
+  .custom-search-input-wrap {
+    padding: 14px 16px 10px;
+  }
+  .custom-search-input-wrap input {
+    width: 100%;
+    background: var(--bg2);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .custom-search-input-wrap input::placeholder { color: var(--muted); }
+  .custom-search-input-wrap input:focus { border-color: #b47afe; }
+  .custom-search-results {
+    overflow-y: auto;
+    max-height: 320px;
+    padding: 4px 8px 8px;
+  }
+  .custom-search-results::-webkit-scrollbar { width: 6px; }
+  .custom-search-results::-webkit-scrollbar-track { background: transparent; }
+  .custom-search-results::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 
-  /* ─── SEARCH MODAL FOOTER ─── */
+
+  /* ─── THEME TOGGLE ─── */
+  #theme-toggle-btn {
+    position: fixed;
+    top: 18px;
+    right: 18px;
+    z-index: 500;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    background: var(--card);
+    color: var(--accent);
+    font-size: 1.1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.3);
+  }
+  #theme-toggle-btn:hover {
+    border-color: var(--accent);
+    transform: rotate(20deg) scale(1.08);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+  }
+  #theme-panel {
+    position: fixed;
+    top: 68px;
+    right: 18px;
+    z-index: 500;
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 18px;
+    padding: 14px 16px 16px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.45);
+    display: none;
+    flex-direction: column;
+    gap: 12px;
+    width: 240px;
+    animation: fadeUp 0.18s ease both;
+  }
+  #theme-panel.open { display: flex; }
+  .theme-panel-title {
+    font-family: 'Comic Sans MS', 'Comic Sans', cursive;
+    font-size: 0.75rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+  }
+  .tp-row {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .tp-label {
+    font-family: 'Comic Sans MS', 'Comic Sans', cursive;
+    font-size: 0.75rem;
+    color: var(--muted);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .tp-label span { color: var(--text); font-size: 0.7rem; }
+  /* Color picker row */
+  .tp-color-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .tp-color-input {
+    width: 44px;
+    height: 36px;
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    cursor: pointer;
+    background: none;
+    padding: 2px;
+    flex-shrink: 0;
+  }
+  .tp-color-input::-webkit-color-swatch-wrapper { padding: 0; }
+  .tp-color-input::-webkit-color-swatch { border-radius: 7px; border: none; }
+  .tp-hue-bar {
+    flex: 1;
+    height: 14px;
+    border-radius: 7px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
+    background: linear-gradient(to right,
+      hsl(0,80%,50%), hsl(30,80%,50%), hsl(60,80%,50%), hsl(90,80%,50%),
+      hsl(120,80%,50%), hsl(150,80%,50%), hsl(180,80%,50%), hsl(210,80%,50%),
+      hsl(240,80%,50%), hsl(270,80%,50%), hsl(300,80%,50%), hsl(330,80%,50%), hsl(360,80%,50%));
+  }
+  .tp-hue-bar::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: #fff;
+    border: 2px solid rgba(0,0,0,0.3);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+    cursor: pointer;
+  }
+  /* Range sliders */
+  .tp-slider {
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  .tp-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid #fff;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.35);
+    cursor: pointer;
+  }
+  .tp-slider#sl-lightness {
+    background: linear-gradient(to right, #000, #fff);
+  }
+  .tp-slider#sl-saturation {
+    background: linear-gradient(to right, #888, hsl(var(--accent-h,210),100%,50%));
+  }
+  .tp-slider#sl-contrast {
+    background: linear-gradient(to right, var(--bg2,#162032), #fff);
+  }
+  .theme-divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 2px 0;
+  }
+  .wallpaper-toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .wallpaper-toggle-label {
+    font-family: 'Comic Sans MS', 'Comic Sans', cursive;
+    font-size: 0.8rem;
+    color: var(--text);
+    font-weight: 600;
+  }
+  .wallpaper-pill {
+    position: relative;
+    width: 36px; height: 20px;
+    border-radius: 10px;
+    background: var(--border);
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s;
+    flex-shrink: 0;
+    padding: 0;
+  }
+  .wallpaper-pill::after {
+    content: '';
+    position: absolute;
+    top: 3px; left: 3px;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: #fff;
+    transition: transform 0.2s;
+  }
+  .wallpaper-pill.on { background: var(--accent); }
+  .wallpaper-pill.on::after { transform: translateX(16px); }
+  .tp-reset-btn {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: 'Comic Sans MS', 'Comic Sans', cursive;
+    font-size: 0.72rem;
+    border-radius: 8px;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    align-self: flex-end;
+  }
+  .tp-reset-btn:hover { background: var(--border); color: var(--text); }
   .search-modal-footer {
     display: flex;
     align-items: center;
@@ -963,31 +1435,178 @@
     line-height: 1.2;
     font-weight: 600;
   }
+
+  /* ─── BUBBLE WALLPAPER ─── */
+  #bubble-wallpaper {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    z-index: -1;
+    display: block;
+    opacity: 0.62;
+  }
+
+  body {
+    background: var(--bg) !important;
+    background-image: none !important;
+  }
+  /* Game container is transparent — wallpaper canvas (outside pan-viewport) shows through */
+  #zone-game-container {
+    background: transparent !important;
+    background-image: none !important;
+  }
+  /* Hide pan-viewport content while game is active; canvas is a sibling so it stays visible */
+  body.game-active #pan-viewport {
+    visibility: hidden;
+  }
 </style>
 </head>
 <body>
 
-<!-- ── SCREEN 1: DIFFICULTY ── -->
-<div id="screen-difficulty" class="screen active">
-  <div class="diff-header">
-    <div class="globe">🌍</div>
-    <h1>Flag Grid Challenge</h1>
-    <p>Each cell on the grid requires a flag that satisfies <em>both</em> its row and column attribute. Search by name, pick your flag — but every flag can only be used once across the whole board!</p>
-  </div>
-  <div class="diff-card">
-    <h2>Select your challenge:</h2>
-    <div class="diff-counts" id="diff-counts"></div>
-    <div class="btn-group">
-      <button class="diff-btn easy"   onclick="selectDifficulty('easy')">🟢 Easy</button>
-      <button class="diff-btn medium" onclick="selectDifficulty('medium')">🟡 Medium</button>
-      <button class="diff-btn hard"   onclick="selectDifficulty('hard')">🔴 Hard</button>
-      <button class="diff-btn hitme"  onclick="selectDifficulty('hitme')">🔥 Hit me!</button>
+<canvas id="bubble-wallpaper"></canvas>
+
+<button id="theme-toggle-btn" onclick="toggleThemePanel()" title="Change theme">
+  <i class="fa-solid fa-palette"></i>
+</button>
+<div id="theme-panel">
+  <div class="theme-panel-title">Customize Theme</div>
+
+  <!-- Primary color (background) -->
+  <div class="tp-row">
+    <div class="tp-label">Primary Color <span id="lbl-bg">#0f1623</span></div>
+    <div class="tp-color-row">
+      <input type="color" class="tp-color-input" id="pick-bg" value="#0f1623" title="Pick background color">
+      <input type="range" class="tp-hue-bar" id="hue-bg" min="0" max="360" value="210">
     </div>
   </div>
+
+  <!-- Secondary color (accent) -->
+  <div class="tp-row">
+    <div class="tp-label">Secondary Color <span id="lbl-accent">#4a9eff</span></div>
+    <div class="tp-color-row">
+      <input type="color" class="tp-color-input" id="pick-accent" value="#4a9eff" title="Pick accent color">
+      <input type="range" class="tp-hue-bar" id="hue-accent" min="0" max="360" value="210">
+    </div>
+  </div>
+
+  <!-- Lightness slider -->
+  <div class="tp-row">
+    <div class="tp-label">Background Lightness <span id="lbl-lightness">20%</span></div>
+    <input type="range" class="tp-slider" id="sl-lightness" min="0" max="100" value="20">
+  </div>
+
+  <!-- Saturation slider -->
+  <div class="tp-row">
+    <div class="tp-label">Accent Saturation <span id="lbl-saturation">100%</span></div>
+    <input type="range" class="tp-slider" id="sl-saturation" min="20" max="100" value="100">
+  </div>
+
+  <!-- Contrast slider -->
+  <div class="tp-row">
+    <div class="tp-label">Contrast <span id="lbl-contrast">50%</span></div>
+    <input type="range" class="tp-slider" id="sl-contrast" min="0" max="100" value="50">
+  </div>
+
+  <button class="tp-reset-btn" onclick="resetTheme()">↩ Reset to default</button>
+
+  <hr class="theme-divider">
+  <div class="wallpaper-toggle-row">
+    <span class="wallpaper-toggle-label">Animated BG</span>
+    <button class="wallpaper-pill on" id="wallpaper-pill-btn" onclick="toggleWallpaper()" title="Toggle animated background"></button>
+  </div>
+</div>
+<div id="pan-viewport">
+
+  <!-- LEFT ZONE: Campaign -->
+  <div class="pan-zone" id="zone-campaign">
+    <button class="zone-back-btn" onclick="panTo('hub')" title="Back to Hub">
+      <i class="fa-solid fa-chevron-up"></i>
+    </button>
+    <div style="display:flex;flex-direction:column;align-items:center;width:100%;max-width:500px;">
+      <div class="diff-header">
+        <h1>Campaign</h1>
+      </div>
+      <div class="diff-card">
+        <h2>Select difficulty:</h2>
+        <div class="diff-counts" id="diff-counts"></div>
+        <div class="btn-group">
+          <button class="diff-btn easy"   onclick="selectDifficulty('easy')">Easy</button>
+          <button class="diff-btn medium" onclick="selectDifficulty('medium')">Medium</button>
+          <button class="diff-btn hard"   onclick="selectDifficulty('hard')">Hard</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CENTER ZONE: Hub -->
+  <div class="pan-zone" id="zone-hub" style="position:relative;">
+    <svg id="hub-lines-svg" xmlns="http://www.w3.org/2000/svg"></svg>
+    <div id="screen-hub">
+      <div class="hub-hero">
+        <div class="hub-title">Flagtrioku</div>
+        <div class="hub-subtitle">Each cell requires a flag matching both its row and column attribute. Every flag can only be used once!</div>
+      </div>
+      <div class="hub-modes">
+
+        <div class="mode-btn-wrap">
+          <i class="fa-solid fa-map mode-icon"></i>
+          <button class="mode-btn" onclick="panTo('campaign')">
+            Campaign
+          </button>
+        </div>
+
+        <div class="mode-btn-wrap">
+          <i class="fa-solid fa-globe mode-icon" style="color:#4a9eff"></i>
+          <button class="mode-btn" onclick="panTo('world')">
+            World
+          </button>
+        </div>
+
+        <div class="mode-btn-wrap">
+          <i class="fa-solid fa-paintbrush mode-icon" style="color:#b47afe"></i>
+          <button class="mode-btn" onclick="panTo('custom')">
+            Custom
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTTOM ZONE: World (placeholder) -->
+  <div class="pan-zone" id="zone-world">
+    <button class="zone-back-btn" onclick="panTo('hub')" title="Back to Hub">
+      <i class="fa-solid fa-chevron-up"></i>
+    </button>
+    <div style="text-align:center;color:var(--muted);max-width:340px;">
+      <i class="fa-solid fa-globe" style="font-size:3rem;color:var(--accent);margin-bottom:18px;display:block;opacity:0.5"></i>
+      <h2 style="font-family:'Comic Sans MS','Comic Sans',cursive;font-size:1.6rem;margin-bottom:10px;color:var(--title-color);">World Mode</h2>
+      <p>Coming soon — compete on global leaderboards with a shared daily grid.</p>
+    </div>
+  </div>
+
+  <!-- RIGHT ZONE: Custom -->
+  <div class="pan-zone" id="zone-custom">
+    <button class="zone-back-btn" onclick="panTo('hub')" title="Back to Hub">
+      <i class="fa-solid fa-chevron-up"></i>
+    </button>
+    <div class="custom-search-wrap">
+      <div class="custom-search-title">Custom Mode</div>
+      <div class="custom-search-sub">Choose any flag to build your grid around. Its name will be shown, but it can't be used as an answer.</div>
+      <div class="custom-search-box">
+        <div class="custom-search-input-wrap">
+          <input type="text" id="custom-search-input" placeholder="Search for a flag…" autocomplete="off" spellcheck="false">
+        </div>
+        <div class="custom-search-results" id="custom-search-results">
+          <div class="search-state-msg">Start typing to find a flag</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
 
-<!-- ── SCREEN 2: GAME ── -->
-<div id="screen-game" class="screen">
+<!-- ── GAME ZONE (full-screen overlay, outside pan) ── -->
+<div id="zone-game-container">
   <div class="game-wrap" id="game-wrap"></div>
 </div>
 
@@ -1170,27 +1789,40 @@ const ITEM_MAP = {
   'rgn_South America': { label:'South America',   emoji:'🌎', p:3 },
   'rgn_Oceania':       { label:'Oceania',         emoji:'🌏', p:3 },
   // Sub-regions
-  'rg2_AF_East':    { label:'East Africa',      emoji:'🌍', p:2 },
-  'rg2_AF_West':    { label:'West Africa',      emoji:'🌍', p:2 },
-  'rg2_AF_North':   { label:'North Africa',     emoji:'🌍', p:2 },
-  'rg2_AF_South':   { label:'Southern Africa',  emoji:'🌍', p:2 },
-  'rg2_AF_Central': { label:'Central Africa',   emoji:'🌍', p:2 },
-  'rg2_AS_East':    { label:'East Asia',        emoji:'🌏', p:2 },
-  'rg2_AS_West':    { label:'West Asia',        emoji:'🌏', p:2 },
-  'rg2_AS_South':   { label:'South Asia',       emoji:'🌏', p:2 },
-  'rg2_AS_SE':      { label:'SE Asia',          emoji:'🌏', p:2 },
-  'rg2_AS_Central': { label:'Central Asia',     emoji:'🌏', p:2 },
-  'rg2_Na_Caribbean':{ label:'Caribbean',       emoji:'🏝️', p:2 },
-  'rg2_Na_CeAm':    { label:'Central America',  emoji:'🌎', p:2 },
-  'rg2_OC_AUNZ':    { label:'Aus/NZ Region',    emoji:'🦘', p:2 },
-  'rg2_OC_Poly':    { label:'Polynesia',        emoji:'🏝️', p:2 },
-  'rg2_OC_Micro':   { label:'Micronesia',       emoji:'🏝️', p:2 },
-  'rg2_EU_West':    { label:'Western Europe',   emoji:'🇪🇺', p:2 },
-  'rg2_EU_East':    { label:'Eastern Europe',   emoji:'🌍', p:2 },
-  'rg2_EU_North':   { label:'Northern Europe',  emoji:'🌍', p:2 },
-  'rg2_EU_South':   { label:'Southern Europe',  emoji:'🌍', p:2 },
-  'rg2_SA_Cone':    { label:'Southern Cone',    emoji:'🌎', p:2 },
-  'rg2_SA_North':   { label:'Northern S.Am.',   emoji:'🌎', p:2 },
+  'rg2_AF_East':       { label:'East Africa',      emoji:'🌍', p:2 },
+  'rg2_AF_West':       { label:'West Africa',      emoji:'🌍', p:2 },
+  'rg2_AF_North':      { label:'North Africa',     emoji:'🌍', p:2 },
+  'rg2_AF_South':      { label:'Southern Africa',  emoji:'🌍', p:2 },
+  'rg2_AF_Central':    { label:'Central Africa',   emoji:'🌍', p:2 },
+  'rg2_AF_Mid':        { label:'Central Africa',   emoji:'🌍', p:2 },
+  'rg2_AS_East':       { label:'East Asia',        emoji:'🌏', p:2 },
+  'rg2_AS_West':       { label:'West Asia',        emoji:'🌏', p:2 },
+  'rg2_AS_South':      { label:'South Asia',       emoji:'🌏', p:2 },
+  'rg2_AS_SE':         { label:'SE Asia',          emoji:'🌏', p:2 },
+  'rg2_AS_SouthEast':  { label:'SE Asia',          emoji:'🌏', p:2 },
+  'rg2_As_SouthOnly':  { label:'SE Asia',          emoji:'🌏', p:2 },
+  'rg2_AS_Central':    { label:'Central Asia',     emoji:'🌏', p:2 },
+  'rg2_Na_Caribbean':  { label:'Caribbean',        emoji:'🏝️', p:2 },
+  'rg2_NA_Caribbean':  { label:'Caribbean',        emoji:'🏝️', p:2 },
+  'rg2_Na_CeAm':       { label:'Central America',  emoji:'🌎', p:2 },
+  'rg2_AM_Central':    { label:'Central America',  emoji:'🌎', p:2 },
+  'rg2_AM_North':      { label:'North America',    emoji:'🌎', p:2 },
+  'rg2_AM_South':      { label:'South America',    emoji:'🌎', p:2 },
+  'rg2_OC_AUNZ':       { label:'Aus/NZ Region',    emoji:'🦘', p:2 },
+  'rg2_OC_Poly':       { label:'Polynesia',        emoji:'🏝️', p:2 },
+  'rg2_Oc_Polynesia':  { label:'Polynesia',        emoji:'🏝️', p:2 },
+  'rg2_OC_Micro':      { label:'Micronesia',       emoji:'🏝️', p:2 },
+  'rg2_OC_Micronesia': { label:'Micronesia',       emoji:'🏝️', p:2 },
+  'rg2_OC_Melanesia':  { label:'Melanesia',        emoji:'🏝️', p:2 },
+  'rg2_EU_West':       { label:'Western Europe',   emoji:'🇪🇺', p:2 },
+  'rg2_EU_East':       { label:'Eastern Europe',   emoji:'🌍', p:2 },
+  'rg2_EU_North':      { label:'Northern Europe',  emoji:'🌍', p:2 },
+  'rg2_EU_South':      { label:'Southern Europe',  emoji:'🌍', p:2 },
+  'rg2_SA_Cone':       { label:'Southern Cone',    emoji:'🌎', p:2 },
+  'rg2_SA_North':      { label:'Northern S.Am.',   emoji:'🌎', p:2 },
+  // Historical regions
+  'rg3_romanempire':   { label:'Roman Empire',     emoji:'🏛️', p:2 },
+  'rg3_austrohungary': { label:'Austro-Hungarian Empire', emoji:'🇦🇹', p:2 },
   // Features
   'HasSta': { label:'Has Stars',          emoji:'⭐', p:3 },
   'HasSun': { label:'Has Sun',            emoji:'☀️', p:3 },
@@ -1204,7 +1836,7 @@ const ITEM_MAP = {
   'Trside': { label:'Triangle/Sidebar',   emoji:'📐', p:2 },
   'Crosse': { label:'Has Cross',          emoji:'✝️',  p:2 },
   'southc': { label:'Southern Cross',     emoji:'✨', p:2 },
-  'NoStar': { label:'No Stars',           emoji:'🚫', p:1 },
+  'NoStar': { label:'No Stars',           emoji:'🚫⭐', p:1 },
   // Stars
   '1Stars': { label:'1 Star',   emoji:'⭐', p:2 },
   '2Stars': { label:'2 Stars',  emoji:'⭐', p:2 },
@@ -1216,6 +1848,7 @@ const ITEM_MAP = {
   '3Bands': { label:'3 Bands',          emoji:'3️⃣', p:2 },
   '4+Band': { label:'4+ Bands',         emoji:'4️⃣', p:2 },
   'dgband': { label:'Diagonal Band',    emoji:'↗️', p:2 },
+  'Diagon': { label:'Diagonal Band',    emoji:'↗️', p:2 },
   'Radial': { label:'Radial Design',    emoji:'💫', p:3 },
   'OnlyBa': { label:'Only Bands',       emoji:'🚫', p:1 },
   // Color counts
@@ -1241,23 +1874,87 @@ const ITEM_MAP = {
   'portug': { label:'Portuguese Speaking',emoji:'🗣️',p:2 },
   'russi':  { label:'Russian Speaking', emoji:'🗣️', p:2 },
   'swahi':  { label:'Swahili Speaking', emoji:'🗣️', p:2 },
-  // Currency
+  // Currency — case-insensitive aliases all mapped here
   'cur_Dollar': { label:'Dollar Currency', emoji:'💵', p:1 },
+  'cur_dollar': { label:'Dollar Currency', emoji:'💵', p:1 },
   'cur_Euro':   { label:'Euro Currency',   emoji:'💶', p:1 },
+  'cur_EUR':    { label:'Euro Currency',   emoji:'💶', p:1 },
+  'cur_eur':    { label:'Euro Currency',   emoji:'💶', p:1 },
   'cur_Pound':  { label:'Pound Currency',  emoji:'💷', p:1 },
   'cur_Franc':  { label:'Franc Currency',  emoji:'💰', p:1 },
   // Size
-  'nn_mikro': { label:'Microstate', emoji:'🔬', p:2 },
-  'nn_small': { label:'Small Nation',emoji:'🗺️', p:1 },
+  'nn_mikro':  { label:'Microstate',   emoji:'🔬', p:2 },
+  'nn_small':  { label:'Small Nation', emoji:'🗺️', p:1 },
   // Band layout extras
   'Rotate':   { label:'Rotatable Flag',   emoji:'🔄', p:1 },
   'Egually':  { label:'Equal-width Bands',emoji:'📏', p:1 },
   // Political / cultural
-  'bolivarian':{ label:'Bolivarian State', emoji:'🦅', p:2 },
-  'orinoc':   { label:'Orinoco Region',    emoji:'🌊', p:1 },
-  'md_deno_n':{ label:'Nation-State',      emoji:'🏳️', p:1 },
-  'rg2_AM_South':{ label:'AM South',       emoji:'🌎', p:2 },
+  'bolivarian':   { label:'Bolivarian State',  emoji:'🦅', p:2 },
+  'md_deno_n':    { label:'Nation-State',       emoji:'🏳️', p:1 },
+  // Miscellaneous items with malformed / alias codes resolved here
+  'Ships':        { label:'Ship',               emoji:'🛥️', p:2 },  // alias for Ships!
+  'Crown':        { label:'Crown',              emoji:'👑', p:2 },   // alias for Crowns
+  'Artifact':     { label:'Checkered Pattern',  emoji:'🏁', p:2 },  // maps to Checkd
+  'centered_items':{ label:'Centered Emblem',   emoji:'🎯', p:2 },  // alias for Center
+  'nolrgcrs':     { label:'No Large Cross',      emoji:'🚫➕', p:1 },
+  'notlargecrs':  { label:'No Large Cross',      emoji:'🚫➕', p:1 },
+  // Typo / prefix-error aliases
+  'md_eqtor':     { label:'Equatorial Country',  emoji:'🌐', p:1 },
+  'md_egal':      { label:'Winged Animal',        emoji:'🦅', p:2 },  // typo of md_egl
+  'md_lion':      { label:'Non-Winged Animal',    emoji:'🦁', p:2 },  // typo of md_lio
+  'md_slavi':     { label:'Slavic Language',      emoji:'🇺🇦', p:2 }, // wrong prefix (nn_slavi)
+  'md_LOTRNation':{ label:'LOTR Nation',          emoji:'💍', p:1 },
+  'md_acreed123': { label:'Assassin\'s Creed',    emoji:'🗡️', p:1 },
+  'md_stun_bla':  { label:'Star over Black',      emoji:'⚛⚫', p:1 },
+  // Bare color codes missing their cl_ prefix
+  'BLU':          { label:'Blue',                 emoji:'🔵', p:2 },
+  'WHI':          { label:'White',                emoji:'⬜', p:2 },
+  // Concatenated / comma-in-code errors — map to the dominant first item
+  'HasSun,':            { label:'Has Sun',          emoji:'☀️', p:2 },
+  'nn_mikro,':          { label:'Microstate',       emoji:'🔬', p:2 },
+  'myrGRA, BLA':        { label:'Main Gray + Black',emoji:'💿⬛', p:1 },
+  'Center,hascoa,Quartr':{ label:'Centered Coat/Quartered', emoji:'🎯🛡️', p:1 },
+  'won_lioEgually':     { label:'Non-Winged Animal + Equal Bands', emoji:'🦁📏', p:1 },
+  // Malformed bnd_ codes with full color names → map to correct 3-letter versions
+  'bnd_BLUE':   { label:'Blue Band',   emoji:'🟦', p:2 },
+  'bnd_GREEN':  { label:'Green Band',  emoji:'🟩', p:2 },
+  'bnd_WHITE':  { label:'White Band',  emoji:'⬜', p:2 },
+  'bnd_YELLOW': { label:'Yellow Band', emoji:'🟨', p:2 },
+  // Malformed bnd_ codes with positional prefixes mixed in
+  'bnd_001WHI': { label:'White Band (1st)', emoji:'⬜', p:1 },
+  'bnd_002BLU': { label:'Blue Band (2nd)',  emoji:'🟦', p:1 },
+  'bnd_003WHI': { label:'White Band (3rd)', emoji:'⬜', p:1 },
+  // Other malformed bnd_ codes
+  'bnd_GR':     { label:'Green Band',       emoji:'🟩', p:2 },
+  'bnd_BRORA':  { label:'Brown/Orange Band',emoji:'🟫', p:1 },
+  'bnd_PURED':  { label:'Purple Band',      emoji:'🟪', p:1 },
+  'bnd_NON':    { label:'Unknown Band',     emoji:'❓', p:0 },
+  'bnd_X':      { label:'Unknown Band',     emoji:'❓', p:0 },
+  // Space/character errors in bnd_ codes
+  'bnd_E YEL':  { label:'Yellow Band',      emoji:'🟨', p:2 },
+  'bnd_RED YEL':{ label:'Red+Yellow Bands', emoji:'🟥🟨', p:1 },
+  'bnd_WHIÇ':   { label:'White Band',       emoji:'⬜', p:2 },
+  // Bloemfontein — data error on South Africa's entry
+  'Bloemfontein':{ label:'Capital: Bloemfontein', emoji:'🏙️', p:0 },
 };
+
+// ─── BLOCKED ITEMS ────────────────────────────────────────────────────────────
+// Items that should never appear as grid row/column headers.
+// Includes: nonsense codes, pop-culture trivia categories unsuitable as puzzle axes,
+// and any code that is purely a data artefact with no meaningful gameplay value.
+const BLOCKED_ITEMS = new Set([
+  // Nonsense / malformed band codes with no real color
+  '001NON', '002NON', '003NON',
+  '002x',   '002X',
+  'bnd_NON', 'bnd_X',
+  // Pop-culture song-lyric categories (fun facts but bad puzzle axes)
+  'orinoc',   // Orinoco Flow (Enya)
+  'kokomo',   // Kokomo (The Beach Boys)
+  // Checkered / pattern category (Artifact was a mis-mapping; Checkd is valid but Artifact itself is junk)
+  'Artifact',
+  // Pure data errors / placeholder codes
+  'Bloemfontein',
+]);
 
 // Skip prefixes — only truly unplayable metadata (PM names, capitals, exact area, geo coords, policies)
 const SKIP_PREFIXES = ['nt','pm_','capi_','area_','geo_','pol_','_'];
@@ -1271,6 +1968,9 @@ const COLOR_EMOJI = {
 function colorEmojiFor(col) { return COLOR_EMOJI[col] || '🎨'; }
 
 function getItemInfo(code) {
+  // 0. Hard block — return null so callers discard this item entirely
+  if (BLOCKED_ITEMS.has(code)) return null;
+
   // 1. ITEM_MAP — hardcoded priority values override everything
   if (ITEM_MAP[code]) return ITEM_MAP[code];
 
@@ -1295,17 +1995,23 @@ function getItemInfo(code) {
   }
 
   // Band has color  e.g. bnd_RED → "Has Red Band"
+  // Guard against malformed codes: only match known 3-letter color suffixes
   if (code.startsWith('bnd_')) {
-    const col = code.slice(4);
-    return { label: `Has ${col} Band`, emoji: colorEmojiFor(col), p:2 };
+    const col = code.slice(4).toUpperCase();
+    const knownColors = new Set(['RED','BLU','WHI','GRE','YEL','ORA','BLA','BRO','PUR','PIN','GRA']);
+    if (knownColors.has(col)) return { label: `Has ${col[0]+col.slice(1).toLowerCase()} Band`, emoji: colorEmojiFor(col), p:2 };
+    return { label: `Has ${col} Band`, emoji: '🏳️', p:0 };
   }
 
   // Positional band color  e.g. 001RED → "Band 1: Red"
+  // Only match known 3-letter color suffixes to avoid 001NON etc. slipping through
   const bandMatch = code.match(/^(\d{3})([A-Z]+)$/);
   if (bandMatch) {
     const pos = parseInt(bandMatch[1], 10);
     const col = bandMatch[2];
-    return { label: `Band ${pos}: ${col}`, emoji: colorEmojiFor(col), p:1 };
+    const knownColors = new Set(['RED','BLU','WHI','GRE','YEL','ORA','BLA','BRO','PUR','PIN','GRA']);
+    if (!knownColors.has(col)) return null; // e.g. 001NON — block silently
+    return { label: `Band ${pos}: ${col[0]+col.slice(1).toLowerCase()}`, emoji: colorEmojiFor(col), p:1 };
   }
 
   // 4. Last-resort fallback — show raw code rather than silently drop it
@@ -1376,18 +2082,45 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal()
     `<span>🔴 ${countries.hard.length} hard</span>`;
 })();
 
-// ─── SCREENS ─────────────────────────────────────────────────────────────────
+// ─── SCREENS / PAN ───────────────────────────────────────────────────────────
+let currentZone = 'hub';
+let lastZone    = 'campaign'; // which mode zone launched the current game
+
+function panTo(zone) {
+  currentZone = zone;
+  const vp = document.getElementById('pan-viewport');
+  // Zone positions: campaign=(-100vw,100vh), hub=(0,0), world=(0,100vh), custom=(100vw,0)
+  // To show a zone we translate by the inverse of its position
+  if (zone === 'campaign') {
+    vp.style.transform = 'translateX(100vw) translateY(-100vh)';
+  } else if (zone === 'world') {
+    vp.style.transform = 'translateX(0) translateY(-100vh)';
+  } else if (zone === 'custom') {
+    vp.style.transform = 'translateX(-100vw) translateY(-100vh)';
+  } else { // hub
+    vp.style.transform = 'translateX(0) translateY(0)';
+  }
+}
+
 function show(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
+  if (id === 'screen-game') {
+    document.getElementById('zone-game-container').classList.add('active');
+    document.body.classList.add('game-active');
+  } else {
+    document.getElementById('zone-game-container').classList.remove('active');
+    document.body.classList.remove('game-active');
+  }
 }
 
 function showDifficulty() {
-  show('screen-difficulty');
+  document.getElementById('zone-game-container').classList.remove('active');
+  document.body.classList.remove('game-active');
+  panTo(lastZone || 'hub');
 }
 
 // ─── DIFFICULTY SELECTION ────────────────────────────────────────────────────
 function selectDifficulty(diff) {
+  lastZone = 'campaign';
   currentDifficulty = diff;
   let pool;
   if (diff === 'hitme') {
@@ -1427,6 +2160,7 @@ async function loadGame(flagName) {
   const wrap = document.getElementById('game-wrap');
   const badgeDiff  = currentDifficulty.replace('+hitme','');
   const badgeLabel = currentDifficulty.includes('hitme') ? '🔥 Hit me!'
+    : badgeDiff === 'custom' ? '🎨 Custom'
     : badgeDiff.charAt(0).toUpperCase() + badgeDiff.slice(1);
 
   currentMainFlag = flagName;
@@ -1437,10 +2171,14 @@ async function loadGame(flagName) {
   gaveUp          = false;
   clearInterval(timerInterval);
 
+  const topbarFlagLabel = (currentDifficulty === 'custom')
+    ? `🎨 ${flagName}`
+    : `🔍 Hidden Flag`;
+
   wrap.innerHTML = `
     <div class="game-topbar">
       <div class="flag-name">
-        🔍 Hidden Flag
+        ${topbarFlagLabel}
         <span class="diff-badge ${badgeDiff}">${badgeLabel}</span>
       </div>
       <div style="display:flex;align-items:center;gap:10px;">
@@ -1720,7 +2458,10 @@ function renderResults(data) {
   const rows = data.map(flag => {
     const name    = (flag.couname || '?').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
     const isUsed  = usedFlags.has((flag.couname || '').toLowerCase());
-    const usedCls = isUsed ? ' used' : '';
+    // In custom mode, the chosen main flag is blocked as an answer
+    const isBlocked = currentDifficulty === 'custom' &&
+      (flag.couname || '').toLowerCase() === currentMainFlag.toLowerCase();
+    const usedCls = (isUsed || isBlocked) ? ' used' : '';
 
     let imgHtml;
     if (previewEnabled) {
@@ -1741,9 +2482,10 @@ function renderResults(data) {
       imgHtml = `<span class="result-flag-placeholder">🏳️</span>`;
     }
 
-    const badgeHtml = isUsed ? `<span class="result-used-badge">Already used</span>` : '';
+    const badgeHtml = isBlocked ? `<span class="result-used-badge">Can't use main flag</span>`
+      : isUsed ? `<span class="result-used-badge">Already used</span>` : '';
 
-    return `<div class="search-result-item${usedCls}" data-idx="${data.indexOf(flag)}"${isUsed ? '' : ' role="button" tabindex="0"'}>${imgHtml}<span class="result-flag-name">${name}</span>${badgeHtml}</div>`;
+    return `<div class="search-result-item${usedCls}" data-idx="${data.indexOf(flag)}"${(isUsed || isBlocked) ? '' : ' role="button" tabindex="0"'}>${imgHtml}<span class="result-flag-name">${name}</span>${badgeHtml}</div>`;
   }).join('');
 
   el.innerHTML = rows;
@@ -1766,6 +2508,12 @@ function handleGuess(flag, rowEl) {
   const hasRow   = items.includes(currentRowCode.toLowerCase());
   const hasCol   = items.includes(currentColCode.toLowerCase());
   const isMain   = (flag.couname || '').toLowerCase() === currentMainFlag.toLowerCase();
+
+  // In custom mode, the chosen main flag cannot be used as an answer
+  if (isMain && currentDifficulty === 'custom') {
+    showMainFlagToast();
+    return;
+  }
 
   if (hasRow && hasCol) {
     // ✅ Correct — main flag gets yellow glow, others get green
@@ -1922,7 +2670,579 @@ function showCompletion() {
   document.getElementById('completion-overlay').classList.add('open');
 }
 
-// ─── CSV DATA ─────────────────────────────────────────────────────────────────
+// ─── CUSTOM MODE ─────────────────────────────────────────────────────────────
+let customSearchDebounce = null;
+let customSearchAbort    = null;
+let customSearchCache    = new Map();
+
+document.getElementById('custom-search-input').addEventListener('input', function() {
+  clearTimeout(customSearchDebounce);
+  const q = this.value.trim();
+  const el = document.getElementById('custom-search-results');
+  if (!q) {
+    if (customSearchAbort) { customSearchAbort.abort(); customSearchAbort = null; }
+    el.innerHTML = '<div class="search-state-msg">Start typing to find a flag</div>';
+    return;
+  }
+  customSearchDebounce = setTimeout(() => doCustomSearch(q), 150);
+});
+
+async function doCustomSearch(query) {
+  const el = document.getElementById('custom-search-results');
+  if (customSearchCache.has(query)) {
+    renderCustomResults(customSearchCache.get(query));
+    return;
+  }
+  if (customSearchAbort) customSearchAbort.abort();
+  customSearchAbort = new AbortController();
+  el.innerHTML = '<div class="search-state-msg"><div class="spinner-sm"></div> Searching…</div>';
+  try {
+    const url = `https://new-databases-012n12.replit.app/searchto355-flags` +
+      `?filter=${encodeURIComponent(query)}&fields=ExtraItems-couname|ExtraItems-HDFlag|ExtraItems-Flag`;
+    const res = await fetch(url, { signal: customSearchAbort.signal });
+    if (!res.ok) throw new Error('API error ' + res.status);
+    const data = await res.json();
+    const results = Array.isArray(data) ? data : [];
+    customSearchCache.set(query, results);
+    renderCustomResults(results);
+  } catch(e) {
+    if (e.name === 'AbortError') return;
+    el.innerHTML = `<div class="search-state-msg" style="color:var(--hard)">⚠️ ${e.message}</div>`;
+  } finally {
+    customSearchAbort = null;
+  }
+}
+
+function renderCustomResults(data) {
+  const el = document.getElementById('custom-search-results');
+  if (!data.length) {
+    el.innerHTML = '<div class="search-state-msg">No flags found</div>';
+    return;
+  }
+  const rows = data.map((flag, idx) => {
+    const name = (flag.couname || '?').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    // Prefer HDFlag thumbnail; fall back to plain Flag; fall back to placeholder
+    const hdSrc = flag.HDFlag ? thumbUrl(flag.HDFlag, 160) : '';
+    const fbSrc = flag.Flag   ? flag.Flag.replace(/"/g,'&quot;') : '';
+    const hdSrcQ = hdSrc.replace(/"/g,'&quot;');
+    const primary = hdSrc || flag.Flag || '';
+    const imgHtml = primary
+      ? `<img class="result-flag-img" loading="lazy" decoding="async" alt=""
+           src="${primary.replace(/"/g,'&quot;')}"
+           onerror="if(this.dataset.fb&&this.src!==this.dataset.fb){this.src=this.dataset.fb;this.onerror=null;}else{this.outerHTML='<span class=result-flag-placeholder>🏳️</span>';}"
+           data-fb="${fbSrc}">`
+      : `<span class="result-flag-placeholder">🏳️</span>`;
+    return `<div class="search-result-item" data-idx="${idx}" role="button" tabindex="0">${imgHtml}<span class="result-flag-name">${name}</span></div>`;
+  }).join('');
+  el.innerHTML = rows;
+  el.onclick = e => {
+    const row = e.target.closest('.search-result-item');
+    if (!row) return;
+    const idx = parseInt(row.dataset.idx, 10);
+    startCustomGame(data[idx].couname);
+  };
+}
+
+function startCustomGame(flagName) {
+  lastZone = 'custom';
+  currentDifficulty = 'custom';
+  // Clear the custom search input
+  document.getElementById('custom-search-input').value = '';
+  document.getElementById('custom-search-results').innerHTML =
+    '<div class="search-state-msg">Start typing to find a flag</div>';
+  show('screen-game');
+  loadGame(flagName);
+}
+
+// ─── WAVY LINE HELPER ────────────────────────────────────────────────────────
+function wavyPath(x1, y1, x2, y2, amplitude = 13, numWaves = 3) {
+  const dx = x2 - x1, dy = y2 - y1;
+  const len = Math.sqrt(dx * dx + dy * dy);
+  if (len < 1) return `M ${x1} ${y1}`;
+  const px = -dy / len, py = dx / len; // perpendicular unit vector
+  const samples = Math.max(40, Math.floor(len / 6));
+  const pts = [];
+  for (let i = 0; i <= samples; i++) {
+    const t = i / samples;
+    // Taper amplitude at both ends so wave meets button cleanly
+    const taper = Math.sin(t * Math.PI);
+    const wave  = amplitude * taper * Math.sin(t * numWaves * 2 * Math.PI);
+    pts.push(`${(x1 + dx * t + px * wave).toFixed(1)},${(y1 + dy * t + py * wave).toFixed(1)}`);
+  }
+  return 'M ' + pts.join(' L ');
+}
+
+// ─── HUB LINE DRAWING ────────────────────────────────────────────────────────
+function drawHubLines() {
+  const svg = document.getElementById('hub-lines-svg');
+  if (!svg) return;
+
+  const hubZone     = document.getElementById('zone-hub');
+  const campaignBtn = document.querySelector('#zone-hub .mode-btn-wrap:nth-child(1) .mode-btn');
+  const worldBtn    = document.querySelector('#zone-hub .mode-btn-wrap:nth-child(2) .mode-btn');
+  const customBtn   = document.querySelector('#zone-hub .mode-btn-wrap:nth-child(3) .mode-btn');
+  if (!campaignBtn || !worldBtn || !customBtn) return;
+
+  const hubRect = hubZone.getBoundingClientRect();
+  const vw = window.innerWidth, vh = window.innerHeight;
+  const HALF_BTN = 32; // half of 64px button
+
+  function btnCenter(btn) {
+    const r = btn.getBoundingClientRect();
+    return { x: r.left + r.width / 2 - hubRect.left, y: r.top + r.height / 2 - hubRect.top };
+  }
+
+  const camp   = btnCenter(campaignBtn);
+  const world  = btnCenter(worldBtn);
+  const custom = btnCenter(customBtn);
+
+  // Line endpoints in hub-svg (= pan-viewport) coords
+  // Each line exits toward its zone's off-screen position
+  const campEnd   = { x: -vw * 0.06, y: vh * 1.06 };   // ↙ bottom-left
+  const worldEnd  = { x: world.x,    y: vh * 1.06 };   // ↓ straight down
+  const customEnd = { x: vw * 1.06,  y: vh * 1.06 };   // ↘ bottom-right
+
+  const campPath   = wavyPath(camp.x,   camp.y,   campEnd.x,   campEnd.y);
+  const worldPath  = wavyPath(world.x,  world.y,  worldEnd.x,  worldEnd.y);
+  const customPath = wavyPath(custom.x, custom.y, customEnd.x, customEnd.y);
+
+  // Read theme colors
+  const cs      = getComputedStyle(document.documentElement);
+  const accent  = cs.getPropertyValue('--accent').trim()  || '#4a9eff';
+  const bgColor = cs.getPropertyValue('--bg').trim()      || '#0f1623';
+  const cardCol = cs.getPropertyValue('--card').trim()    || '#1c2b3a';
+
+  // Triple-stroke road effect: outer dark halo → middle accent → thin bright center
+  function roadLine(d, color) {
+    return `
+      <path d="${d}" fill="none" stroke="${bgColor}"  stroke-width="30" stroke-linecap="round" opacity="1"/>
+      <path d="${d}" fill="none" stroke="${color}"    stroke-width="18" stroke-linecap="round" opacity="0.95"/>
+      <path d="${d}" fill="none" stroke="${cardCol}"  stroke-width="8"  stroke-linecap="round" opacity="0.85"/>
+      <path d="${d}" fill="none" stroke="${color}"    stroke-width="3"  stroke-linecap="round" opacity="0.6"/>
+    `;
+  }
+
+  svg.innerHTML =
+    roadLine(campPath,   accent) +
+    roadLine(worldPath,  accent) +
+    roadLine(customPath, accent);
+
+  // ── Position back-buttons at the exact line endpoints in each zone ──
+  // Zone offsets in pan-viewport coords (where the zone's top-left is):
+  // campaign: (-vw, vh), world: (0, vh), custom: (vw, vh)
+  function positionBackBtn(zoneId, endX, endY, zoneOffsetX, zoneOffsetY) {
+    const btn = document.querySelector(`#${zoneId} .zone-back-btn`);
+    if (!btn) return;
+    // Convert line endpoint from pan-viewport coords to zone-local coords
+    const localX = endX - zoneOffsetX;
+    const localY = endY - zoneOffsetY;
+    btn.style.position = 'absolute';
+    btn.style.left     = (localX - HALF_BTN) + 'px';
+    btn.style.top      = (localY - HALF_BTN) + 'px';
+    // Remove any conflicting preset positioning
+    btn.style.right    = 'auto';
+    btn.style.transform = 'none';
+  }
+
+  positionBackBtn('zone-campaign', campEnd.x,   campEnd.y,   -vw, vh);
+  positionBackBtn('zone-world',    worldEnd.x,  worldEnd.y,    0,  vh);
+  positionBackBtn('zone-custom',   customEnd.x, customEnd.y,   vw, vh);
+}
+
+window.addEventListener('load', () => { drawHubLines(); });
+window.addEventListener('resize', drawHubLines);
+
+// ─── BUBBLE WALLPAPER ────────────────────────────────────────────────────────
+(function initBubbleWallpaper() {
+  const canvas = document.getElementById('bubble-wallpaper');
+  const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+  if (!gl) return;
+
+  const VS = `
+    attribute vec2 a_pos;
+    void main() { gl_Position = vec4(a_pos, 0.0, 1.0); }
+  `;
+
+  // Wave landscape approach: 12 overlapping sine waves create a full-screen
+  // height field with peaks (bubbles) and valleys (background) everywhere.
+  const FS = `
+    precision highp float;
+    uniform vec2  u_res;
+    uniform float u_time;
+    uniform vec3  u_bg;
+    uniform vec3  u_blob;
+
+    // 12 sine waves summed → organic height field covering entire screen.
+    // Frequencies are in 1/pixel units; ~250px wavelength gives ~8 bubbles across 1920px.
+    float landscape(vec2 px) {
+      float t = u_time;
+      float f = 0.0;
+      // Each line: sin(px.x*fx + px.y*fy + t*speed + phase)
+      // Varied angles and speeds so no two waves cancel or align
+      f += sin( px.x*0.02450 + px.y*0.01180 + t*0.310 + 0.00);
+      f += sin(-px.x*0.01760 + px.y*0.02220 + t*0.220 + 1.30);
+      f += sin( px.x*0.01420 - px.y*0.02560 + t*0.280 + 2.60);
+      f += sin( px.x*0.02930 + px.y*0.00740 + t*0.190 + 3.90);
+      f += sin(-px.x*0.00860 + px.y*0.02910 + t*0.350 + 5.20);
+      f += sin( px.x*0.02170 - px.y*0.01630 + t*0.270 + 0.80);
+      f += sin(-px.x*0.02380 - px.y*0.01270 + t*0.415 + 2.10);
+      f += sin( px.x*0.01280 + px.y*0.02680 + t*0.240 + 3.40);
+      f += sin(-px.x*0.01080 - px.y*0.01940 + t*0.330 + 4.70);
+      f += sin( px.x*0.03110 - px.y*0.00650 + t*0.185 + 6.00);
+      f += sin(-px.x*0.02720 + px.y*0.01820 + t*0.385 + 1.60);
+      f += sin( px.x*0.00790 + px.y*0.03050 + t*0.295 + 2.90);
+      // Sum range: approx ±12 (Gaussian-ish distribution, σ≈2.45)
+      return f;
+    }
+
+    void main() {
+      vec2 px = gl_FragCoord.xy;
+
+      // Single field sample — no chromatic offset
+      float h = landscape(px);
+
+      float thresh = 0.70;
+      float blobMask = smoothstep(thresh - 0.06, thresh + 0.06, h);
+
+      // ── Contour rings: 18 evenly-spaced bands ──
+      float bandStep  = 0.30;
+      float bandWidth = 0.040;
+      float contour = 0.0;
+      for (int i = 0; i < 18; i++) {
+        float level = -2.5 + float(i) * bandStep;
+        contour += smoothstep(bandWidth, 0.0, abs(h - level));
+      }
+      contour = clamp(contour, 0.0, 1.0);
+
+      // ── Elevation-based valley tinting ──
+      float elev = clamp((h + 3.0) / 6.0, 0.0, 1.0);
+      vec3 warmValley = mix(u_bg * 0.75, u_bg * 1.3 + vec3(0.18, 0.08, -0.04), elev);
+
+      // Base: warm valleys, flat blob on peaks
+      vec3 color = mix(warmValley, u_blob, blobMask);
+
+      // ── Clean contour color: bright warm tone between bg and blob ──
+      vec3 lineColor = u_bg * 1.5 + u_blob * 0.5 + vec3(0.10, 0.05, 0.0);
+      lineColor = clamp(lineColor, 0.0, 1.0);
+      color = mix(color, lineColor, contour * 0.88);
+
+      gl_FragColor = vec4(clamp(color, 0.0, 1.0), 1.0);
+    }
+  `;
+
+  function compileShader(type, src) {
+    const s = gl.createShader(type);
+    gl.shaderSource(s, src); gl.compileShader(s);
+    if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) {
+      console.warn('Shader error:', gl.getShaderInfoLog(s));
+    }
+    return s;
+  }
+
+  const prog = gl.createProgram();
+  gl.attachShader(prog, compileShader(gl.VERTEX_SHADER,   VS));
+  gl.attachShader(prog, compileShader(gl.FRAGMENT_SHADER, FS));
+  gl.linkProgram(prog);
+  gl.useProgram(prog);
+
+  // Full-screen quad
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+  const aPos = gl.getAttribLocation(prog, 'a_pos');
+  gl.enableVertexAttribArray(aPos);
+  gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
+
+  const uRes  = gl.getUniformLocation(prog, 'u_res');
+  const uTime = gl.getUniformLocation(prog, 'u_time');
+  const uBg   = gl.getUniformLocation(prog, 'u_bg');
+  const uBlob = gl.getUniformLocation(prog, 'u_blob');
+
+  // Parse CSS color to [r,g,b] 0-1
+  function cssToRgb(cssVar) {
+    const raw = getComputedStyle(document.documentElement).getPropertyValue(cssVar).trim();
+    const tmp = document.createElement('div');
+    tmp.style.color = raw;
+    document.body.appendChild(tmp);
+    const computed = getComputedStyle(tmp).color;
+    document.body.removeChild(tmp);
+    const m = computed.match(/\d+/g);
+    if (!m) return [0.1, 0.1, 0.15];
+    return [parseInt(m[0])/255, parseInt(m[1])/255, parseInt(m[2])/255];
+  }
+
+  let bgColor   = [0.06, 0.09, 0.14];
+  let blobColor = [0.29, 0.62, 1.00];
+
+  function refreshColors() {
+    bgColor   = cssToRgb('--bg');
+    blobColor = cssToRgb('--accent');
+  }
+
+  function resize() {
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+    canvas.width  = Math.floor(window.innerWidth  * dpr * 0.75);
+    canvas.height = Math.floor(window.innerHeight * dpr * 0.75);
+    canvas.style.width  = window.innerWidth  + 'px';
+    canvas.style.height = window.innerHeight + 'px';
+    gl.viewport(0, 0, canvas.width, canvas.height);
+  }
+
+  window.addEventListener('resize', resize);
+  resize();
+  refreshColors();
+
+  // Expose hooks for theme system
+  window._wallpaperRefreshColors = refreshColors;
+
+  let paused = false;
+  window._wallpaperSetVisible = function(on) {
+    paused = !on;
+    canvas.style.display = on ? 'block' : 'none';
+    if (on && !rafId) { startTime = performance.now() - lastT * 2000; draw(); }
+  };
+
+  let lastT = 0;
+  let startTime = performance.now();
+  let rafId;
+
+  function draw() {
+    if (paused) { rafId = null; return; }
+    lastT = (performance.now() - startTime) / 1000;
+    gl.uniform2f(uRes,  canvas.width, canvas.height);
+    gl.uniform1f(uTime, lastT * 0.5);
+    gl.uniform3fv(uBg,   bgColor);
+    gl.uniform3fv(uBlob, blobColor);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    rafId = requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// ─── THEME SYSTEM ────────────────────────────────────────────────────────────
+// ─── DYNAMIC THEME ENGINE ────────────────────────────────────────────────────
+const THEME_KEY = 'flagtrioku-theme-v2';
+
+const DEFAULT_THEME = { bgHue: 210, bgL: 20, accentHue: 210, accentSat: 100, contrast: 50 };
+
+// ── Color math helpers ──
+function hslToHex(h, s, l) {
+  s /= 100; l /= 100;
+  const a = s * Math.min(l, 1 - l);
+  const f = n => { const k = (n + h / 30) % 12; const c = l - a * Math.max(-1, Math.min(k - 3, Math.min(9 - k, 1))); return Math.round(255 * c).toString(16).padStart(2, '0'); };
+  return '#' + f(0) + f(8) + f(4);
+}
+
+function hexToHsl(hex) {
+  let r = parseInt(hex.slice(1,3),16)/255, g = parseInt(hex.slice(3,5),16)/255, b = parseInt(hex.slice(5,7),16)/255;
+  const max = Math.max(r,g,b), min = Math.min(r,g,b), l = (max+min)/2;
+  if (max === min) return [0, 0, Math.round(l*100)];
+  const d = max - min, s = l > 0.5 ? d/(2-max-min) : d/(max+min);
+  let h = 0;
+  if (max===r) h = ((g-b)/d + (g<b?6:0))/6;
+  else if (max===g) h = ((b-r)/d + 2)/6;
+  else h = ((r-g)/d + 4)/6;
+  return [Math.round(h*360), Math.round(s*100), Math.round(l*100)];
+}
+
+// ── The core: apply all CSS vars from theme params ──
+function applyTheme(params) {
+  const { bgHue, bgL, accentHue, accentSat, contrast } = params;
+
+  // Dark vs light mode: dark if bgL < 50
+  const dark = bgL < 50;
+  const cFactor = contrast / 100; // 0–1
+
+  // BG shades
+  const bgStep  = dark ? cFactor * 8  : cFactor * 8;
+  const bg      = hslToHex(bgHue, 30, bgL);
+  const bg2     = hslToHex(bgHue, 32, dark ? bgL + bgStep     : bgL - bgStep);
+  const card    = hslToHex(bgHue, 28, dark ? bgL + bgStep*1.8 : bgL - bgStep*0.5);
+  const card2   = hslToHex(bgHue, 26, dark ? bgL + bgStep*2.4 : bgL - bgStep*0.2);
+  const border  = hslToHex(bgHue, 40, dark ? bgL + bgStep*3.5 : bgL - bgStep*2);
+
+  // Text & muted — high contrast against bg
+  const textL   = dark ? Math.min(95, 70 + cFactor * 25) : Math.max(5, 30 - cFactor * 20);
+  const mutedL  = dark ? Math.min(70, 48 + cFactor * 15) : Math.max(30, 55 - cFactor * 10);
+  const textS   = 15;
+  const text    = hslToHex(bgHue, textS, textL);
+  const muted   = hslToHex(bgHue, 20, mutedL);
+
+  // Accent
+  const accentL = dark ? 62 : 48;
+  const accent  = hslToHex(accentHue, accentSat, accentL);
+  const accentDim = hslToHex(accentHue, accentSat, dark ? 30 : 70);
+
+  // Cell colors
+  const cellEmpty = bg2;
+  const cellHover = hslToHex(bgHue, 34, dark ? bgL + bgStep*2.2 : bgL - bgStep*1.2);
+
+  // Hero box glass: bg color at partial opacity
+  const heroBgR = parseInt(bg.slice(1,3),16);
+  const heroBgG = parseInt(bg.slice(3,5),16);
+  const heroBgB = parseInt(bg.slice(5,7),16);
+  const heroBg  = `rgba(${heroBgR},${heroBgG},${heroBgB},0.68)`;
+  const accentR = parseInt(accent.slice(1,3),16);
+  const accentG = parseInt(accent.slice(3,5),16);
+  const accentB = parseInt(accent.slice(5,7),16);
+  const heroBorder = `rgba(${accentR},${accentG},${accentB},0.22)`;
+
+  const root = document.documentElement;
+  root.style.setProperty('--bg',         bg);
+  root.style.setProperty('--bg2',        bg2);
+  root.style.setProperty('--card',       card);
+  root.style.setProperty('--card2',      card2);
+  root.style.setProperty('--border',     border);
+  root.style.setProperty('--text',       text);
+  root.style.setProperty('--muted',      muted);
+  root.style.setProperty('--accent',     accent);
+  root.style.setProperty('--title-color',accent);
+  root.style.setProperty('--cell-empty', cellEmpty);
+  root.style.setProperty('--cell-hover', cellHover);
+  root.style.setProperty('--hub-hero-bg',    heroBg);
+  root.style.setProperty('--hub-hero-border',heroBorder);
+  root.style.setProperty('--accent-h',   accentHue);
+
+  // Update saturation slider track color
+  const slSat = document.getElementById('sl-saturation');
+  if (slSat) slSat.style.background = `linear-gradient(to right,hsl(${accentHue},20%,${accentL}%),hsl(${accentHue},100%,${accentL}%))`;
+
+  // Update lightness slider track
+  const slL = document.getElementById('sl-lightness');
+  if (slL) slL.style.background = dark
+    ? `linear-gradient(to right,hsl(${bgHue},30%,5%),hsl(${bgHue},30%,45%))`
+    : `linear-gradient(to right,hsl(${bgHue},30%,55%),hsl(${bgHue},10%,97%))`;
+
+  // Refresh wallpaper
+  setTimeout(function() { if (window._wallpaperRefreshColors) window._wallpaperRefreshColors(); }, 20);
+  setTimeout(drawHubLines, 30);
+}
+
+// ── Sync inputs → labels ──
+function syncLabels(params) {
+  const { bgHue, bgL, accentHue, accentSat, contrast } = params;
+  const bgHex     = hslToHex(bgHue, 30, bgL);
+  const accentL   = bgL < 50 ? 62 : 48;
+  const accentHex = hslToHex(accentHue, accentSat, accentL);
+  const lblBg     = document.getElementById('lbl-bg');
+  const lblAcc    = document.getElementById('lbl-accent');
+  const lblL      = document.getElementById('lbl-lightness');
+  const lblS      = document.getElementById('lbl-saturation');
+  const lblC      = document.getElementById('lbl-contrast');
+  if (lblBg)  lblBg.textContent  = bgHex;
+  if (lblAcc) lblAcc.textContent = accentHex;
+  if (lblL)   lblL.textContent   = bgL + '%';
+  if (lblS)   lblS.textContent   = accentSat + '%';
+  if (lblC)   lblC.textContent   = contrast + '%';
+
+  // Sync color picker swatches
+  const pickBg = document.getElementById('pick-bg');
+  const pickAcc = document.getElementById('pick-accent');
+  if (pickBg)  pickBg.value  = bgHex;
+  if (pickAcc) pickAcc.value = accentHex;
+
+  // Sync hue bars
+  const hueBg  = document.getElementById('hue-bg');
+  const hueAcc = document.getElementById('hue-accent');
+  if (hueBg)  hueBg.value  = bgHue;
+  if (hueAcc) hueAcc.value = accentHue;
+
+  // Sync range sliders
+  const slL = document.getElementById('sl-lightness');
+  const slS = document.getElementById('sl-saturation');
+  const slC = document.getElementById('sl-contrast');
+  if (slL) slL.value = bgL;
+  if (slS) slS.value = accentSat;
+  if (slC) slC.value = contrast;
+}
+
+// ── Live theme state ──
+let _theme = Object.assign({}, DEFAULT_THEME);
+
+function saveAndApply() {
+  localStorage.setItem(THEME_KEY, JSON.stringify(_theme));
+  applyTheme(_theme);
+  syncLabels(_theme);
+}
+
+function resetTheme() {
+  _theme = Object.assign({}, DEFAULT_THEME);
+  saveAndApply();
+}
+
+// ── Wire up inputs ──
+document.addEventListener('DOMContentLoaded', function() {
+  // BG hue bar
+  document.getElementById('hue-bg').addEventListener('input', function() {
+    _theme.bgHue = +this.value; saveAndApply();
+  });
+  // Accent hue bar
+  document.getElementById('hue-accent').addEventListener('input', function() {
+    _theme.accentHue = +this.value; saveAndApply();
+  });
+  // BG color picker
+  document.getElementById('pick-bg').addEventListener('input', function() {
+    const [h,,l] = hexToHsl(this.value);
+    _theme.bgHue = h; _theme.bgL = l; saveAndApply();
+  });
+  // Accent color picker
+  document.getElementById('pick-accent').addEventListener('input', function() {
+    const [h,s] = hexToHsl(this.value);
+    _theme.accentHue = h; _theme.accentSat = s; saveAndApply();
+  });
+  // Lightness slider
+  document.getElementById('sl-lightness').addEventListener('input', function() {
+    _theme.bgL = +this.value; saveAndApply();
+  });
+  // Saturation slider
+  document.getElementById('sl-saturation').addEventListener('input', function() {
+    _theme.accentSat = +this.value; saveAndApply();
+  });
+  // Contrast slider
+  document.getElementById('sl-contrast').addEventListener('input', function() {
+    _theme.contrast = +this.value; saveAndApply();
+  });
+
+  // Restore saved
+  const saved = localStorage.getItem(THEME_KEY);
+  if (saved) { try { _theme = Object.assign({}, DEFAULT_THEME, JSON.parse(saved)); } catch(e){} }
+  saveAndApply();
+});
+
+function toggleThemePanel() {
+  document.getElementById('theme-panel').classList.toggle('open');
+}
+
+// Close theme panel when clicking outside
+document.addEventListener('click', e => {
+  if (!e.target.closest('#theme-toggle-btn') && !e.target.closest('#theme-panel')) {
+    document.getElementById('theme-panel').classList.remove('open');
+  }
+});
+
+// ─── WALLPAPER TOGGLE ────────────────────────────────────────────────────────
+const WALLPAPER_KEY = 'flagtrioku-wallpaper';
+
+function toggleWallpaper() {
+  const isOn = localStorage.getItem(WALLPAPER_KEY) !== 'off';
+  const nowOn = !isOn;
+  localStorage.setItem(WALLPAPER_KEY, nowOn ? 'on' : 'off');
+  applyWallpaperState(nowOn);
+}
+
+function applyWallpaperState(on) {
+  const pill = document.getElementById('wallpaper-pill-btn');
+  if (pill) pill.classList.toggle('on', on);
+  if (window._wallpaperSetVisible) window._wallpaperSetVisible(on);
+}
+
+// Restore wallpaper preference on load (default: on)
+(function restoreWallpaper() {
+  const saved = localStorage.getItem(WALLPAPER_KEY);
+  const on = saved !== 'off';
+  applyWallpaperState(on);
+})();
+
 let crosscountData = null; // { rowLabel: { colLabel: number } }
 let crosstabData   = null; // { rowLabel: { colLabel: "flag1|flag2|…" } }
 let csvLoadPromise = null;
