@@ -1,4 +1,19 @@
-<!DOCTYPE html>
+
+                        <!DOCTYPE html>
+                        <html lang="en">
+                        <head>
+                            <meta charset="UTF-8">
+                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+							<style>
+								body {
+									background-color: white; /* Ensure the iframe has a white background */
+								}
+
+								
+							</style>
+                        </head>
+                        <body>
+                            <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -28,11 +43,7 @@
     --cell-hover: #1e3348;
     --title-color: #4a9eff;
   }
-
-  /* ── CUSTOM THEME (written by JS) ── */
-
   * { box-sizing: border-box; margin: 0; padding: 0; }
-
   body {
     background: var(--bg);
     font-family: 'DM Sans', sans-serif;
@@ -43,8 +54,6 @@
       radial-gradient(ellipse at 20% 20%, rgba(74,158,255,0.04) 0%, transparent 60%),
       radial-gradient(ellipse at 80% 80%, rgba(255,107,0,0.03) 0%, transparent 60%);
   }
-
-  /* ─── PAN VIEWPORT ─── */
   #pan-viewport {
     position: fixed;
     top: 0; left: 0;
@@ -52,13 +61,6 @@
     transition: transform 0.7s cubic-bezier(0.77,0,0.18,1);
     will-change: transform;
   }
-
-  /* Hub layout: 2D grid of zones
-     campaign = bottom-left (-100vw, 100vh)
-     hub      = center      (0, 0)
-     world    = bottom      (0, 100vh)
-     custom   = right       (100vw, 0)
-  */
   .pan-zone {
     position: absolute;
     width: 100vw; height: 100vh;
@@ -71,11 +73,8 @@
   #zone-hub      { left: 0;      top: 0;      }
   #zone-world    { left: 0;      top: 100vh;  }
   #zone-custom   { left: 100vw;  top: 100vh;  }
-
   .screen { display: none; width: 100%; max-width: 900px; flex-direction: column; align-items: center; }
   .screen.active { display: flex; }
-
-  /* ─── HUB SCREEN ─── */
   #screen-hub {
     display: flex;
     flex-direction: column;
@@ -113,8 +112,6 @@
     max-width: 340px;
     opacity: 0.8;
   }
-
-  /* Three mode buttons in a row */
   .hub-modes {
     display: flex;
     align-items: flex-end;
@@ -124,8 +121,6 @@
     max-width: 620px;
     position: relative;
   }
-
-  /* Connecting SVG line behind the buttons */
   .hub-connector {
     position: absolute;
     top: 50%;
@@ -134,7 +129,6 @@
     z-index: 0;
     pointer-events: none;
   }
-
   .mode-btn-wrap {
     display: flex;
     flex-direction: column;
@@ -143,14 +137,12 @@
     z-index: 1;
     flex: 1;
   }
-
   .mode-icon {
     font-size: 2rem;
     color: var(--accent);
     opacity: 0.85;
     transition: opacity 0.2s, transform 0.2s;
   }
-
   .mode-btn {
     width: 130px;
     height: 130px;
@@ -184,8 +176,6 @@
     transform: translateY(-3px);
   }
   .mode-btn:active { transform: translateY(-1px); }
-
-  /* SVG lines overlay in hub */
   #hub-lines-svg {
     position: absolute;
     top: 0; left: 0;
@@ -202,27 +192,201 @@
     fill: none;
     transition: stroke 0.3s;
   }
-
-  /* ─── CAMPAIGN ZONE ─── */
-  #zone-campaign .diff-header {
-    text-align: center;
-    margin-bottom: 24px;
-    animation: none;
+  /* ─── CAMPAIGN ZONE (NEW BROWSER) ─── */
+  #zone-campaign {
+    align-items: flex-start;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 80px 0 40px;
   }
-  #zone-campaign .diff-header h1 {
-    font-family: 'Comic Sans MS', 'Comic Sans', cursive;
-    font-size: 1.9rem;
-    font-weight: 900;
-    color: var(--title-color);
+  .campaign-browser {
+    width: 100%;
+    max-width: 1400px;
+    padding: 0 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+  .campaign-header {
+    text-align: center;
     margin-bottom: 8px;
   }
-  #zone-campaign .diff-header p {
-    color: var(--muted);
-    font-size: 0.87rem;
-    max-width: 380px;
-    margin: 0 auto;
+  .campaign-header h1 {
+    font-family: 'Comic Sans MS', 'Comic Sans', cursive;
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--title-color);
+    margin-bottom: 6px;
   }
-
+  .campaign-header p {
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+  .shelf {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .shelf-title {
+    font-family: 'Comic Sans MS', 'Comic Sans', cursive;
+    font-size: 1.1rem;
+    font-weight: 700;
+    padding: 0 4px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    letter-spacing: 0.3px;
+  }
+  .shelf-title .shelf-dot {
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  .shelf-title.easy .shelf-dot   { background: var(--easy); }
+  .shelf-title.medium .shelf-dot { background: var(--medium); }
+  .shelf-title.hard .shelf-dot   { background: var(--hard); }
+  .shelf-title.unc .shelf-dot    { background: var(--muted); }
+  .shelf-title .shelf-count {
+    font-size: 0.8rem;
+    color: var(--muted);
+    font-weight: 500;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .shelf-scroll {
+    display: flex;
+    flex-direction: row;
+    gap: 14px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    padding: 6px 4px 14px;
+    outline: none;
+  }
+  .shelf-scroll::-webkit-scrollbar {
+    height: 6px;
+  }
+  .shelf-scroll::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .shelf-scroll::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 3px;
+  }
+  .shelf-scroll:focus {
+    box-shadow: inset 0 0 0 2px rgba(74,158,255,0.25);
+    border-radius: 12px;
+  }
+  .flag-card {
+    flex: 0 0 auto;
+    width: 168px;
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    padding: 10px;
+    cursor: pointer;
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s;
+    position: relative;
+  }
+  .flag-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--accent);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  }
+  .flag-card.complete {
+    border-color: var(--easy);
+    box-shadow: 0 0 0 1px rgba(46,204,113,0.3);
+  }
+  .flag-card-img-wrap {
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--bg2);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .flag-card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: filter 0.3s;
+  }
+  .flag-card-img.blurred {
+    filter: blur(14px) saturate(1.1);
+  }
+  .flag-card-placeholder {
+    font-size: 2.4rem;
+    opacity: 0.5;
+  }
+  .flag-card-status {
+    position: absolute;
+    top: 6px; right: 6px;
+    background: rgba(0,0,0,0.55);
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 10px;
+    backdrop-filter: blur(4px);
+  }
+  .flag-card.complete .flag-card-status {
+    background: var(--easy);
+    color: #0a2a18;
+  }
+  .flag-card-name {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text);
+    text-align: center;
+    line-height: 1.25;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    min-height: 2.2em;
+  }
+  .flag-card-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    background: var(--card2);
+    border-radius: 8px;
+    padding: 6px 8px;
+    font-size: 0.7rem;
+    color: var(--muted);
+  }
+  .flag-card-stat-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 6px;
+  }
+  .flag-card-stat-row .stat-icon {
+    flex-shrink: 0;
+    opacity: 0.7;
+  }
+  .flag-card-stat-row .stat-value {
+    color: var(--text);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+  .flag-card.complete .stat-value {
+    color: var(--easy);
+  }
+  .shelf-empty {
+    color: var(--muted);
+    font-size: 0.85rem;
+    padding: 16px;
+    font-style: italic;
+  }
   /* ─── DIRECTIONAL BACK BUTTONS ─── */
   .zone-back-btn {
     position: absolute;
@@ -247,18 +411,10 @@
     box-shadow: 0 8px 28px rgba(0,0,0,0.4), 0 0 0 6px var(--card2);
   }
   .zone-back-btn:active { transform: scale(0.97); }
-
-  /* Campaign: hub is up-right → button top-right corner (overridden by JS to line endpoint) */
-  /* World: hub is up → button top-center (overridden by JS to line endpoint) */
-  /* Custom: hub is up-left → button top-left corner (overridden by JS to line endpoint) */
   #zone-world .zone-back-btn:hover { transform: scale(1.10) !important; }
-
-  /* Chevron icon rotation per direction */
-  #zone-campaign .zone-back-btn i { transform: rotate(45deg);  }  /* ↗ */
-  #zone-world    .zone-back-btn i { transform: rotate(0deg);   }  /* ↑ */
-  #zone-custom   .zone-back-btn i { transform: rotate(-45deg); }  /* ↖ */
-
-  /* ─── SCREEN (GAME) overrides for non-hub screens ─── */
+  #zone-campaign .zone-back-btn i { transform: rotate(45deg);  }
+  #zone-world    .zone-back-btn i { transform: rotate(0deg);   }
+  #zone-custom   .zone-back-btn i { transform: rotate(-45deg); }
   #zone-game-container {
     position: fixed;
     top: 0; left: 0;
@@ -275,8 +431,6 @@
       radial-gradient(ellipse at 80% 80%, rgba(255,107,0,0.03) 0%, transparent 60%);
   }
   #zone-game-container.active { display: flex; }
-
-  /* ─── DIFFICULTY SCREEN ─── */
   .diff-header {
     text-align: center;
     margin-bottom: 16px;
@@ -304,96 +458,11 @@
     max-width: 380px;
     margin: 0 auto;
   }
-  .diff-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 18px;
-    padding: 24px 28px;
-    text-align: center;
-    box-shadow: 0 12px 40px rgba(0,0,0,0.35);
-    width: 100%;
-    max-width: 380px;
-    animation: fadeUp 0.4s ease both;
-  }
-
-  .diff-card h2 {
-    font-family: 'Comic Sans MS', 'Comic Sans', cursive;
-    font-size: 0.88rem;
-    font-weight: 600;
-    color: var(--muted);
-    margin-bottom: 4px;
-    letter-spacing: 0.5px;
-  }
-  .diff-counts {
-    color: var(--muted);
-    font-size: 0.82rem;
-    margin-bottom: 18px;
-    letter-spacing: 0.3px;
-  }
-  .diff-counts span { margin: 0 6px; }
-
-  .btn-group {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-  }
-
-  .diff-btn {
-    border: none;
-    border-radius: 12px;
-    width: 90px;
-    height: 90px;
-    font-family: 'Comic Sans MS', 'Comic Sans', cursive;
-    font-size: 0.88rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: transform 0.15s, box-shadow 0.15s, filter 0.15s;
-    letter-spacing: 0.3px;
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .diff-btn:hover { transform: translateY(-2px); filter: brightness(1.1); }
-  .diff-btn:active { transform: translateY(0); }
-
-  .diff-btn.easy {
-    background: var(--easy);
-    color: #0a2a18;
-    box-shadow: 0 4px 18px rgba(46,204,113,0.35);
-  }
-  .diff-btn.medium {
-    background: var(--medium);
-    color: #2a2000;
-    box-shadow: 0 4px 18px rgba(240,196,25,0.35);
-  }
-  .diff-btn.hard {
-    background: var(--hard);
-    color: #fff;
-    box-shadow: 0 4px 18px rgba(224,82,82,0.35);
-  }
-  .diff-btn.hitme {
-    background: var(--fire-bg);
-    color: #fff;
-    border: 2px solid var(--fire1);
-    box-shadow: 0 0 18px var(--fire1), 0 0 40px rgba(255,34,0,0.3);
-    animation: firePulse 1.8s ease-in-out infinite;
-  }
-  @keyframes firePulse {
-    0%,100% { box-shadow: 0 0 18px var(--fire1), 0 0 40px rgba(255,34,0,0.3); }
-    50%      { box-shadow: 0 0 28px var(--fire1), 0 0 60px rgba(255,34,0,0.5), 0 0 80px rgba(255,34,0,0.15); }
-  }
-
-  /* ─── GAME SCREEN ─── */
   .game-wrap {
     width: 100%;
     max-width: 900px;
     animation: fadeUp 0.4s ease both;
   }
-
   .game-topbar {
     display: flex;
     align-items: center;
@@ -422,7 +491,7 @@
   .diff-badge.hard   { background: rgba(224,82,82,0.15);  color: var(--hard);   border: 1px solid rgba(224,82,82,0.3); }
   .diff-badge.hitme  { background: rgba(255,107,0,0.15);  color: var(--fire1);  border: 1px solid rgba(255,107,0,0.3); }
   .diff-badge.custom { background: rgba(180,122,254,0.15); color: #b47afe;       border: 1px solid rgba(180,122,254,0.3); }
-
+  .diff-badge.unc    { background: rgba(122,150,176,0.15); color: var(--muted);  border: 1px solid rgba(122,150,176,0.3); }
   .back-btn {
     background: var(--card2);
     border: 1px solid var(--border);
@@ -436,8 +505,6 @@
     transition: color 0.15s, border-color 0.15s;
   }
   .back-btn:hover { color: var(--text); border-color: var(--accent); }
-
-  /* Loading spinner */
   .loading-state {
     display: flex;
     flex-direction: column;
@@ -454,8 +521,6 @@
     animation: spin2 0.8s linear infinite;
   }
   @keyframes spin2 { to { transform: rotate(360deg); } }
-
-  /* ─── GRID ─── */
   .grid-outer {
     background: var(--card);
     border: 1px solid var(--border);
@@ -464,18 +529,13 @@
     box-shadow: 0 16px 50px rgba(0,0,0,0.4);
     overflow-x: auto;
   }
-
   .grid-table {
     display: grid;
     gap: 8px;
     width: fit-content;
     min-width: 100%;
   }
-
-  .grid-corner {
-    background: transparent;
-  }
-
+  .grid-corner { background: transparent; }
   .col-header, .row-header {
     background: var(--card2);
     border: 1px solid var(--border);
@@ -507,7 +567,6 @@
   .col-header:hover::after, .row-header:hover::after { opacity: 1; }
   .col-header { min-height: 80px; }
   .row-header { min-width: 130px; min-height: 80px; }
-
   .header-emoji { font-size: 1.5rem; line-height: 1; }
   .header-label {
     font-size: 0.75rem;
@@ -522,7 +581,6 @@
     font-family: monospace;
     letter-spacing: 0.3px;
   }
-
   .grid-cell {
     background: var(--cell-empty);
     border: 1.5px dashed var(--border);
@@ -567,8 +625,6 @@
     line-height: 1.2;
     font-weight: 500;
   }
-
-  /* Unused items list */
   .unused-items {
     margin-top: 18px;
     padding: 14px 18px;
@@ -584,11 +640,7 @@
     font-weight: 600;
     margin-bottom: 10px;
   }
-  .unused-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-  }
+  .unused-tags { display: flex; flex-wrap: wrap; gap: 6px; }
   .unused-tag {
     background: var(--bg2);
     border: 1px solid var(--border);
@@ -600,8 +652,6 @@
     align-items: center;
     gap: 4px;
   }
-
-  /* Error */
   .error-box {
     background: rgba(224,82,82,0.1);
     border: 1px solid rgba(224,82,82,0.3);
@@ -612,7 +662,6 @@
     text-align: center;
     margin-top: 20px;
   }
-
   .give-up-btn {
     background: rgba(224,82,82,0.1);
     border: 1px solid rgba(224,82,82,0.35);
@@ -627,8 +676,6 @@
   }
   .give-up-btn:hover { background: rgba(224,82,82,0.2); border-color: var(--hard); }
   .give-up-btn:disabled { opacity: 0.45; cursor: default; pointer-events: none; }
-
-  /* Topbar main-flag reveal area */
   .main-flag-reveal {
     display: flex;
     align-items: center;
@@ -649,8 +696,6 @@
     font-weight: 600;
     color: var(--easy);
   }
-
-  /* Stat pill in topbar */
   .stat-pill {
     display: flex;
     align-items: center;
@@ -664,8 +709,6 @@
     font-weight: 500;
   }
   .stat-pill b { color: var(--text); }
-
-  /* ─── MAIN FLAG TOAST ─── */
   .main-flag-toast-overlay {
     display: none;
     position: fixed;
@@ -711,8 +754,6 @@
     width: 100%;
   }
   .main-flag-toast button:hover { filter: brightness(1.1); }
-
-  /* ─── COMPLETION MODAL ─── */
   .completion-overlay {
     display: none;
     position: fixed;
@@ -788,8 +829,6 @@
     color: var(--text);
     border: 1px solid var(--border);
   }
-
-  /* ─── CORRECT / INCORRECT CELL STATES ─── */
   .grid-cell.correct {
     background: rgba(46,204,113,0.12);
     border: 2px solid var(--easy);
@@ -818,15 +857,11 @@
     0%,100% { box-shadow: 0 0 10px rgba(240,196,25,0.35), 0 0 24px rgba(240,196,25,0.2); }
     50%      { box-shadow: 0 0 18px rgba(240,196,25,0.6), 0 0 40px rgba(240,196,25,0.3); }
   }
-  .grid-cell.wrong-flash {
-    animation: wrongFlash 0.5s ease both;
-  }
+  .grid-cell.wrong-flash { animation: wrongFlash 0.5s ease both; }
   @keyframes wrongFlash {
     0%,100% { border-color: var(--border); background: var(--cell-empty); }
     25%,75%  { border-color: var(--hard); background: rgba(224,82,82,0.12); border-style: solid; }
   }
-
-  /* ─── SEARCH MODAL ─── */
   .search-modal-overlay {
     display: none;
     position: fixed;
@@ -838,7 +873,6 @@
     padding: 20px;
   }
   .search-modal-overlay.open { display: flex; }
-
   .search-modal {
     background: var(--card);
     border: 1px solid var(--border);
@@ -852,8 +886,6 @@
     flex-direction: column;
     max-height: 90vh;
   }
-
-  /* Header bar */
   .search-modal-header {
     display: flex;
     align-items: center;
@@ -931,8 +963,6 @@
     line-height: 1;
   }
   .search-close-btn:hover { color: var(--text); background: var(--bg2); }
-
-  /* Search input */
   .search-input-wrap {
     padding: 14px 16px 10px;
     flex-shrink: 0;
@@ -951,18 +981,15 @@
   }
   .search-input-wrap input::placeholder { color: var(--muted); }
   .search-input-wrap input:focus { border-color: var(--accent); }
-
-  /* Results — fixed height = exactly 7 rows so modal never resizes */
   .search-results {
     overflow-y: auto;
     flex-shrink: 0;
     padding: 4px 8px 8px;
-    height: 364px;   /* 7 × ~52px per row */
+    height: 364px;
   }
   .search-results::-webkit-scrollbar { width: 6px; }
   .search-results::-webkit-scrollbar-track { background: transparent; }
   .search-results::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-
   .search-result-item {
     display: flex;
     align-items: center;
@@ -975,15 +1002,12 @@
   }
   .search-result-item:last-child { border-bottom: none; }
   .search-result-item:hover { background: var(--card2); }
-  .search-result-item.shake {
-    animation: shakeRow 0.35s ease;
-  }
+  .search-result-item.shake { animation: shakeRow 0.35s ease; }
   @keyframes shakeRow {
     0%,100% { transform: translateX(0); }
     25%      { transform: translateX(-6px); }
     75%      { transform: translateX(6px); }
   }
-
   .search-result-item.used {
     opacity: 0.38;
     cursor: not-allowed;
@@ -999,7 +1023,6 @@
     white-space: nowrap;
     flex-shrink: 0;
   }
-
   .result-flag-img {
     width: 48px;
     height: 32px;
@@ -1031,7 +1054,6 @@
     white-space: nowrap;
     flex-shrink: 0;
   }
-
   .search-state-msg {
     display: flex;
     align-items: center;
@@ -1049,8 +1071,6 @@
     animation: spin2 0.7s linear infinite;
     flex-shrink: 0;
   }
-
-  /* ─── DESCRIPTION MODAL ─── */
   .desc-modal-overlay {
     display: none;
     position: fixed;
@@ -1061,9 +1081,7 @@
     justify-content: center;
     padding: 20px;
   }
-  .desc-modal-overlay.open {
-    display: flex;
-  }
+  .desc-modal-overlay.open { display: flex; }
   .desc-modal {
     background: var(--card);
     border: 1px solid var(--border);
@@ -1119,8 +1137,6 @@
     text-align: center;
   }
   .desc-modal-close:hover { border-color: var(--accent); background: var(--bg2); }
-
-  /* ─── CUSTOM ZONE ─── */
   .custom-search-wrap {
     width: 100%;
     max-width: 500px;
@@ -1149,9 +1165,7 @@
     overflow: hidden;
     box-shadow: 0 16px 50px rgba(0,0,0,0.4);
   }
-  .custom-search-input-wrap {
-    padding: 14px 16px 10px;
-  }
+  .custom-search-input-wrap { padding: 14px 16px 10px; }
   .custom-search-input-wrap input {
     width: 100%;
     background: var(--bg2);
@@ -1174,9 +1188,6 @@
   .custom-search-results::-webkit-scrollbar { width: 6px; }
   .custom-search-results::-webkit-scrollbar-track { background: transparent; }
   .custom-search-results::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-
-
-  /* ─── THEME TOGGLE ─── */
   #theme-toggle-btn {
     position: fixed;
     bottom: 18px;
@@ -1225,11 +1236,7 @@
     text-transform: uppercase;
     letter-spacing: 0.8px;
   }
-  .tp-row {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-  }
+  .tp-row { display: flex; flex-direction: column; gap: 5px; }
   .tp-label {
     font-family: 'Comic Sans MS', 'Comic Sans', cursive;
     font-size: 0.75rem;
@@ -1239,15 +1246,9 @@
     align-items: center;
   }
   .tp-label span { color: var(--text); font-size: 0.7rem; }
-  /* Color picker row */
-  .tp-color-row {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
+  .tp-color-row { display: flex; align-items: center; gap: 10px; }
   .tp-color-input {
-    width: 44px;
-    height: 36px;
+    width: 44px; height: 36px;
     border: 2px solid var(--border);
     border-radius: 10px;
     cursor: pointer;
@@ -1280,7 +1281,6 @@
     box-shadow: 0 1px 4px rgba(0,0,0,0.3);
     cursor: pointer;
   }
-  /* Range sliders */
   .tp-slider {
     width: 100%;
     height: 6px;
@@ -1300,15 +1300,9 @@
     box-shadow: 0 1px 4px rgba(0,0,0,0.35);
     cursor: pointer;
   }
-  .tp-slider#sl-lightness {
-    background: linear-gradient(to right, #000, #fff);
-  }
-  .tp-slider#sl-saturation {
-    background: linear-gradient(to right, #888, hsl(var(--accent-h,210),100%,50%));
-  }
-  .tp-slider#sl-contrast {
-    background: linear-gradient(to right, var(--bg2,#162032), #fff);
-  }
+  .tp-slider#sl-lightness { background: linear-gradient(to right, #000, #fff); }
+  .tp-slider#sl-saturation { background: linear-gradient(to right, #888, hsl(var(--accent-h,210),100%,50%)); }
+  .tp-slider#sl-contrast { background: linear-gradient(to right, var(--bg2,#162032), #fff); }
   .theme-divider {
     border: none;
     border-top: 1px solid var(--border);
@@ -1404,8 +1398,6 @@
   .give-up-cell-btn:hover { filter: brightness(1.15); transform: translateY(-1px); }
   .give-up-cell-btn:active { transform: translateY(0); }
   .give-up-cell-btn:disabled { opacity: 0.4; cursor: default; pointer-events: none; }
-
-  /* ─── GIVEN-UP CELL ─── */
   .grid-cell.given-up {
     background: rgba(224,82,82,0.12);
     border: 2px solid var(--hard);
@@ -1435,8 +1427,6 @@
     line-height: 1.2;
     font-weight: 600;
   }
-
-  /* ─── BUBBLE WALLPAPER ─── */
   #bubble-wallpaper {
     position: fixed;
     top: 0; left: 0;
@@ -1445,33 +1435,28 @@
     display: block;
     opacity: 0.62;
   }
-
   body {
     background: var(--bg) !important;
     background-image: none !important;
   }
-  /* Game container is transparent — wallpaper canvas (outside pan-viewport) shows through */
   #zone-game-container {
     background: transparent !important;
     background-image: none !important;
   }
-  /* Hide pan-viewport content while game is active; canvas is a sibling so it stays visible */
-  body.game-active #pan-viewport {
-    visibility: hidden;
+  body.game-active #pan-viewport { visibility: hidden; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
   }
 </style>
 </head>
 <body>
-
 <canvas id="bubble-wallpaper"></canvas>
-
 <button id="theme-toggle-btn" onclick="toggleThemePanel()" title="Change theme">
   <i class="fa-solid fa-palette"></i>
 </button>
 <div id="theme-panel">
   <div class="theme-panel-title">Customize Theme</div>
-
-  <!-- Primary color (background) -->
   <div class="tp-row">
     <div class="tp-label">Primary Color <span id="lbl-bg">#0f1623</span></div>
     <div class="tp-color-row">
@@ -1479,8 +1464,6 @@
       <input type="range" class="tp-hue-bar" id="hue-bg" min="0" max="360" value="210">
     </div>
   </div>
-
-  <!-- Secondary color (accent) -->
   <div class="tp-row">
     <div class="tp-label">Secondary Color <span id="lbl-accent">#4a9eff</span></div>
     <div class="tp-color-row">
@@ -1488,27 +1471,19 @@
       <input type="range" class="tp-hue-bar" id="hue-accent" min="0" max="360" value="210">
     </div>
   </div>
-
-  <!-- Lightness slider -->
   <div class="tp-row">
     <div class="tp-label">Background Lightness <span id="lbl-lightness">20%</span></div>
     <input type="range" class="tp-slider" id="sl-lightness" min="0" max="100" value="20">
   </div>
-
-  <!-- Saturation slider -->
   <div class="tp-row">
     <div class="tp-label">Accent Saturation <span id="lbl-saturation">100%</span></div>
     <input type="range" class="tp-slider" id="sl-saturation" min="20" max="100" value="100">
   </div>
-
-  <!-- Contrast slider -->
   <div class="tp-row">
     <div class="tp-label">Contrast <span id="lbl-contrast">50%</span></div>
     <input type="range" class="tp-slider" id="sl-contrast" min="0" max="100" value="50">
   </div>
-
   <button class="tp-reset-btn" onclick="resetTheme()">↩ Reset to default</button>
-
   <hr class="theme-divider">
   <div class="wallpaper-toggle-row">
     <span class="wallpaper-toggle-label">Animated BG</span>
@@ -1516,28 +1491,24 @@
   </div>
 </div>
 <div id="pan-viewport">
-
-  <!-- LEFT ZONE: Campaign -->
+  <!-- LEFT ZONE: Campaign (NEW BROWSER) -->
   <div class="pan-zone" id="zone-campaign">
     <button class="zone-back-btn" onclick="panTo('hub')" title="Back to Hub">
       <i class="fa-solid fa-chevron-up"></i>
     </button>
-    <div style="display:flex;flex-direction:column;align-items:center;width:100%;max-width:500px;">
-      <div class="diff-header">
+    <div class="campaign-browser" id="campaign-browser">
+      <div class="campaign-header">
         <h1>Campaign</h1>
+        <p>Browse the collection — click a flag to attempt it. Use ← → to scroll, ↑ ↓ to switch shelves.</p>
       </div>
-      <div class="diff-card">
-        <h2>Select difficulty:</h2>
-        <div class="diff-counts" id="diff-counts"></div>
-        <div class="btn-group">
-          <button class="diff-btn easy"   onclick="selectDifficulty('easy')">Easy</button>
-          <button class="diff-btn medium" onclick="selectDifficulty('medium')">Medium</button>
-          <button class="diff-btn hard"   onclick="selectDifficulty('hard')">Hard</button>
+      <div id="campaign-shelves">
+        <div class="loading-state">
+          <div class="spinner"></div>
+          <span>Loading flag lists…</span>
         </div>
       </div>
     </div>
   </div>
-
   <!-- CENTER ZONE: Hub -->
   <div class="pan-zone" id="zone-hub" style="position:relative;">
     <svg id="hub-lines-svg" xmlns="http://www.w3.org/2000/svg"></svg>
@@ -1547,21 +1518,18 @@
         <div class="hub-subtitle">Each cell requires a flag matching both its row and column attribute. Every flag can only be used once!</div>
       </div>
       <div class="hub-modes">
-
         <div class="mode-btn-wrap">
           <i class="fa-solid fa-map mode-icon"></i>
           <button class="mode-btn" onclick="panTo('campaign')">
             Campaign
           </button>
         </div>
-
         <div class="mode-btn-wrap">
           <i class="fa-solid fa-globe mode-icon" style="color:#4a9eff"></i>
           <button class="mode-btn" onclick="panTo('world')">
             World
           </button>
         </div>
-
         <div class="mode-btn-wrap">
           <i class="fa-solid fa-paintbrush mode-icon" style="color:#b47afe"></i>
           <button class="mode-btn" onclick="panTo('custom')">
@@ -1571,7 +1539,6 @@
       </div>
     </div>
   </div>
-
   <!-- BOTTOM ZONE: World (placeholder) -->
   <div class="pan-zone" id="zone-world">
     <button class="zone-back-btn" onclick="panTo('hub')" title="Back to Hub">
@@ -1583,7 +1550,6 @@
       <p>Coming soon — compete on global leaderboards with a shared daily grid.</p>
     </div>
   </div>
-
   <!-- RIGHT ZONE: Custom -->
   <div class="pan-zone" id="zone-custom">
     <button class="zone-back-btn" onclick="panTo('hub')" title="Back to Hub">
@@ -1602,15 +1568,10 @@
       </div>
     </div>
   </div>
-
 </div>
-
-<!-- ── GAME ZONE (full-screen overlay, outside pan) ── -->
 <div id="zone-game-container">
   <div class="game-wrap" id="game-wrap"></div>
 </div>
-
-<!-- ── SEARCH / GUESS MODAL ── -->
 <div class="search-modal-overlay" id="search-modal-overlay">
   <div class="search-modal" onclick="event.stopPropagation()">
     <div class="search-modal-header">
@@ -1648,8 +1609,6 @@
     </div>
   </div>
 </div>
-
-<!-- ── MAIN FLAG TOAST ── -->
 <div class="main-flag-toast-overlay" id="main-flag-toast-overlay">
   <div class="main-flag-toast" onclick="event.stopPropagation()">
     <div class="toast-emoji">🎯</div>
@@ -1658,8 +1617,6 @@
     <button onclick="closeMainFlagToast()">Got it, keep playing!</button>
   </div>
 </div>
-
-<!-- ── COMPLETION MODAL ── -->
 <div class="completion-overlay" id="completion-overlay">
   <div class="completion-modal" onclick="event.stopPropagation()">
     <div class="trophy">🏆</div>
@@ -1681,8 +1638,6 @@
     </div>
   </div>
 </div>
-
-<!-- ── DESCRIPTION MODAL ── -->
 <div class="desc-modal-overlay" id="desc-modal-overlay" onclick="closeModal()">
   <div class="desc-modal" onclick="event.stopPropagation()">
     <div class="desc-modal-emoji" id="modal-emoji"></div>
@@ -1692,85 +1647,12 @@
     <button class="desc-modal-close" onclick="closeModal()">Close</button>
   </div>
 </div>
-
 <script>
 // ─── DATA ───────────────────────────────────────────────────────────────────
-let countries = { easy: [], medium: [], hard: [] };
+let countries = { easy: [], medium: [], hard: [], uncategorized: [] };
 let currentDifficulty = '';
-let flagDescriptions = null;       // Loaded from flagca.txt
-
-// ─── EASY / MEDIUM / HARD LISTS ─────────────────────────────────────────────
-const EASY_LIST = [
-  "Spain","Italy","Brazil","Portugal","United States","Belgium","Argentina","Mexico",
-  "Seychelles","Colombia","Wales","Ghana","Costa Rica","Gabon","North Korea","Germany",
-  "South Africa","Bolivia","Burkina Faso","France","Venezuela","Mauritius",
-  "Bosnia and Herzegovina","United Kingdom","Uruguay","Bulgaria","Uzbekistan","Serbia",
-  "Congo","Libya","Chad","Lithuania","Lesotho","Cuba","Pakistan","Togo","Yemen",
-  "Kiribati","Uganda","Liberia","Burundi","Netherlands","Suriname","Egypt","Tanzania",
-  "Brunei","Nigeria","Tajikistan","Zimbabwe","Canada","Georgia","Gambia","Syria",
-  "Greece","Madagascar","Japan","Cyprus","Estonia","Azerbaijan","Benin","England",
-  "Vietnam","Kyrgyzstan","Austria","Hungary","Oman","Cameroon","China","Rwanda",
-  "Armenia","Finland","Kazakhstan","Latvia","Comoros","Turkmenistan","Scotland",
-  "North Macedonia","Barbados","Taiwan","Honduras","Botswana","Monaco","Philippines",
-  "Faroe Islands","Romania","Thailand","Aland","New Zealand","Papua New Guinea",
-  "Montenegro","Ukraine","St Pierre et Miquelon","Afghanistan (2013-2021)","Kosovo",
-  "Jamaica","Malta","Norway","Guinea","Denmark","Maldives","Vatican City","Ethiopia",
-  "Cura\u00e7ao","Poland","Malaysia","Sweden","Luxembourg","Mozambique","Sudan","Peru",
-  "Algeria","Slovakia","Iran","Switzerland","South Sudan","Iceland","Gibraltar",
-  "Belarus","Bangladesh","Singapore","Moldova","[JPN] Osaka","Czech Republic","Iraq",
-  "[·] Chequered Flag","Lebanon","Albania","Turkey","Christmas Island",
-  "United Arab Emirates","Andorra","Indonesia","Russia","Liechtenstein","Slovenia",
-  "Dominican Republic","San Marino"
-];
-
-const MEDIUM_LIST = [
-  "India","South Korea","Mongolia","Angola","Sri Lanka","Ecuador","Laos","Ireland",
-  "Palau","Micronesia","Grenada","Zambia","Somalia","Saudi Arabia","Guyana","Saba",
-  "Democratic Republic Of The Congo","Kenya","Aruba","Ivory Coast","Eswatini",
-  "Senegal","Bahamas","Central African Republic","Tunisia","Guam","Morocco","Mali",
-  "Malawi","Dominica","Myanmar","Sierra Leone","Saint Vincent and the Grenadines",
-  "Timor-Leste","New Caledonia","[CHI] Macau","Trinidad and Tobago","Guernsey",
-  "Belize","Northern Ireland","Nepal","Niue","[·] Antarctica","Bahrain",
-  "[CAN] Quebec","Antigua and Barbuda","Cocos Islands","Nicaragua","Mayotte",
-  "Greenland","Norfolk Island","[CHI] Tibet","Equatorial Guinea","Palestine",
-  "Tuvalu","Haiti","Martinique","Puerto Rico","[·] Progress Pride Flag","Kuwait",
-  "[·] Buddhist Flag","Jordan","[AUS] Australian Naval Ensign","Qatar","Vanuatu",
-  "Paraguay","Afghanistan","Mauritania","[CHI] Hong Kong","Chile"
-];
-
-const HARD_LIST = [
-  "Marshall Islands","[POR] Azores","[PAK] Azad Kashmir","[ESP] Canary Islands",
-  "Anguilla","[·] Olympic Flag","Sao Tome and Pr\u00edncipe","Fiji","Bhutan",
-  "Cambodia","[USA] Alaska","[ESP] Basque Country","[GEO] South Ossetia",
-  "[JPN] Kyoto","[GER] Berlin","Cape Verde","Australia","Niger","Samoa",
-  "United States Virgin Islands","Guinea-Bissau","[·] European Union","Jersey",
-  "Wallis and Futuna","Eritrea","Northern Mariana Islands","Nauru",
-  "[ESP] Valencian Community","Saint Kitts and Nevis","[LIB] Libya (1977-2011)",
-  "Croatia","Saint Lucia","Panama","Cook Islands","Sint Maarten","French Polynesia",
-  "Guatemala","[SCO] Orkney","Namibia","American Samoa","Falkland Islands",
-  "Djibouti","Bermuda","[·] Jolly Roger","Solomon Islands","Cayman Islands",
-  "[MHL] Ebon Atoll","[RUS] Bryansk Oblast","[GEO] Borjomi Municipality",
-  "[·] Seto People","[BGR] Bulgaria Naval Jack","[CZE] Hlub\u00f3\u010dec",
-  "[CHL] [ANT] Magallanes","[USA] North Pole","El Salvador",
-  "British Indian Ocean Territory","[NED] Amsterdam","Sint Eustatius","Montserrat",
-  "[·] Pride Flag","[USA] Minnesota","Tonga","[UKR] Donetsk Oblast",
-  "[SRB] Yugoslavia (1946-1992)","Isle of Man","Reunion","Israel",
-  "Turks and Caicos Islands","[ANT] French Southern and Antarctic Lands",
-  "[ESP] Tenerife","Saint Helena","[·] United Nations","Bonaire","Pitcairn Islands",
-  "French Guiana","[USA] California","Guadeloupe","[ITA] Sardinia",
-  "British Virgin Islands","Saint Barth\u00e9lemy"
-];
-
-const SAMPLE_DATA = [
-  ...EASY_LIST.map(c   => [{dff:"Easy", ctry:c}]),
-  ...MEDIUM_LIST.map(c => [{dff:"Med",  ctry:c}]),
-  ...HARD_LIST.map(c   => [{dff:"Hard", ctry:c}])
-];
-
-// ─── ITEM LABEL MAP ──────────────────────────────────────────────────────────
-// Priority: 3=high, 2=medium, 1=low, 0=skip
+let flagDescriptions = null;
 const ITEM_MAP = {
-  // Colors
   'cl_BLA': { label:'Black',           emoji:'⬛', p:3 },
   'cl_BLU': { label:'Blue',            emoji:'🔵', p:3 },
   'cl_GRE': { label:'Green',           emoji:'🟢', p:3 },
@@ -1781,14 +1663,12 @@ const ITEM_MAP = {
   'cl_YEL': { label:'Yellow',          emoji:'🟡', p:3 },
   'cl_PIN': { label:'Pink',            emoji:'🩷', p:3 },
   'cl_BRO': { label:'Brown',           emoji:'🟤', p:3 },
-  // Regions
   'rgn_Africa':        { label:'Africa',         emoji:'🌍', p:3 },
   'rgn_Asia':          { label:'Asia',            emoji:'🌏', p:3 },
   'rgn_Europe':        { label:'Europe',          emoji:'🌍', p:3 },
   'rgn_North America': { label:'North America',   emoji:'🌎', p:3 },
   'rgn_South America': { label:'South America',   emoji:'🌎', p:3 },
   'rgn_Oceania':       { label:'Oceania',         emoji:'🌏', p:3 },
-  // Sub-regions
   'rg2_AF_East':       { label:'East Africa',      emoji:'🌍', p:2 },
   'rg2_AF_West':       { label:'West Africa',      emoji:'🌍', p:2 },
   'rg2_AF_North':      { label:'North Africa',     emoji:'🌍', p:2 },
@@ -1820,7 +1700,6 @@ const ITEM_MAP = {
   'rg2_EU_South':      { label:'Southern Europe',  emoji:'🌍', p:2 },
   'rg2_SA_Cone':       { label:'Southern Cone',    emoji:'🌎', p:2 },
   'rg2_SA_North':      { label:'Northern S.Am.',   emoji:'🌎', p:2 },
-  // Features
   'HasSta': { label:'Has Stars',          emoji:'⭐', p:3 },
   'HasSun': { label:'Has Sun',            emoji:'☀️', p:3 },
   'IsMoon': { label:'Has Crescent',       emoji:'🌙', p:3 },
@@ -1834,11 +1713,9 @@ const ITEM_MAP = {
   'Crosse': { label:'Has Cross',          emoji:'✝️',  p:2 },
   'southc': { label:'Southern Cross',     emoji:'✨', p:2 },
   'NoStar': { label:'No Stars',           emoji:'🚫⭐', p:1 },
-  // Stars
   '1Stars': { label:'1 Star',   emoji:'⭐', p:2 },
   '2Stars': { label:'2 Stars',  emoji:'⭐', p:2 },
   '3+Star': { label:'3+ Stars', emoji:'✨', p:2 },
-  // Band design
   'Horizo': { label:'Horizontal Bands', emoji:'〰️', p:2 },
   'Vertic': { label:'Vertical Bands',   emoji:'🟦', p:2 },
   '2Bands': { label:'2 Bands',          emoji:'2️⃣', p:2 },
@@ -1848,12 +1725,10 @@ const ITEM_MAP = {
   'Diagon': { label:'Diagonal Band',    emoji:'↗️', p:2 },
   'Radial': { label:'Radial Design',    emoji:'💫', p:3 },
   'OnlyBa': { label:'Only Bands',       emoji:'🚫', p:1 },
-  // Color counts
   '2Color': { label:'2 Colors',  emoji:'🎨', p:2 },
   '3Color': { label:'3 Colors',  emoji:'🎨', p:2 },
   '4Color': { label:'4 Colors',  emoji:'🎨', p:3 },
   '5+Color':{ label:'5+ Colors', emoji:'🌈', p:3 },
-  // Special
   'chopGB':   { label:'Gained UK Independence', emoji:'🚫🇬🇧', p:3 },
   'island':   { label:'Island Nation',           emoji:'🏝️',    p:3 },
   'monarchy': { label:'Monarchy',                emoji:'👑',    p:2 },
@@ -1863,7 +1738,6 @@ const ITEM_MAP = {
   'terr_us':  { label:'US Territory',            emoji:'🇺🇸',   p:2 },
   'terr_all': { label:'Territory',               emoji:'📍',    p:1 },
   'femalepm': { label:'Female Head of State',    emoji:'👩',    p:2 },
-  // Language
   'englis': { label:'English Speaking', emoji:'🗣️', p:2 },
   'french': { label:'French Speaking',  emoji:'🗣️', p:2 },
   'spanis': { label:'Spanish Speaking', emoji:'🗣️', p:2 },
@@ -1871,7 +1745,6 @@ const ITEM_MAP = {
   'portug': { label:'Portuguese Speaking',emoji:'🗣️',p:2 },
   'russi':  { label:'Russian Speaking', emoji:'🗣️', p:2 },
   'swahi':  { label:'Swahili Speaking', emoji:'🗣️', p:2 },
-  // Currency — case-insensitive aliases all mapped here
   'cur_Dollar': { label:'Dollar Currency', emoji:'💵', p:1 },
   'cur_dollar': { label:'Dollar Currency', emoji:'💵', p:1 },
   'cur_Euro':   { label:'Euro Currency',   emoji:'💶', p:1 },
@@ -1879,92 +1752,57 @@ const ITEM_MAP = {
   'cur_eur':    { label:'Euro Currency',   emoji:'💶', p:1 },
   'cur_Pound':  { label:'Pound Currency',  emoji:'💷', p:1 },
   'cur_Franc':  { label:'Franc Currency',  emoji:'💰', p:1 },
-  // Size
   'nn_mikro':  { label:'Microstate',   emoji:'🔬', p:2 },
   'nn_small':  { label:'Small Nation', emoji:'🗺️', p:1 },
-  // Band layout extras
   'Rotate':   { label:'Rotatable Flag',   emoji:'🔄', p:1 },
   'Egually':  { label:'Equal-width Bands',emoji:'📏', p:1 },
-  // Political / cultural
   'bolivarian':   { label:'Bolivarian State',  emoji:'🦅', p:2 },
   'md_deno_n':    { label:'Nation-State',       emoji:'🏳️', p:1 },
-  // Miscellaneous items with malformed / alias codes resolved here
-  'Ships':        { label:'Ship',               emoji:'🛥️', p:2 },  // alias for Ships!
-  'Crown':        { label:'Crown',              emoji:'👑', p:2 },   // alias for Crowns
-  'Artifact':     { label:'Checkered Pattern',  emoji:'🏁', p:2 },  // maps to Checkd
-  'centered_items':{ label:'Centered Emblem',   emoji:'🎯', p:2 },  // alias for Center
+  'Ships':        { label:'Ship',               emoji:'🛥️', p:2 },
+  'Crown':        { label:'Crown',              emoji:'👑', p:2 },
+  'Artifact':     { label:'Checkered Pattern',  emoji:'🏁', p:2 },
+  'centered_items':{ label:'Centered Emblem',   emoji:'🎯', p:2 },
   'nolrgcrs':     { label:'No Large Cross',      emoji:'🚫➕', p:1 },
   'notlargecrs':  { label:'No Large Cross',      emoji:'🚫➕', p:1 },
-  // Typo / prefix-error aliases
   'md_eqtor':     { label:'Equatorial Country',  emoji:'🌐', p:1 },
-  'md_egal':      { label:'Winged Animal',        emoji:'🦅', p:2 },  // typo of md_egl
-  'md_lion':      { label:'Non-Winged Animal',    emoji:'🦁', p:2 },  // typo of md_lio
-  'md_slavi':     { label:'Slavic Language',      emoji:'🇺🇦', p:2 }, // wrong prefix (nn_slavi)
+  'md_egal':      { label:'Winged Animal',        emoji:'🦅', p:2 },
+  'md_lion':      { label:'Non-Winged Animal',    emoji:'🦁', p:2 },
+  'md_slavi':     { label:'Slavic Language',      emoji:'🇺🇦', p:2 },
   'md_stun_bla':  { label:'Star over Black',      emoji:'⚛⚫', p:1 },
-  // Bare color codes missing their cl_ prefix
   'BLU':          { label:'Blue',                 emoji:'🔵', p:2 },
   'WHI':          { label:'White',                emoji:'⬜', p:2 },
-  // Concatenated / comma-in-code errors — map to the dominant first item
   'HasSun,':            { label:'Has Sun',          emoji:'☀️', p:2 },
   'nn_mikro,':          { label:'Microstate',       emoji:'🔬', p:2 },
   'myrGRA, BLA':        { label:'Main Gray + Black',emoji:'💿⬛', p:1 },
   'Center,hascoa,Quartr':{ label:'Centered Coat/Quartered', emoji:'🎯🛡️', p:1 },
   'won_lioEgually':     { label:'Non-Winged Animal + Equal Bands', emoji:'🦁📏', p:1 },
-  // Malformed bnd_ codes with full color names → map to correct 3-letter versions
   'bnd_BLUE':   { label:'Blue Band',   emoji:'🟦', p:2 },
   'bnd_GREEN':  { label:'Green Band',  emoji:'🟩', p:2 },
   'bnd_WHITE':  { label:'White Band',  emoji:'⬜', p:2 },
   'bnd_YELLOW': { label:'Yellow Band', emoji:'🟨', p:2 },
-  // Malformed bnd_ codes with positional prefixes mixed in
   'bnd_001WHI': { label:'White Band (1st)', emoji:'⬜', p:1 },
   'bnd_002BLU': { label:'Blue Band (2nd)',  emoji:'🟦', p:1 },
   'bnd_003WHI': { label:'White Band (3rd)', emoji:'⬜', p:1 },
-  // Other malformed bnd_ codes
   'bnd_GR':     { label:'Green Band',       emoji:'🟩', p:2 },
   'bnd_BRORA':  { label:'Brown/Orange Band',emoji:'🟫', p:1 },
   'bnd_PURED':  { label:'Purple Band',      emoji:'🟪', p:1 },
   'bnd_NON':    { label:'Unknown Band',     emoji:'❓', p:0 },
   'bnd_X':      { label:'Unknown Band',     emoji:'❓', p:0 },
-  // Space/character errors in bnd_ codes
   'bnd_E YEL':  { label:'Yellow Band',      emoji:'🟨', p:2 },
   'bnd_RED YEL':{ label:'Red+Yellow Bands', emoji:'🟥🟨', p:1 },
   'bnd_WHIÇ':   { label:'White Band',       emoji:'⬜', p:2 },
-  // Bloemfontein — data error on South Africa's entry
   'Bloemfontein':{ label:'Capital: Bloemfontein', emoji:'🏙️', p:0 },
 };
-
-// ─── BLOCKED ITEMS ────────────────────────────────────────────────────────────
-// Items that should never appear as grid row/column headers.
-// Includes: nonsense codes, pop-culture trivia categories unsuitable as puzzle axes,
-// and any code that is purely a data artefact with no meaningful gameplay value.
 const BLOCKED_ITEMS = new Set([
-  // Nonsense / malformed band codes with no real color
   '001NON', '002NON', '003NON',
   '002x',   '002X',
   'bnd_NON', 'bnd_X',
-  // Pop-culture song-lyric categories — countries mentioned in song lyrics,
-  // not a meaningful geographical or flag-design axis for a puzzle
-  'orinoc',   // 🎵 Orinoco Flow (Enya) — lists countries from the song, not a real category
-  'kokomo',   // 🎵 Kokomo (The Beach Boys) — lists island destinations from the song
-  // Pop-culture / fictional universe categories — fun trivia but not suitable puzzle axes
-  'md_LOTRNation',  // 💍 Lord of the Rings fictional nations (not real countries)
-  'md_acreed123',   // 🗡️ Assassin's Creed game settings (fictional/anachronistic)
-  'md_tekken7',     // 🥊 Tekken 7 fighter nationalities (video game, not geography)
-  'locate_MI',      // 📍 Unresolvable location code — data artefact
-  // Historical empires — removed as puzzle axes (too niche / overlapping region coverage)
-  'rg3_romanempire',   // 🏛️ Roman Empire
-  'rg3_austrohungary', // 🇦🇹 Austro-Hungarian Empire
-  // Checkered / pattern category (Artifact was a mis-mapping; Checkd is valid but Artifact itself is junk)
-  'Artifact',
-  // Pure data errors / placeholder codes
-  'Bloemfontein',
+  'orinoc','kokomo',
+  'md_LOTRNation','md_acreed123','md_tekken7','locate_MI',
+  'rg3_romanempire','rg3_austrohungary',
+  'Artifact','Bloemfontein',
 ]);
-
-// ─── DESCRIPTION MAP ─────────────────────────────────────────────────────────
-// Manual descriptions for ITEM_MAP entries that aren't in flagca.txt.
-// Format: code → description string shown in the info modal.
 const DESC_MAP = {
-  // Colors
   'cl_BLA': 'Flags that prominently feature the color black.',
   'cl_BLU': 'Flags that prominently feature the color blue.',
   'cl_GRE': 'Flags that prominently feature the color green.',
@@ -1975,197 +1813,53 @@ const DESC_MAP = {
   'cl_YEL': 'Flags that prominently feature the color yellow.',
   'cl_PIN': 'Flags that prominently feature the color pink.',
   'cl_BRO': 'Flags that prominently feature the color brown.',
-  // Sub-region aliases not in flagca.txt
-  'rg2_Na_Caribbean':  'Island and coastal nations of the Caribbean Sea.',
-  'rg2_NA_Caribbean':  'Island and coastal nations of the Caribbean Sea.',
-  'rg2_Na_CeAm':       'Nations of Central America, connecting North and South America.',
-  'rg2_AM_Central':    'Nations of Central America, connecting North and South America.',
-  'rg2_AM_North':      'Countries of North America: Canada, USA, Mexico and nearby.',
-  'rg2_AM_South':      'Countries of South America.',
-  'rg2_As_SouthOnly':  'Nations of South and Southeast Asia.',
-  'rg2_OC_Micronesia': 'Micronesian island nations of the Pacific Ocean.',
-  'rg2_Oc_Polynesia':  'Polynesian island nations of the Pacific Ocean.',
-  'rg2_AF_Mid':        'Nations of Central/Middle Africa.',
-  'rg2_SA_Cone':       'Southern Cone nations of South America: Chile, Argentina, Uruguay.',
-  'rg2_SA_North':      'Northern nations of South America including Colombia, Venezuela and Peru.',
-  // Currency
-  'cur_Dollar': 'Countries whose official currency is a dollar (USD, AUD, CAD, etc.).',
-  'cur_dollar': 'Countries whose official currency is a dollar (USD, AUD, CAD, etc.).',
-  'cur_Euro':   'Eurozone countries that use the Euro (€) as their official currency.',
-  'cur_EUR':    'Eurozone countries that use the Euro (€) as their official currency.',
-  'cur_eur':    'Eurozone countries that use the Euro (€) as their official currency.',
-  'cur_Pound':  'Countries whose official currency is a pound (GBP, EGP, etc.).',
-  'cur_Franc':  'Countries whose official currency is a franc (CHF, CFA, etc.).',
-  // Size
-  'nn_mikro': 'Microstates — countries with a very small land area or population (e.g. Monaco, Vatican, San Marino).',
-  'nn_small': 'Small nations with limited land area or population.',
-  // Features
-  'HasSta': 'Flags that include one or more stars in their design.',
-  'HasSun': 'Flags that feature a sun or sunburst symbol.',
-  'IsMoon': 'Flags that feature a crescent moon symbol.',
-  'Animal': 'Flags that depict an animal (eagle, lion, dragon, bird, etc.).',
-  'Plants': 'Flags that include plant imagery such as leaves, trees, or flowers.',
-  'Weapon': 'Flags that include a weapon such as a sword, spear, or AK-47.',
-  'Circle': 'Flags that feature a circle or disc element.',
-  'Canton': 'Flags that include a canton — a distinct rectangular area in the top-left corner.',
-  'Center': 'Flags with a coat of arms, emblem, or symbol placed at or near the center.',
-  'centered_items': 'Flags with a coat of arms, emblem, or symbol placed at or near the center.',
-  'Trside': 'Flags featuring a triangle or sidebar (hoist-side triangle or vertical stripe).',
-  'Crosse': 'Flags that feature a cross design (not just a canton cross).',
-  'southc': 'Flags that include the Southern Cross constellation, common in the Southern Hemisphere.',
-  'NoStar': 'Flags that contain no star symbols in their design.',
-  'Diagon': 'Flags featuring a diagonal band or stripe.',
-  'dgband': 'Flags featuring a diagonal band or stripe.',
-  'Radial': 'Flags with a radial or starburst design emanating from a central point.',
-  'OnlyBa': 'Flags consisting only of horizontal or vertical bands, with no additional emblems.',
-  'Rotate': 'Flags that look the same when rotated 180° (rotationally symmetric).',
-  'Egually': 'Flags where all horizontal or vertical bands are of equal width.',
-  // Stars
-  '1Stars': 'Flags that feature exactly one star.',
-  '2Stars': 'Flags that feature exactly two stars.',
-  '3+Star': 'Flags that feature three or more stars.',
-  // Band design
-  'Horizo': 'Flags with horizontal bands or stripes.',
-  'Vertic': 'Flags with vertical bands or stripes.',
-  '2Bands': 'Flags divided into two horizontal or vertical bands.',
-  '3Bands': 'Flags divided into three horizontal or vertical bands.',
-  '4+Band': 'Flags divided into four or more bands or stripes.',
-  // Color counts
-  '2Color': 'Flags using exactly two distinct colors.',
-  '3Color': 'Flags using exactly three distinct colors.',
-  '4Color': 'Flags using exactly four distinct colors.',
-  '5+Color': 'Flags using five or more distinct colors.',
-  // Special
-  'chopGB':   'Countries that gained independence from the United Kingdom (former British colonies).',
-  'island':   'Island nations — countries entirely on one or more islands.',
-  'monarchy': 'Countries with a monarchy as their form of government.',
-  'republic': 'Countries officially designated as republics.',
-  'eunion':   'Countries that are full members of the European Union.',
-  'retrique': 'Flags using a radiating tricolor design (stripes fan out from a point).',
-  'terr_us':  'US territories and associated states (e.g. Puerto Rico, Guam).',
-  'terr_all': 'Territories, dependencies, and non-sovereign entities.',
-  'femalepm': 'Countries currently led by a female head of state or government.',
-  // Language
-  'englis': 'Countries where English is an official or de facto national language.',
-  'french': 'Countries where French is an official or widely spoken language.',
-  'spanis': 'Countries where Spanish is an official language.',
-  'arabic': 'Countries where Arabic is an official language.',
-  'portug': 'Countries where Portuguese is an official language.',
-  'russi':  'Countries where Russian is an official or widely spoken language.',
-  'swahi':  'Countries where Swahili is an official or widely spoken language.',
-  // Political
-  'bolivarian': 'States inspired by the Bolivarian Revolution or Simon Bolívar\'s legacy (Venezuela, Bolivia, etc.).',
-  'md_deno_n':  'Sovereign nation-states (as opposed to territories or dependencies).',
-  // Misc
-  'Ships':     'Flags that feature a ship or maritime vessel in their design.',
-  'Crown':     'Flags that include a crown symbol.',
-  'nolrgcrs':  'Flags that do not feature a large cross design.',
-  'notlargecrs':'Flags that do not feature a large cross design.',
-  'md_eqtor':  'Countries located on or very near the geographic equator.',
-  'md_egal':   'Flags that depict a winged animal such as an eagle or condor.',
-  'md_lion':   'Flags that depict a non-winged animal such as a lion, bear, or bull.',
-  'md_slavi':  'Countries with a Slavic language as an official or primary language.',
-  'md_stun_bla': 'Flags featuring a star or celestial symbol over a black background or band.',
-  // Band color aliases
-  'BLU':       'Flags where blue is a dominant color.',
-  'WHI':       'Flags where white is a dominant color.',
-  // Concatenated codes
-  'HasSun,':         'Flags that feature a sun — includes all sun/sunburst varieties.',
-  'nn_mikro,':       'Microstates — very small countries by area or population.',
-  'myrGRA, BLA':     'Flags whose main or dominant colors are gray and black.',
-  'Center,hascoa,Quartr': 'Flags with a centered coat of arms, or a quartered design.',
-  'won_lioEgually':  'Flags depicting a non-winged animal with equal-width bands.',
-  // Malformed bnd_ codes
-  'bnd_BLUE':   'Flags that contain a blue band or stripe.',
-  'bnd_GREEN':  'Flags that contain a green band or stripe.',
-  'bnd_WHITE':  'Flags that contain a white band or stripe.',
-  'bnd_YELLOW': 'Flags that contain a yellow band or stripe.',
-  'bnd_001WHI': 'Flags where the first (top or left) band is white.',
-  'bnd_002BLU': 'Flags where the second band is blue.',
-  'bnd_003WHI': 'Flags where the third band is white.',
-  'bnd_GR':     'Flags that contain a green band or stripe.',
-  'bnd_BRORA':  'Flags that contain a brown or orange band.',
-  'bnd_PURED':  'Flags that contain a purple band or stripe.',
-  'bnd_E YEL':  'Flags that contain a yellow band or stripe.',
-  'bnd_RED YEL':'Flags that contain both red and yellow bands.',
-  'bnd_WHIÇ':   'Flags that contain a white band or stripe.',
-  'Bloemfontein': 'Data error — this entry should not appear in gameplay.',
 };
-
-// Skip prefixes — only truly unplayable metadata (PM names, capitals, exact area, geo coords, policies)
 const SKIP_PREFIXES = ['nt','pm_','capi_','area_','geo_','pol_','_'];
 const SKIP_RE = new RegExp('^(' + SKIP_PREFIXES.map(p => p.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('|') + ')');
-
-// Map short color codes to display emoji
 const COLOR_EMOJI = {
   RED:'🔴', WHI:'⬜', BLU:'🔵', GRE:'🟢', YEL:'🟡', ORA:'🟠',
   BLA:'⬛', PUR:'🟣', PIN:'🩷', BRO:'🟤', GOL:'🟡', SIL:'⬜', TUR:'🩵'
 };
 function colorEmojiFor(col) { return COLOR_EMOJI[col] || '🎨'; }
-
 function getItemInfo(code) {
-  // 0. Hard block — return null so callers discard this item entirely
   if (BLOCKED_ITEMS.has(code)) return null;
-
-  // 1. ITEM_MAP — hardcoded priority values override everything
   if (ITEM_MAP[code]) {
     const base = ITEM_MAP[code];
-    // Attach a manual description if we have one, so the modal can show it
     if (!base.desc && DESC_MAP[code]) return Object.assign({}, base, { desc: DESC_MAP[code] });
     return base;
   }
-
-  // 2. flagca.txt — the live database is authoritative for label & emoji
-  //    entry[1] format: "🔄<br>180° Symmetry"  or  "🟦<br>Vertical<br>Bands"
   if (flagDescriptions && flagDescriptions[code]) {
     const parts = flagDescriptions[code][1].split('<br>');
     const emoji = parts[0].trim() || '🏷️';
     const label = parts.slice(1).join(' ').trim() || flagDescriptions[code][0] || code;
-    // flagca.txt may also have a description field [2]; fall back to DESC_MAP
     const desc = (flagDescriptions[code][2] || '').trim() || DESC_MAP[code] || '';
     return { label, emoji, p: 2, desc };
   }
-
-  // 3. Dynamic patterns for codes the database may not enumerate exhaustively
-
-  // Sub-region  e.g. rg2_AM_South → "AM South"
   if (code.startsWith('rg2_')) {
     const label = code.replace('rg2_','').replace(/_/g,' ');
     return { label, emoji:'🗺️', p:1, desc: DESC_MAP[code] || '' };
   }
-
-  // Majority color  e.g. myrRED → "Mostly Red"
   if (code.startsWith('myr')) {
     const col = code.slice(3);
     return { label: `Mostly ${col}`, emoji: colorEmojiFor(col), p:2, desc: DESC_MAP[code] || `Flags where ${col.toLowerCase()} is the dominant color.` };
   }
-
-  // Band has color  e.g. bnd_RED → "Has Red Band"
-  // Guard against malformed codes: only match known 3-letter color suffixes
   if (code.startsWith('bnd_')) {
     const col = code.slice(4).toUpperCase();
     const knownColors = new Set(['RED','BLU','WHI','GRE','YEL','ORA','BLA','BRO','PUR','PIN','GRA']);
     if (knownColors.has(col)) return { label: `Has ${col[0]+col.slice(1).toLowerCase()} Band`, emoji: colorEmojiFor(col), p:2, desc: DESC_MAP[code] || `Flags that include a ${col.toLowerCase()} band or stripe.` };
     return { label: `Has ${col} Band`, emoji: '🏳️', p:0, desc: DESC_MAP[code] || '' };
   }
-
-  // Positional band color  e.g. 001RED → "Band 1: Red"
-  // Only match known 3-letter color suffixes to avoid 001NON etc. slipping through
   const bandMatch = code.match(/^(\d{3})([A-Z]+)$/);
   if (bandMatch) {
     const pos = parseInt(bandMatch[1], 10);
     const col = bandMatch[2];
     const knownColors = new Set(['RED','BLU','WHI','GRE','YEL','ORA','BLA','BRO','PUR','PIN','GRA']);
-    if (!knownColors.has(col)) return null; // e.g. 001NON — block silently
+    if (!knownColors.has(col)) return null;
     return { label: `Band ${pos}: ${col[0]+col.slice(1).toLowerCase()}`, emoji: colorEmojiFor(col), p:1, desc: `Flags where band number ${pos} (from the top or left) is ${col.toLowerCase()}.` };
   }
-
-  // 4. Last-resort fallback — show raw code rather than silently drop it
   return { label: code, emoji: '🏷️', p:0, desc: DESC_MAP[code] || '' };
 }
-
 function shouldSkip(code) { return SKIP_RE.test(code); }
-
 function scoreItems(items) {
   return items
     .filter(c => !shouldSkip(c))
@@ -2173,8 +1867,6 @@ function scoreItems(items) {
     .filter(x => x.info !== null)
     .sort((a,b) => b.info.p - a.info.p);
 }
-
-// ─── DESCRIPTION LOADING ─────────────────────────────────────────────────────
 async function loadFlagDescriptions() {
   if (flagDescriptions) return flagDescriptions;
   try {
@@ -2188,14 +1880,11 @@ async function loadFlagDescriptions() {
   }
   return flagDescriptions;
 }
-
-// ─── MODAL ───────────────────────────────────────────────────────────────────
 function showDescModal(code, label, emoji) {
   const desc = flagDescriptions && flagDescriptions[code];
   let bodyText = DESC_MAP[code] || 'No description available for this category.';
   let category = '';
   if (desc) {
-    // desc[2] has the description (may start with <br>), desc[3] is the category
     const fromDB = (desc[2] || '')
       .replace(/<br\s*\/?>/gi, '\n')
       .replace(/<[^>]+>/g, '')
@@ -2209,46 +1898,294 @@ function showDescModal(code, label, emoji) {
   document.getElementById('modal-body').textContent = bodyText;
   document.getElementById('desc-modal-overlay').classList.add('open');
 }
-
 function closeModal() {
   document.getElementById('desc-modal-overlay').classList.remove('open');
 }
-
-// Close modal on Escape key
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
-
-// ─── AUTO-INIT WITH BUILT-IN DATA ───────────────────────────────────────────
-(function initData() {
-  countries = { easy: [], medium: [], hard: [] };
-  EASY_LIST.forEach(c   => countries.easy.push(c));
-  MEDIUM_LIST.forEach(c => countries.medium.push(c));
-  HARD_LIST.forEach(c   => countries.hard.push(c));
-  document.getElementById('diff-counts').innerHTML =
-    `<span>🟢 ${countries.easy.length} easy</span>` +
-    `<span>🟡 ${countries.medium.length} medium</span>` +
-    `<span>🔴 ${countries.hard.length} hard</span>`;
-})();
-
+// ─── CAMPAIGN BROWSER ───────────────────────────────────────────────────────
+// JSON-driven shelves of flag cards with per-flag progress tracking.
+const CAMPAIGN_PROGRESS_KEY = 'flagtrioku-campaign-progress-v1';
+const CAMPAIGN_DIFFS = [
+  { key: 'easy',          file: 'easy.json',          title: 'Easy',          cls: 'easy' },
+  { key: 'medium',        file: 'medium.json',        title: 'Medium',        cls: 'medium' },
+  { key: 'hard',          file: 'hard.json',          title: 'Hard',          cls: 'hard' },
+  { key: 'uncategorized', file: 'uncategorized.json', title: 'Uncategorized', cls: 'unc' }
+];
+let campaignData = null;       // { easy: [...], medium: [...], hard: [...], uncategorized: [...] }
+let campaignProgress = {};     // { "Vietnam": { time: 142, guesses: 17, filled: 32, total: 42 }, ... }
+let campaignThumbCache = {};   // { "Vietnam": { primary: "https://...", fallback: "https://..." } }
+let activeShelfIdx = 0;        // for arrow-key navigation
+function loadCampaignProgress() {
+  try {
+    const raw = localStorage.getItem(CAMPAIGN_PROGRESS_KEY);
+    campaignProgress = raw ? JSON.parse(raw) : {};
+  } catch(e) { campaignProgress = {}; }
+}
+function saveCampaignProgress() {
+  try {
+    localStorage.setItem(CAMPAIGN_PROGRESS_KEY, JSON.stringify(campaignProgress));
+  } catch(e) { /* quota — silent */ }
+}
+function getProgressFor(country) {
+  return campaignProgress[country] || null;
+}
+function setProgressFor(country, data) {
+  campaignProgress[country] = Object.assign({}, campaignProgress[country] || {}, data);
+  saveCampaignProgress();
+}
+async function loadCampaignData() {
+  if (campaignData) return campaignData;
+  campaignData = { easy: [], medium: [], hard: [], uncategorized: [] };
+  await Promise.all(CAMPAIGN_DIFFS.map(async d => {
+    try {
+      const res = await fetch(d.file);
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const arr = await res.json();
+      campaignData[d.key] = Array.isArray(arr) ? arr : [];
+    } catch(e) {
+      console.warn('Could not load ' + d.file + ':', e);
+      campaignData[d.key] = [];
+    }
+  }));
+  // Mirror data into the legacy `countries` object so the rest of the game
+  // (selectDifficulty, fallback random pickers) keeps working with the new data.
+  countries.easy          = campaignData.easy.map(x => x.Country).filter(Boolean);
+  countries.medium        = campaignData.medium.map(x => x.Country).filter(Boolean);
+  countries.hard          = campaignData.hard.map(x => x.Country).filter(Boolean);
+  countries.uncategorized = campaignData.uncategorized.map(x => x.Country).filter(Boolean);
+  return campaignData;
+}
+function formatProgressTime(secs) {
+  if (typeof secs !== 'number' || secs <= 0) return '—';
+  const m = Math.floor(secs / 60);
+  const s = secs % 60;
+  return m + ':' + String(s).padStart(2, '0');
+}
+function buildCampaignBrowser() {
+  const host = document.getElementById('campaign-shelves');
+  if (!campaignData) {
+    host.innerHTML = '<div class="loading-state"><div class="spinner"></div><span>Loading…</span></div>';
+    return;
+  }
+  let html = '';
+  CAMPAIGN_DIFFS.forEach((d, idx) => {
+    const list = campaignData[d.key] || [];
+    const completedCount = list.filter(e => {
+      const p = getProgressFor(e.Country);
+      return p && p.filled === p.total && p.total > 0;
+    }).length;
+    html += `<div class="shelf" data-shelf-idx="${idx}">
+      <div class="shelf-title ${d.cls}">
+        <span class="shelf-dot"></span>
+        ${d.title}
+        <span class="shelf-count">${completedCount} / ${list.length} complete</span>
+      </div>`;
+    if (!list.length) {
+      html += `<div class="shelf-empty">No flags loaded for this list. (Make sure ${d.file} exists.)</div>`;
+    } else {
+      html += `<div class="shelf-scroll" tabindex="0" data-diff-key="${d.key}">`;
+      list.forEach((entry, cardIdx) => {
+        html += renderFlagCard(entry, d, cardIdx);
+      });
+      html += `</div>`;
+    }
+    html += `</div>`;
+  });
+  host.innerHTML = html;
+  // Wire up click handlers
+  host.querySelectorAll('.flag-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const country = card.dataset.country;
+      const diffKey = card.dataset.diff;
+      startCampaignFlag(country, diffKey);
+    });
+  });
+  // Wire up shelves for keyboard focus tracking
+  host.querySelectorAll('.shelf-scroll').forEach((shelf, idx) => {
+    shelf.addEventListener('focus', () => { activeShelfIdx = idx; });
+    shelf.addEventListener('mouseenter', () => { activeShelfIdx = idx; });
+  });
+  // Lazy-load the flag thumbnails (one fetch per country)
+  loadCampaignThumbnails();
+}
+function renderFlagCard(entry, diff, cardIdx) {
+  const country = entry.Country || '?';
+  const safeCountry = country.replace(/"/g,'&quot;').replace(/</g,'&lt;');
+  const total = entry.Total_Squares || (entry.Num_Cols && entry.Num_Rows ? entry.Num_Cols * entry.Num_Rows : 0);
+  const progress = getProgressFor(country) || {};
+  const filled = progress.filled || 0;
+  const totalFromProgress = progress.total || total || '?';
+  const isComplete = totalFromProgress !== '?' && filled >= totalFromProgress && totalFromProgress > 0;
+  const guesses = progress.guesses || 0;
+  const timeStr = formatProgressTime(progress.time || 0);
+  const ratio = totalFromProgress === '?' ? `0/${total || '?'}` : `${filled}/${totalFromProgress}`;
+  const statusBadge = isComplete ? '✓ Done' : (filled > 0 ? `${filled}/${totalFromProgress}` : 'New');
+  const completeCls = isComplete ? ' complete' : '';
+  const blurCls = isComplete ? '' : ' blurred';
+  return `<div class="flag-card${completeCls}" data-country="${safeCountry}" data-diff="${diff.key}" tabindex="0" role="button">
+    <div class="flag-card-img-wrap">
+      <span class="flag-card-placeholder">🏳️</span>
+      <div class="flag-card-status">${statusBadge}</div>
+    </div>
+    <div class="flag-card-name">${safeCountry}</div>
+    <div class="flag-card-stats">
+      <div class="flag-card-stat-row">
+        <span class="stat-icon">⏱</span>
+        <span class="stat-value">${timeStr}</span>
+      </div>
+      <div class="flag-card-stat-row">
+        <span class="stat-icon">🎯</span>
+        <span class="stat-value">${guesses} guesses</span>
+      </div>
+      <div class="flag-card-stat-row">
+        <span class="stat-icon">▦</span>
+        <span class="stat-value">${ratio}</span>
+      </div>
+    </div>
+  </div>`;
+  // Note: data-card-idx="${cardIdx}" omitted on purpose — index-by-country is enough
+}
+async function loadCampaignThumbnails() {
+  // Only fetch images for cards currently visible-ish (lazy via IntersectionObserver)
+  const cards = document.querySelectorAll('#campaign-shelves .flag-card');
+  if (!('IntersectionObserver' in window)) {
+    cards.forEach(c => fetchAndApplyThumbnail(c));
+    return;
+  }
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(en => {
+      if (en.isIntersecting) {
+        fetchAndApplyThumbnail(en.target);
+        io.unobserve(en.target);
+      }
+    });
+  }, { root: null, rootMargin: '200px', threshold: 0.01 });
+  cards.forEach(c => io.observe(c));
+}
+async function fetchAndApplyThumbnail(card) {
+  const country = card.dataset.country;
+  if (!country) return;
+  // Cache hit
+  if (campaignThumbCache[country]) {
+    applyThumbnailToCard(card, campaignThumbCache[country]);
+    return;
+  }
+  // Strip [XYZ] bracket prefixes for API search
+  const searchQuery = country.replace(/^\[.*?\]\s*/, '') || country;
+  try {
+    const url = 'https://new-databases-012n12.replit.app/searchto355-flags' +
+      '?filter=' + encodeURIComponent(searchQuery) +
+      '&fields=ExtraItems-couname|ExtraItems-HDFlag|ExtraItems-Flag';
+    const res = await fetch(url);
+    if (!res.ok) return;
+    const data = await res.json();
+    if (!Array.isArray(data) || !data.length) return;
+    const match =
+      data.find(d => (d.couname || '').toLowerCase() === country.toLowerCase()) ||
+      data.find(d => (d.couname || '').toLowerCase() === searchQuery.toLowerCase()) ||
+      data[0];
+    const hd = match.HDFlag ? thumbUrl(match.HDFlag, 320) : '';
+    const fb = match.Flag || '';
+    const cacheEntry = { primary: hd || fb, fallback: fb };
+    campaignThumbCache[country] = cacheEntry;
+    applyThumbnailToCard(card, cacheEntry);
+  } catch(e) { /* silent */ }
+}
+function applyThumbnailToCard(card, srcs) {
+  if (!srcs || !srcs.primary) return;
+  const wrap = card.querySelector('.flag-card-img-wrap');
+  if (!wrap) return;
+  const isComplete = card.classList.contains('complete');
+  const ph = wrap.querySelector('.flag-card-placeholder');
+  if (ph) ph.remove();
+  // Avoid double-add if observer fires twice
+  if (wrap.querySelector('.flag-card-img')) return;
+  const img = document.createElement('img');
+  img.className = 'flag-card-img' + (isComplete ? '' : ' blurred');
+  img.alt = '';
+  img.loading = 'lazy';
+  img.decoding = 'async';
+  img.src = srcs.primary;
+  img.onerror = () => {
+    if (img.src !== srcs.fallback && srcs.fallback) {
+      img.src = srcs.fallback;
+      img.onerror = null;
+    } else {
+      img.replaceWith(Object.assign(document.createElement('span'), { className: 'flag-card-placeholder', textContent: '🏳️' }));
+    }
+  };
+  wrap.insertBefore(img, wrap.firstChild);
+}
+function startCampaignFlag(country, diffKey) {
+  lastZone = 'campaign';
+  // Map uncategorized → 'unc' for badge styling, but treat as a normal campaign run
+  currentDifficulty = (diffKey === 'uncategorized') ? 'unc' : diffKey;
+  show('screen-game');
+  loadGame(country);
+}
+// Refresh shelf cards (re-renders to pick up newly-saved progress)
+function refreshCampaignBrowser() {
+  if (!campaignData) return;
+  // Preserve scroll positions per shelf
+  const scrollPositions = {};
+  document.querySelectorAll('#campaign-shelves .shelf-scroll').forEach(s => {
+    scrollPositions[s.dataset.diffKey] = s.scrollLeft;
+  });
+  buildCampaignBrowser();
+  // Restore scroll positions
+  document.querySelectorAll('#campaign-shelves .shelf-scroll').forEach(s => {
+    if (scrollPositions[s.dataset.diffKey] != null) s.scrollLeft = scrollPositions[s.dataset.diffKey];
+  });
+}
+// Arrow-key navigation between/within shelves while campaign zone is active
+document.addEventListener('keydown', e => {
+  if (currentZone !== 'campaign') return;
+  // Don't hijack typing in an input/textarea
+  const tag = (e.target.tagName || '').toLowerCase();
+  if (tag === 'input' || tag === 'textarea') return;
+  const shelves = document.querySelectorAll('#campaign-shelves .shelf-scroll');
+  if (!shelves.length) return;
+  if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+    const shelf = shelves[activeShelfIdx];
+    if (!shelf) return;
+    const card = shelf.querySelector('.flag-card');
+    const step = card ? card.offsetWidth + 14 : 180;
+    shelf.scrollBy({ left: e.key === 'ArrowRight' ? step : -step, behavior: 'smooth' });
+    e.preventDefault();
+  } else if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+    activeShelfIdx = Math.max(0, Math.min(shelves.length - 1,
+      activeShelfIdx + (e.key === 'ArrowDown' ? 1 : -1)));
+    const target = shelves[activeShelfIdx];
+    if (target) {
+      target.focus({ preventScroll: false });
+      target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    e.preventDefault();
+  }
+});
+// ─── INIT ───────────────────────────────────────────────────────────────────
+loadCampaignProgress();
+loadCampaignData().then(() => buildCampaignBrowser());
 // ─── SCREENS / PAN ───────────────────────────────────────────────────────────
 let currentZone = 'hub';
-let lastZone    = 'campaign'; // which mode zone launched the current game
-
+let lastZone    = 'campaign';
 function panTo(zone) {
   currentZone = zone;
   const vp = document.getElementById('pan-viewport');
-  // Zone positions: campaign=(-100vw,100vh), hub=(0,0), world=(0,100vh), custom=(100vw,0)
-  // To show a zone we translate by the inverse of its position
   if (zone === 'campaign') {
     vp.style.transform = 'translateX(100vw) translateY(-100vh)';
   } else if (zone === 'world') {
     vp.style.transform = 'translateX(0) translateY(-100vh)';
   } else if (zone === 'custom') {
     vp.style.transform = 'translateX(-100vw) translateY(-100vh)';
-  } else { // hub
+  } else {
     vp.style.transform = 'translateX(0) translateY(0)';
   }
+  // When entering campaign, refresh in case progress changed
+  if (zone === 'campaign' && campaignData) {
+    refreshCampaignBrowser();
+  }
 }
-
 function show(id) {
   if (id === 'screen-game') {
     document.getElementById('zone-game-container').classList.add('active');
@@ -2258,42 +2195,24 @@ function show(id) {
     document.body.classList.remove('game-active');
   }
 }
-
 function showDifficulty() {
   document.getElementById('zone-game-container').classList.remove('active');
   document.body.classList.remove('game-active');
   panTo(lastZone || 'hub');
+  if ((lastZone || 'hub') === 'campaign') refreshCampaignBrowser();
 }
-
-// ─── DIFFICULTY SELECTION ────────────────────────────────────────────────────
 function selectDifficulty(diff) {
+  // Legacy fallback (kept for compatibility, unused by new browser)
   lastZone = 'campaign';
   currentDifficulty = diff;
-  let pool;
-  if (diff === 'hitme') {
-    const allPools = [
-      { list: countries.easy, diff: 'easy' },
-      { list: countries.medium, diff: 'medium' },
-      { list: countries.hard, diff: 'hard' }
-    ].filter(p => p.list.length > 0);
-    if (!allPools.length) { alert('No countries loaded!'); return; }
-    const chosen = allPools[Math.floor(Math.random() * allPools.length)];
-    pool = chosen.list;
-    currentDifficulty = chosen.diff + '+hitme';
-  } else {
-    pool = countries[diff];
-  }
-  if (!pool || pool.length === 0) {
-    alert(`No countries in the ${diff} list! Load your JSON first.`);
-    return;
-  }
+  const pool = countries[diff];
+  if (!pool || !pool.length) { alert('No countries in the ' + diff + ' list!'); return; }
   const flag = pool[Math.floor(Math.random() * pool.length)];
   show('screen-game');
   loadGame(flag);
 }
-
 // ─── GAME LOGIC ──────────────────────────────────────────────────────────────
-let currentMainFlag = '';   // couname of the grid's main flag
+let currentMainFlag = '';
 let gameStartTime   = 0;
 let totalGuesses    = 0;
 let totalCells      = 0;
@@ -2302,14 +2221,13 @@ let gaveUp          = false;
 let timerInterval   = null;
 let lastDiff        = '';
 let lastMainFlag    = '';
-
 async function loadGame(flagName) {
   const wrap = document.getElementById('game-wrap');
   const badgeDiff  = currentDifficulty.replace('+hitme','');
   const badgeLabel = currentDifficulty.includes('hitme') ? '🔥 Hit me!'
     : badgeDiff === 'custom' ? '🎨 Custom'
+    : badgeDiff === 'unc'    ? '📦 Uncategorized'
     : badgeDiff.charAt(0).toUpperCase() + badgeDiff.slice(1);
-
   currentMainFlag = flagName;
   lastDiff        = currentDifficulty;
   lastMainFlag    = flagName;
@@ -2317,11 +2235,9 @@ async function loadGame(flagName) {
   filledCells     = 0;
   gaveUp          = false;
   clearInterval(timerInterval);
-
   const topbarFlagLabel = (currentDifficulty === 'custom')
     ? `🎨 ${flagName}`
     : `🔍 Hidden Flag`;
-
   wrap.innerHTML = `
     <div class="game-topbar">
       <div class="flag-name">
@@ -2339,9 +2255,7 @@ async function loadGame(flagName) {
       <div class="spinner"></div>
       <span>Fetching flag data…</span>
     </div>`;
-
   try {
-    // Fetch descriptions and flag items in parallel — both must be ready before buildGrid
     const [items] = await Promise.all([
       fetchFlagItems(flagName),
       loadFlagDescriptions()
@@ -2353,55 +2267,46 @@ async function loadGame(flagName) {
     console.error(err);
   }
 }
-
 async function fetchFlagItems(flagName) {
-  // encodeURIComponent converts spaces to %20 automatically
+  // Strip bracket prefix for the API search to maximize hit-rate
+  const query = flagName.replace(/^\[.*?\]\s*/, '') || flagName;
   const url = `https://new-databases-012n12.replit.app/searchto355-flags` +
-    `?filter=${encodeURIComponent(flagName)}&fields=ExtraItems-couname|ExtraItems-Items&nolimit=true`;
+    `?filter=${encodeURIComponent(query)}&fields=ExtraItems-couname|ExtraItems-Items&nolimit=true`;
   const res = await fetch(url);
-  if (!res.ok) throw new Error(`API error: ${res.status}`);
+  if (!res.ok) throw new Error('API error: ' + res.status);
   const data = await res.json();
   if (!Array.isArray(data) || data.length === 0) throw new Error('No results from API.');
-  // Find exact match first, else fallback to first result
-  const exact = data.find(f => f.couname === flagName) || data[0];
+  const exact = data.find(f => f.couname === flagName) ||
+                data.find(f => (f.couname || '').toLowerCase() === flagName.toLowerCase()) ||
+                data[0];
   return exact.Items || [];
 }
-
-// ─── GRID SIZING ─────────────────────────────────────────────────────────────
-// Max 6 columns; any extra items spill into additional rows.
 function bestGridSplit(n) {
   if (n < 2) return { cols: n, rows: 1 };
   const cols = Math.min(Math.ceil(n / 2), 6);
   const rows = n - cols;
   return { cols, rows };
 }
-
 function buildGrid(wrap, flagName, rawItems, badgeDiff, badgeLabel) {
   const scored = scoreItems(rawItems);
   usedFlags   = new Set();
-  searchCache = new Map();   // clear per-game so stale used-state doesn't linger
-
+  searchCache = new Map();
   if (scored.length < 4) {
     const topbar = wrap.querySelector('.game-topbar').outerHTML;
     wrap.innerHTML = topbar + `<div class="error-box">Not enough displayable items (got ${scored.length}, need ≥ 4).</div>`;
     return;
   }
-
   const { cols, rows } = bestGridSplit(scored.length);
   const colItems = scored.slice(0, cols);
   const rowItems = scored.slice(cols, cols + rows);
   totalCells  = cols * rows;
   filledCells = 0;
-
-  // Start timer
   gameStartTime = Date.now();
   clearInterval(timerInterval);
   timerInterval = setInterval(updateTimer, 1000);
-
   let gridHTML = `<div class="grid-outer">
     <div class="grid-table" style="grid-template-columns: 140px repeat(${cols}, 1fr);">
       <div class="grid-corner"></div>`;
-
   colItems.forEach(item => {
     const safeCode  = item.code.replace(/'/g, "\\'");
     const safeLabel = item.info.label.replace(/'/g, "\\'");
@@ -2413,7 +2318,6 @@ function buildGrid(wrap, flagName, rawItems, badgeDiff, badgeLabel) {
         <span class="header-code">${item.code}</span>
       </div>`;
   });
-
   rowItems.forEach(rowItem => {
     const safeCode  = rowItem.code.replace(/'/g, "\\'");
     const safeLabel = rowItem.info.label.replace(/'/g, "\\'");
@@ -2438,9 +2342,7 @@ function buildGrid(wrap, flagName, rawItems, badgeDiff, badgeLabel) {
         </div>`;
     });
   });
-
   gridHTML += `</div></div>`;
-
   const unusedItems = scored.slice(cols + rows);
   if (unusedItems.length > 0) {
     gridHTML += `<div class="unused-items">
@@ -2451,11 +2353,8 @@ function buildGrid(wrap, flagName, rawItems, badgeDiff, badgeLabel) {
     });
     gridHTML += `</div></div>`;
   }
-
   const topbar = wrap.querySelector('.game-topbar').outerHTML;
   wrap.innerHTML = topbar + gridHTML;
-
-  // Give Up button
   const topbarEl = wrap.querySelector('.game-topbar');
   const rightGroup = topbarEl.querySelector('div[style]');
   const giveUpBtn = document.createElement('button');
@@ -2464,13 +2363,14 @@ function buildGrid(wrap, flagName, rawItems, badgeDiff, badgeLabel) {
   giveUpBtn.textContent = 'Give Up 🏳️';
   giveUpBtn.onclick = confirmGiveUp;
   rightGroup.appendChild(giveUpBtn);
+  // Persist initial total to campaign progress so the card shows ratio immediately
+  if (lastZone === 'campaign') {
+    setProgressFor(currentMainFlag, { total: totalCells, filled: filledCells, time: 0, guesses: 0 });
+  }
 }
-
 function headerClick(code, label, emoji) {
   showDescModal(code, label, emoji);
 }
-
-// ─── SEARCH MODAL STATE ───────────────────────────────────────────────────────
 let currentSearchCell  = null;
 let currentRowCode     = '';
 let currentColCode     = '';
@@ -2478,41 +2378,30 @@ let previewEnabled     = true;
 let searchDebounce     = null;
 let lastSearchResults  = [];
 let usedFlags          = new Set();
-let searchCache        = new Map();   // query → results[]
-let searchAbort        = null;        // AbortController for in-flight request
-
-// Shrink Wikipedia thumbnail URLs for search previews (saves ~95% bandwidth)
+let searchCache        = new Map();
+let searchAbort        = null;
 function thumbUrl(url, px = 160) {
   if (!url) return '';
   return url.replace(/\/\d+px-/, `/${px}px-`);
 }
-
 function cellClick(cell, rowCode, colCode, rowLabel, colLabel, rowEmoji, colEmoji) {
   if (cell.classList.contains('correct') || gaveUp) return;
-
   currentSearchCell = cell;
   currentRowCode    = rowCode;
   currentColCode    = colCode;
-
   document.getElementById('sm-row-emoji').textContent  = rowEmoji;
   document.getElementById('sm-row-label').textContent  = rowLabel;
   document.getElementById('sm-col-emoji').textContent  = colEmoji;
   document.getElementById('sm-col-label').textContent  = colLabel;
-
   const input = document.getElementById('search-input');
   input.value = '';
   lastSearchResults = [];
   document.getElementById('search-results').innerHTML =
     '<div class="search-state-msg">Start typing to search flags</div>';
-
   updatePreviewBtn();
   document.getElementById('search-modal-overlay').classList.add('open');
   setTimeout(() => input.focus(), 60);
-
-  // Update count from CSV data (may show '…' if still loading)
   updateCellCount(rowCode, colCode);
-
-  // If CSV not loaded yet, update once it is
   if (!crosscountData) {
     loadCsvData().then(() => {
       if (document.getElementById('search-modal-overlay').classList.contains('open')) {
@@ -2520,31 +2409,24 @@ function cellClick(cell, rowCode, colCode, rowLabel, colLabel, rowEmoji, colEmoj
       }
     });
   }
-
-  // Reset give-up-cell button state
   const gucBtn = document.getElementById('give-up-cell-btn');
   if (gucBtn) gucBtn.disabled = false;
 }
-
 function closeSearchModal() {
   document.getElementById('search-modal-overlay').classList.remove('open');
   clearTimeout(searchDebounce);
 }
-
 function togglePreview() {
   previewEnabled = !previewEnabled;
   updatePreviewBtn();
   if (lastSearchResults.length > 0) renderResults(lastSearchResults);
 }
-
 function updatePreviewBtn() {
   const btn = document.getElementById('preview-toggle-btn');
   const lbl = document.getElementById('preview-toggle-label');
   lbl.textContent = previewEnabled ? 'ON' : 'OFF';
   btn.classList.toggle('off', !previewEnabled);
 }
-
-// ─── SEARCH INPUT ─────────────────────────────────────────────────────────────
 document.getElementById('search-input').addEventListener('input', function() {
   clearTimeout(searchDebounce);
   const q = this.value.trim();
@@ -2557,25 +2439,18 @@ document.getElementById('search-input').addEventListener('input', function() {
   }
   searchDebounce = setTimeout(() => doSearch(q), 130);
 });
-
 document.getElementById('search-input').addEventListener('keydown', function(e) {
   if (e.key === 'Escape') closeSearchModal();
 });
-
 async function doSearch(query) {
   const el = document.getElementById('search-results');
-
-  // Cache hit — render instantly, no spinner
   if (searchCache.has(query)) {
     lastSearchResults = searchCache.get(query);
     renderResults(lastSearchResults);
     return;
   }
-
-  // Cancel any in-flight request
   if (searchAbort) searchAbort.abort();
   searchAbort = new AbortController();
-
   el.innerHTML = '<div class="search-state-msg"><div class="spinner-sm"></div> Searching…</div>';
   try {
     const url = `https://new-databases-012n12.replit.app/searchto355-flags` +
@@ -2587,37 +2462,30 @@ async function doSearch(query) {
     searchCache.set(query, lastSearchResults);
     renderResults(lastSearchResults);
   } catch(e) {
-    if (e.name === 'AbortError') return;   // stale request — ignore
+    if (e.name === 'AbortError') return;
     el.innerHTML = `<div class="search-state-msg" style="color:var(--hard)">⚠️ ${e.message}</div>`;
   } finally {
     searchAbort = null;
   }
 }
-
 function renderResults(data) {
   const el = document.getElementById('search-results');
   if (!data.length) {
     el.innerHTML = '<div class="search-state-msg">No flags found</div>';
     return;
   }
-
-  // Build entire list as one innerHTML string — far faster than createElement loop
   const rows = data.map(flag => {
     const name    = (flag.couname || '?').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
     const isUsed  = usedFlags.has((flag.couname || '').toLowerCase());
-    // In custom mode, the chosen main flag is blocked as an answer
     const isBlocked = currentDifficulty === 'custom' &&
       (flag.couname || '').toLowerCase() === currentMainFlag.toLowerCase();
     const usedCls = (isUsed || isBlocked) ? ' used' : '';
-
     let imgHtml;
     if (previewEnabled) {
-      // Use a small thumbnail for search previews; HDFlag then Flag fallback
       const hdSrc  = thumbUrl(flag.HDFlag, 160);
       const fbSrc  = flag.Flag || '';
       const src    = hdSrc || fbSrc;
       if (src) {
-        const hd2  = hdSrc.replace(/'/g,"\\'");
         const fb2  = fbSrc.replace(/'/g,"\\'");
         imgHtml = `<img class="result-flag-img" loading="lazy" decoding="async" alt=""
           src="${src.replace(/"/g,'&quot;')}"
@@ -2628,16 +2496,11 @@ function renderResults(data) {
     } else {
       imgHtml = `<span class="result-flag-placeholder">🏳️</span>`;
     }
-
     const badgeHtml = isBlocked ? `<span class="result-used-badge">Can't use main flag</span>`
       : isUsed ? `<span class="result-used-badge">Already used</span>` : '';
-
     return `<div class="search-result-item${usedCls}" data-idx="${data.indexOf(flag)}"${(isUsed || isBlocked) ? '' : ' role="button" tabindex="0"'}>${imgHtml}<span class="result-flag-name">${name}</span>${badgeHtml}</div>`;
   }).join('');
-
   el.innerHTML = rows;
-
-  // Single delegated click listener instead of one per row
   el.onclick = e => {
     const row = e.target.closest('.search-result-item:not(.used)');
     if (!row) return;
@@ -2645,61 +2508,51 @@ function renderResults(data) {
     handleGuess(data[idx], row);
   };
 }
-
-// ─── GUESS HANDLING ───────────────────────────────────────────────────────────
 function handleGuess(flag, rowEl) {
   totalGuesses++;
   updateGuessDisplay();
-
+  // Persist guess count to campaign progress
+  if (lastZone === 'campaign') {
+    setProgressFor(currentMainFlag, { guesses: totalGuesses });
+  }
   const items    = (flag.Items || []).map(i => i.toLowerCase());
   const hasRow   = items.includes(currentRowCode.toLowerCase());
   const hasCol   = items.includes(currentColCode.toLowerCase());
   const isMain   = (flag.couname || '').toLowerCase() === currentMainFlag.toLowerCase();
-
-  // In custom mode, the chosen main flag cannot be used as an answer
   if (isMain && currentDifficulty === 'custom') {
     showMainFlagToast();
     return;
   }
-
   if (hasRow && hasCol) {
-    // ✅ Correct — main flag gets yellow glow, others get green
     closeSearchModal();
     markCellCorrect(currentSearchCell, flag, isMain);
   } else {
-    // ❌ Wrong
     if (rowEl) {
       rowEl.classList.remove('shake');
       void rowEl.offsetWidth;
       rowEl.classList.add('shake');
-      rowEl.querySelector('.result-wrong-badge')?.remove();
-
+      const existingBadge = rowEl.querySelector('.result-wrong-badge');
+      if (existingBadge) existingBadge.remove();
       const missing = [];
       if (!hasRow) missing.push(document.getElementById('sm-row-label').textContent);
       if (!hasCol) missing.push(document.getElementById('sm-col-label').textContent);
-
       const badge = document.createElement('span');
       badge.className = 'result-wrong-badge';
       badge.textContent = '✗ ' + missing.join(', ');
       rowEl.appendChild(badge);
     }
-
     if (currentSearchCell) {
       currentSearchCell.classList.add('wrong-flash');
       setTimeout(() => currentSearchCell.classList.remove('wrong-flash'), 500);
     }
   }
 }
-
 function markCellCorrect(cell, flag, isMain = false) {
   usedFlags.add((flag.couname || '').toLowerCase());
-
   cell.classList.add('correct');
   if (isMain) cell.classList.add('main-flag');
   cell.classList.remove('filled');
   cell.innerHTML = '';
-
-  // Flag image: use a reasonable cell size (640px) with HDFlag → Flag fallback
   const hdSrc = thumbUrl(flag.HDFlag, 640);
   const fbSrc = flag.Flag || '';
   const firstSrc = hdSrc || fbSrc;
@@ -2719,70 +2572,69 @@ function markCellCorrect(cell, flag, isMain = false) {
   nameEl.className = 'cell-flag-name';
   nameEl.textContent = flag.couname || '?';
   cell.appendChild(nameEl);
-
   filledCells++;
+  // Persist progress for campaign mode
+  if (lastZone === 'campaign') {
+    const elapsed = Math.floor((Date.now() - gameStartTime) / 1000);
+    setProgressFor(currentMainFlag, {
+      filled: filledCells,
+      total: totalCells,
+      time: elapsed,
+      guesses: totalGuesses
+    });
+  }
   if (filledCells >= totalCells) {
     setTimeout(showCompletion, 400);
   }
 }
-
-// ─── TIMER ───────────────────────────────────────────────────────────────────
 function updateTimer() {
   const el = document.getElementById('timer-display');
   if (!el) { clearInterval(timerInterval); return; }
   const secs = Math.floor((Date.now() - gameStartTime) / 1000);
   el.textContent = formatTime(secs);
+  // Periodically persist time so card shows accurate value if user navigates away
+  if (lastZone === 'campaign' && secs % 5 === 0) {
+    setProgressFor(currentMainFlag, { time: secs });
+  }
 }
-
 function updateGuessDisplay() {
   const el = document.getElementById('guess-display');
   if (el) el.textContent = totalGuesses;
 }
-
 function formatTime(totalSecs) {
   const m = Math.floor(totalSecs / 60);
   const s = totalSecs % 60;
   return `${m}:${String(s).padStart(2,'0')}`;
 }
-
-// ─── MAIN FLAG TOAST ─────────────────────────────────────────────────────────
 function showMainFlagToast() {
   document.getElementById('main-flag-toast-overlay').classList.add('open');
 }
 function closeMainFlagToast() {
   document.getElementById('main-flag-toast-overlay').classList.remove('open');
 }
-
-// ─── GIVE UP ─────────────────────────────────────────────────────────────────
 function confirmGiveUp() {
   if (gaveUp) return;
-  if (!confirm(`Give up and reveal the hidden flag?\n\nYour unsolved cells will be locked.`)) return;
+  if (!confirm('Give up and reveal the hidden flag?\n\nYour unsolved cells will be locked.')) return;
   gaveUp = true;
   clearInterval(timerInterval);
   closeSearchModal();
-
   const btn = document.getElementById('give-up-btn');
   if (btn) { btn.disabled = true; btn.textContent = 'Given up'; }
-
-  // Reveal main flag in topbar
   const topbarLeft = document.querySelector('.game-topbar .flag-name');
   if (topbarLeft) {
     topbarLeft.innerHTML = `<span style="color:var(--muted);font-size:0.85rem;">Revealed:</span> ${currentMainFlag}`;
   }
-  // Optionally fetch and show the main flag image inline
   fetchMainFlagImage();
-
-  // Lock unsolved cells
   document.querySelectorAll('.grid-cell:not(.correct)').forEach(cell => {
     cell.style.pointerEvents = 'none';
     cell.style.opacity = '0.4';
   });
 }
-
 async function fetchMainFlagImage() {
   try {
+    const query = currentMainFlag.replace(/^\[.*?\]\s*/, '') || currentMainFlag;
     const url = `https://new-databases-012n12.replit.app/searchto355-flags` +
-      `?filter=${encodeURIComponent(currentMainFlag)}&fields=ExtraItems-couname|ExtraItems-HDFlag|ExtraItems-Flag`;
+      `?filter=${encodeURIComponent(query)}&fields=ExtraItems-couname|ExtraItems-HDFlag|ExtraItems-Flag`;
     const res = await fetch(url);
     if (!res.ok) return;
     const data = await res.json();
@@ -2799,8 +2651,6 @@ async function fetchMainFlagImage() {
     topbarLeft.prepend(img);
   } catch(e) { /* silent */ }
 }
-
-// ─── COMPLETION SCREEN ───────────────────────────────────────────────────────
 function showCompletion() {
   clearInterval(timerInterval);
   const elapsed = Math.floor((Date.now() - gameStartTime) / 1000);
@@ -2808,6 +2658,15 @@ function showCompletion() {
   document.getElementById('comp-guesses').textContent = totalGuesses;
   document.getElementById('comp-subtitle').textContent =
     `You completed the "${currentMainFlag}" grid!`;
+  // Final progress save
+  if (lastZone === 'campaign') {
+    setProgressFor(currentMainFlag, {
+      filled: filledCells,
+      total: totalCells,
+      time: elapsed,
+      guesses: totalGuesses
+    });
+  }
   document.getElementById('comp-same-btn').onclick = () => {
     document.getElementById('completion-overlay').classList.remove('open');
     currentDifficulty = lastDiff;
@@ -2816,12 +2675,9 @@ function showCompletion() {
   };
   document.getElementById('completion-overlay').classList.add('open');
 }
-
-// ─── CUSTOM MODE ─────────────────────────────────────────────────────────────
 let customSearchDebounce = null;
 let customSearchAbort    = null;
 let customSearchCache    = new Map();
-
 document.getElementById('custom-search-input').addEventListener('input', function() {
   clearTimeout(customSearchDebounce);
   const q = this.value.trim();
@@ -2833,7 +2689,6 @@ document.getElementById('custom-search-input').addEventListener('input', functio
   }
   customSearchDebounce = setTimeout(() => doCustomSearch(q), 150);
 });
-
 async function doCustomSearch(query) {
   const el = document.getElementById('custom-search-results');
   if (customSearchCache.has(query)) {
@@ -2859,7 +2714,6 @@ async function doCustomSearch(query) {
     customSearchAbort = null;
   }
 }
-
 function renderCustomResults(data) {
   const el = document.getElementById('custom-search-results');
   if (!data.length) {
@@ -2868,10 +2722,8 @@ function renderCustomResults(data) {
   }
   const rows = data.map((flag, idx) => {
     const name = (flag.couname || '?').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-    // Prefer HDFlag thumbnail; fall back to plain Flag; fall back to placeholder
     const hdSrc = flag.HDFlag ? thumbUrl(flag.HDFlag, 160) : '';
     const fbSrc = flag.Flag   ? flag.Flag.replace(/"/g,'&quot;') : '';
-    const hdSrcQ = hdSrc.replace(/"/g,'&quot;');
     const primary = hdSrc || flag.Flag || '';
     const imgHtml = primary
       ? `<img class="result-flag-img" loading="lazy" decoding="async" alt=""
@@ -2889,77 +2741,58 @@ function renderCustomResults(data) {
     startCustomGame(data[idx].couname);
   };
 }
-
 function startCustomGame(flagName) {
   lastZone = 'custom';
   currentDifficulty = 'custom';
-  // Clear the custom search input
   document.getElementById('custom-search-input').value = '';
   document.getElementById('custom-search-results').innerHTML =
     '<div class="search-state-msg">Start typing to find a flag</div>';
   show('screen-game');
   loadGame(flagName);
 }
-
-// ─── WAVY LINE HELPER ────────────────────────────────────────────────────────
 function wavyPath(x1, y1, x2, y2, amplitude = 13, numWaves = 3) {
   const dx = x2 - x1, dy = y2 - y1;
   const len = Math.sqrt(dx * dx + dy * dy);
   if (len < 1) return `M ${x1} ${y1}`;
-  const px = -dy / len, py = dx / len; // perpendicular unit vector
+  const px = -dy / len, py = dx / len;
   const samples = Math.max(40, Math.floor(len / 6));
   const pts = [];
   for (let i = 0; i <= samples; i++) {
     const t = i / samples;
-    // Taper amplitude at both ends so wave meets button cleanly
     const taper = Math.sin(t * Math.PI);
     const wave  = amplitude * taper * Math.sin(t * numWaves * 2 * Math.PI);
     pts.push(`${(x1 + dx * t + px * wave).toFixed(1)},${(y1 + dy * t + py * wave).toFixed(1)}`);
   }
   return 'M ' + pts.join(' L ');
 }
-
-// ─── HUB LINE DRAWING ────────────────────────────────────────────────────────
 function drawHubLines() {
   const svg = document.getElementById('hub-lines-svg');
   if (!svg) return;
-
   const hubZone     = document.getElementById('zone-hub');
   const campaignBtn = document.querySelector('#zone-hub .mode-btn-wrap:nth-child(1) .mode-btn');
   const worldBtn    = document.querySelector('#zone-hub .mode-btn-wrap:nth-child(2) .mode-btn');
   const customBtn   = document.querySelector('#zone-hub .mode-btn-wrap:nth-child(3) .mode-btn');
   if (!campaignBtn || !worldBtn || !customBtn) return;
-
   const hubRect = hubZone.getBoundingClientRect();
   const vw = window.innerWidth, vh = window.innerHeight;
-  const HALF_BTN = 32; // half of 64px button
-
+  const HALF_BTN = 32;
   function btnCenter(btn) {
     const r = btn.getBoundingClientRect();
     return { x: r.left + r.width / 2 - hubRect.left, y: r.top + r.height / 2 - hubRect.top };
   }
-
   const camp   = btnCenter(campaignBtn);
   const world  = btnCenter(worldBtn);
   const custom = btnCenter(customBtn);
-
-  // Line endpoints in hub-svg (= pan-viewport) coords
-  // Each line exits toward its zone's off-screen position
-  const campEnd   = { x: -vw * 0.06, y: vh * 1.06 };   // ↙ bottom-left
-  const worldEnd  = { x: world.x,    y: vh * 1.06 };   // ↓ straight down
-  const customEnd = { x: vw * 1.06,  y: vh * 1.06 };   // ↘ bottom-right
-
+  const campEnd   = { x: -vw * 0.06, y: vh * 1.06 };
+  const worldEnd  = { x: world.x,    y: vh * 1.06 };
+  const customEnd = { x: vw * 1.06,  y: vh * 1.06 };
   const campPath   = wavyPath(camp.x,   camp.y,   campEnd.x,   campEnd.y);
   const worldPath  = wavyPath(world.x,  world.y,  worldEnd.x,  worldEnd.y);
   const customPath = wavyPath(custom.x, custom.y, customEnd.x, customEnd.y);
-
-  // Read theme colors
   const cs      = getComputedStyle(document.documentElement);
   const accent  = cs.getPropertyValue('--accent').trim()  || '#4a9eff';
   const bgColor = cs.getPropertyValue('--bg').trim()      || '#0f1623';
   const cardCol = cs.getPropertyValue('--card').trim()    || '#1c2b3a';
-
-  // Triple-stroke road effect: outer dark halo → middle accent → thin bright center
   function roadLine(d, color) {
     return `
       <path d="${d}" fill="none" stroke="${bgColor}"  stroke-width="30" stroke-linecap="round" opacity="1"/>
@@ -2968,64 +2801,41 @@ function drawHubLines() {
       <path d="${d}" fill="none" stroke="${color}"    stroke-width="3"  stroke-linecap="round" opacity="0.6"/>
     `;
   }
-
   svg.innerHTML =
     roadLine(campPath,   accent) +
     roadLine(worldPath,  accent) +
     roadLine(customPath, accent);
-
-  // ── Position back-buttons at the exact line endpoints in each zone ──
-  // Zone offsets in pan-viewport coords (where the zone's top-left is):
-  // campaign: (-vw, vh), world: (0, vh), custom: (vw, vh)
   function positionBackBtn(zoneId, endX, endY, zoneOffsetX, zoneOffsetY) {
-    const btn = document.querySelector(`#${zoneId} .zone-back-btn`);
+    const btn = document.querySelector('#' + zoneId + ' .zone-back-btn');
     if (!btn) return;
-    // Convert line endpoint from pan-viewport coords to zone-local coords
     const localX = endX - zoneOffsetX;
     const localY = endY - zoneOffsetY;
     btn.style.position = 'absolute';
     btn.style.left     = (localX - HALF_BTN) + 'px';
     btn.style.top      = (localY - HALF_BTN) + 'px';
-    // Remove any conflicting preset positioning
     btn.style.right    = 'auto';
     btn.style.transform = 'none';
   }
-
   positionBackBtn('zone-campaign', campEnd.x,   campEnd.y,   -vw, vh);
   positionBackBtn('zone-world',    worldEnd.x,  worldEnd.y,    0,  vh);
   positionBackBtn('zone-custom',   customEnd.x, customEnd.y,   vw, vh);
 }
-
 window.addEventListener('load', () => { drawHubLines(); });
 window.addEventListener('resize', drawHubLines);
-
-// ─── BUBBLE WALLPAPER ────────────────────────────────────────────────────────
 (function initBubbleWallpaper() {
   const canvas = document.getElementById('bubble-wallpaper');
   const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
   if (!gl) return;
-
-  const VS = `
-    attribute vec2 a_pos;
-    void main() { gl_Position = vec4(a_pos, 0.0, 1.0); }
-  `;
-
-  // Wave landscape approach: 12 overlapping sine waves create a full-screen
-  // height field with peaks (bubbles) and valleys (background) everywhere.
+  const VS = `attribute vec2 a_pos; void main() { gl_Position = vec4(a_pos, 0.0, 1.0); }`;
   const FS = `
     precision highp float;
     uniform vec2  u_res;
     uniform float u_time;
     uniform vec3  u_bg;
     uniform vec3  u_blob;
-
-    // 12 sine waves summed → organic height field covering entire screen.
-    // Frequencies are in 1/pixel units; ~250px wavelength gives ~8 bubbles across 1920px.
     float landscape(vec2 px) {
       float t = u_time;
       float f = 0.0;
-      // Each line: sin(px.x*fx + px.y*fy + t*speed + phase)
-      // Varied angles and speeds so no two waves cancel or align
       f += sin( px.x*0.02450 + px.y*0.01180 + t*0.310 + 0.00);
       f += sin(-px.x*0.01760 + px.y*0.02220 + t*0.220 + 1.30);
       f += sin( px.x*0.01420 - px.y*0.02560 + t*0.280 + 2.60);
@@ -3038,20 +2848,13 @@ window.addEventListener('resize', drawHubLines);
       f += sin( px.x*0.03110 - px.y*0.00650 + t*0.185 + 6.00);
       f += sin(-px.x*0.02720 + px.y*0.01820 + t*0.385 + 1.60);
       f += sin( px.x*0.00790 + px.y*0.03050 + t*0.295 + 2.90);
-      // Sum range: approx ±12 (Gaussian-ish distribution, σ≈2.45)
       return f;
     }
-
     void main() {
       vec2 px = gl_FragCoord.xy;
-
-      // Single field sample — no chromatic offset
       float h = landscape(px);
-
       float thresh = 0.70;
       float blobMask = smoothstep(thresh - 0.06, thresh + 0.06, h);
-
-      // ── Contour rings: 18 evenly-spaced bands ──
       float bandStep  = 0.30;
       float bandWidth = 0.040;
       float contour = 0.0;
@@ -3060,23 +2863,15 @@ window.addEventListener('resize', drawHubLines);
         contour += smoothstep(bandWidth, 0.0, abs(h - level));
       }
       contour = clamp(contour, 0.0, 1.0);
-
-      // ── Elevation-based valley tinting ──
       float elev = clamp((h + 3.0) / 6.0, 0.0, 1.0);
       vec3 warmValley = mix(u_bg * 0.75, u_bg * 1.3 + vec3(0.18, 0.08, -0.04), elev);
-
-      // Base: warm valleys, flat blob on peaks
       vec3 color = mix(warmValley, u_blob, blobMask);
-
-      // ── Clean contour color: bright warm tone between bg and blob ──
       vec3 lineColor = u_bg * 1.5 + u_blob * 0.5 + vec3(0.10, 0.05, 0.0);
       lineColor = clamp(lineColor, 0.0, 1.0);
       color = mix(color, lineColor, contour * 0.88);
-
       gl_FragColor = vec4(clamp(color, 0.0, 1.0), 1.0);
     }
   `;
-
   function compileShader(type, src) {
     const s = gl.createShader(type);
     gl.shaderSource(s, src); gl.compileShader(s);
@@ -3085,27 +2880,21 @@ window.addEventListener('resize', drawHubLines);
     }
     return s;
   }
-
   const prog = gl.createProgram();
   gl.attachShader(prog, compileShader(gl.VERTEX_SHADER,   VS));
   gl.attachShader(prog, compileShader(gl.FRAGMENT_SHADER, FS));
   gl.linkProgram(prog);
   gl.useProgram(prog);
-
-  // Full-screen quad
   const buf = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, buf);
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
   const aPos = gl.getAttribLocation(prog, 'a_pos');
   gl.enableVertexAttribArray(aPos);
   gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
-
   const uRes  = gl.getUniformLocation(prog, 'u_res');
   const uTime = gl.getUniformLocation(prog, 'u_time');
   const uBg   = gl.getUniformLocation(prog, 'u_bg');
   const uBlob = gl.getUniformLocation(prog, 'u_blob');
-
-  // Parse CSS color to [r,g,b] 0-1
   function cssToRgb(cssVar) {
     const raw = getComputedStyle(document.documentElement).getPropertyValue(cssVar).trim();
     const tmp = document.createElement('div');
@@ -3117,15 +2906,12 @@ window.addEventListener('resize', drawHubLines);
     if (!m) return [0.1, 0.1, 0.15];
     return [parseInt(m[0])/255, parseInt(m[1])/255, parseInt(m[2])/255];
   }
-
   let bgColor   = [0.06, 0.09, 0.14];
   let blobColor = [0.29, 0.62, 1.00];
-
   function refreshColors() {
     bgColor   = cssToRgb('--bg');
     blobColor = cssToRgb('--accent');
   }
-
   function resize() {
     const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
     canvas.width  = Math.floor(window.innerWidth  * dpr * 0.75);
@@ -3134,25 +2920,19 @@ window.addEventListener('resize', drawHubLines);
     canvas.style.height = window.innerHeight + 'px';
     gl.viewport(0, 0, canvas.width, canvas.height);
   }
-
   window.addEventListener('resize', resize);
   resize();
   refreshColors();
-
-  // Expose hooks for theme system
   window._wallpaperRefreshColors = refreshColors;
-
   let paused = false;
   window._wallpaperSetVisible = function(on) {
     paused = !on;
     canvas.style.display = on ? 'block' : 'none';
     if (on && !rafId) { startTime = performance.now() - lastT * 2000; draw(); }
   };
-
   let lastT = 0;
   let startTime = performance.now();
   let rafId;
-
   function draw() {
     if (paused) { rafId = null; return; }
     lastT = (performance.now() - startTime) / 1000;
@@ -3165,21 +2945,14 @@ window.addEventListener('resize', drawHubLines);
   }
   draw();
 })();
-
-// ─── THEME SYSTEM ────────────────────────────────────────────────────────────
-// ─── DYNAMIC THEME ENGINE ────────────────────────────────────────────────────
 const THEME_KEY = 'flagtrioku-theme-v2';
-
 const DEFAULT_THEME = { bgHue: 210, bgL: 20, accentHue: 210, accentSat: 100, contrast: 50 };
-
-// ── Color math helpers ──
 function hslToHex(h, s, l) {
   s /= 100; l /= 100;
   const a = s * Math.min(l, 1 - l);
   const f = n => { const k = (n + h / 30) % 12; const c = l - a * Math.max(-1, Math.min(k - 3, Math.min(9 - k, 1))); return Math.round(255 * c).toString(16).padStart(2, '0'); };
   return '#' + f(0) + f(8) + f(4);
 }
-
 function hexToHsl(hex) {
   let r = parseInt(hex.slice(1,3),16)/255, g = parseInt(hex.slice(3,5),16)/255, b = parseInt(hex.slice(5,7),16)/255;
   const max = Math.max(r,g,b), min = Math.min(r,g,b), l = (max+min)/2;
@@ -3191,40 +2964,25 @@ function hexToHsl(hex) {
   else h = ((r-g)/d + 4)/6;
   return [Math.round(h*360), Math.round(s*100), Math.round(l*100)];
 }
-
-// ── The core: apply all CSS vars from theme params ──
 function applyTheme(params) {
   const { bgHue, bgL, accentHue, accentSat, contrast } = params;
-
-  // Dark vs light mode: dark if bgL < 50
   const dark = bgL < 50;
-  const cFactor = contrast / 100; // 0–1
-
-  // BG shades
+  const cFactor = contrast / 100;
   const bgStep  = dark ? cFactor * 8  : cFactor * 8;
   const bg      = hslToHex(bgHue, 30, bgL);
   const bg2     = hslToHex(bgHue, 32, dark ? bgL + bgStep     : bgL - bgStep);
   const card    = hslToHex(bgHue, 28, dark ? bgL + bgStep*1.8 : bgL - bgStep*0.5);
   const card2   = hslToHex(bgHue, 26, dark ? bgL + bgStep*2.4 : bgL - bgStep*0.2);
   const border  = hslToHex(bgHue, 40, dark ? bgL + bgStep*3.5 : bgL - bgStep*2);
-
-  // Text & muted — high contrast against bg
   const textL   = dark ? Math.min(95, 70 + cFactor * 25) : Math.max(5, 30 - cFactor * 20);
   const mutedL  = dark ? Math.min(70, 48 + cFactor * 15) : Math.max(30, 55 - cFactor * 10);
   const textS   = 15;
   const text    = hslToHex(bgHue, textS, textL);
   const muted   = hslToHex(bgHue, 20, mutedL);
-
-  // Accent
   const accentL = dark ? 62 : 48;
   const accent  = hslToHex(accentHue, accentSat, accentL);
-  const accentDim = hslToHex(accentHue, accentSat, dark ? 30 : 70);
-
-  // Cell colors
   const cellEmpty = bg2;
   const cellHover = hslToHex(bgHue, 34, dark ? bgL + bgStep*2.2 : bgL - bgStep*1.2);
-
-  // Hero box glass: bg color at partial opacity
   const heroBgR = parseInt(bg.slice(1,3),16);
   const heroBgG = parseInt(bg.slice(3,5),16);
   const heroBgB = parseInt(bg.slice(5,7),16);
@@ -3233,7 +2991,6 @@ function applyTheme(params) {
   const accentG = parseInt(accent.slice(3,5),16);
   const accentB = parseInt(accent.slice(5,7),16);
   const heroBorder = `rgba(${accentR},${accentG},${accentB},0.22)`;
-
   const root = document.documentElement;
   root.style.setProperty('--bg',         bg);
   root.style.setProperty('--bg2',        bg2);
@@ -3249,23 +3006,15 @@ function applyTheme(params) {
   root.style.setProperty('--hub-hero-bg',    heroBg);
   root.style.setProperty('--hub-hero-border',heroBorder);
   root.style.setProperty('--accent-h',   accentHue);
-
-  // Update saturation slider track color
   const slSat = document.getElementById('sl-saturation');
   if (slSat) slSat.style.background = `linear-gradient(to right,hsl(${accentHue},20%,${accentL}%),hsl(${accentHue},100%,${accentL}%))`;
-
-  // Update lightness slider track
   const slL = document.getElementById('sl-lightness');
   if (slL) slL.style.background = dark
     ? `linear-gradient(to right,hsl(${bgHue},30%,5%),hsl(${bgHue},30%,45%))`
     : `linear-gradient(to right,hsl(${bgHue},30%,55%),hsl(${bgHue},10%,97%))`;
-
-  // Refresh wallpaper
   setTimeout(function() { if (window._wallpaperRefreshColors) window._wallpaperRefreshColors(); }, 20);
   setTimeout(drawHubLines, 30);
 }
-
-// ── Sync inputs → labels ──
 function syncLabels(params) {
   const { bgHue, bgL, accentHue, accentSat, contrast } = params;
   const bgHex     = hslToHex(bgHue, 30, bgL);
@@ -3281,20 +3030,14 @@ function syncLabels(params) {
   if (lblL)   lblL.textContent   = bgL + '%';
   if (lblS)   lblS.textContent   = accentSat + '%';
   if (lblC)   lblC.textContent   = contrast + '%';
-
-  // Sync color picker swatches
   const pickBg = document.getElementById('pick-bg');
   const pickAcc = document.getElementById('pick-accent');
   if (pickBg)  pickBg.value  = bgHex;
   if (pickAcc) pickAcc.value = accentHex;
-
-  // Sync hue bars
   const hueBg  = document.getElementById('hue-bg');
   const hueAcc = document.getElementById('hue-accent');
   if (hueBg)  hueBg.value  = bgHue;
   if (hueAcc) hueAcc.value = accentHue;
-
-  // Sync range sliders
   const slL = document.getElementById('sl-lightness');
   const slS = document.getElementById('sl-saturation');
   const slC = document.getElementById('sl-contrast');
@@ -3302,98 +3045,72 @@ function syncLabels(params) {
   if (slS) slS.value = accentSat;
   if (slC) slC.value = contrast;
 }
-
-// ── Live theme state ──
 let _theme = Object.assign({}, DEFAULT_THEME);
-
 function saveAndApply() {
   localStorage.setItem(THEME_KEY, JSON.stringify(_theme));
   applyTheme(_theme);
   syncLabels(_theme);
 }
-
 function resetTheme() {
   _theme = Object.assign({}, DEFAULT_THEME);
   saveAndApply();
 }
-
-// ── Wire up inputs ──
 document.addEventListener('DOMContentLoaded', function() {
-  // BG hue bar
   document.getElementById('hue-bg').addEventListener('input', function() {
     _theme.bgHue = +this.value; saveAndApply();
   });
-  // Accent hue bar
   document.getElementById('hue-accent').addEventListener('input', function() {
     _theme.accentHue = +this.value; saveAndApply();
   });
-  // BG color picker
   document.getElementById('pick-bg').addEventListener('input', function() {
     const [h,,l] = hexToHsl(this.value);
     _theme.bgHue = h; _theme.bgL = l; saveAndApply();
   });
-  // Accent color picker
   document.getElementById('pick-accent').addEventListener('input', function() {
     const [h,s] = hexToHsl(this.value);
     _theme.accentHue = h; _theme.accentSat = s; saveAndApply();
   });
-  // Lightness slider
   document.getElementById('sl-lightness').addEventListener('input', function() {
     _theme.bgL = +this.value; saveAndApply();
   });
-  // Saturation slider
   document.getElementById('sl-saturation').addEventListener('input', function() {
     _theme.accentSat = +this.value; saveAndApply();
   });
-  // Contrast slider
   document.getElementById('sl-contrast').addEventListener('input', function() {
     _theme.contrast = +this.value; saveAndApply();
   });
-
-  // Restore saved
   const saved = localStorage.getItem(THEME_KEY);
   if (saved) { try { _theme = Object.assign({}, DEFAULT_THEME, JSON.parse(saved)); } catch(e){} }
   saveAndApply();
 });
-
 function toggleThemePanel() {
   document.getElementById('theme-panel').classList.toggle('open');
 }
-
-// Close theme panel when clicking outside
 document.addEventListener('click', e => {
   if (!e.target.closest('#theme-toggle-btn') && !e.target.closest('#theme-panel')) {
     document.getElementById('theme-panel').classList.remove('open');
   }
 });
-
-// ─── WALLPAPER TOGGLE ────────────────────────────────────────────────────────
 const WALLPAPER_KEY = 'flagtrioku-wallpaper';
-
 function toggleWallpaper() {
   const isOn = localStorage.getItem(WALLPAPER_KEY) !== 'off';
   const nowOn = !isOn;
   localStorage.setItem(WALLPAPER_KEY, nowOn ? 'on' : 'off');
   applyWallpaperState(nowOn);
 }
-
 function applyWallpaperState(on) {
   const pill = document.getElementById('wallpaper-pill-btn');
   if (pill) pill.classList.toggle('on', on);
   if (window._wallpaperSetVisible) window._wallpaperSetVisible(on);
 }
-
-// Restore wallpaper preference on load (default: on)
 (function restoreWallpaper() {
   const saved = localStorage.getItem(WALLPAPER_KEY);
   const on = saved !== 'off';
   applyWallpaperState(on);
 })();
-
-let crosscountData = null; // { rowLabel: { colLabel: number } }
-let crosstabData   = null; // { rowLabel: { colLabel: "flag1|flag2|…" } }
+let crosscountData = null;
+let crosstabData   = null;
 let csvLoadPromise = null;
-
 function loadCsvData() {
   if (csvLoadPromise) return csvLoadPromise;
   csvLoadPromise = (async () => {
@@ -3403,10 +3120,8 @@ function loadCsvData() {
         fetch('flags_crosstab.csv')
       ]);
       const [ccText, ctText] = await Promise.all([ccRes.text(), ctRes.text()]);
-
       const ccParsed = Papa.parse(ccText, { header: true, skipEmptyLines: true, dynamicTyping: true });
       const ctParsed = Papa.parse(ctText, { header: true, skipEmptyLines: true, dynamicTyping: false });
-
       crosscountData = {};
       ccParsed.data.forEach(row => {
         const label = String(row['Label'] || '').trim();
@@ -3416,7 +3131,6 @@ function loadCsvData() {
           if (k !== 'Label') crosscountData[label][k.trim()] = Number(row[k]) || 0;
         });
       });
-
       crosstabData = {};
       ctParsed.data.forEach(row => {
         const label = String(row['Label'] || '').trim();
@@ -3432,45 +3146,31 @@ function loadCsvData() {
   })();
   return csvLoadPromise;
 }
-
-// Kick off CSV loading immediately so it's ready when the user first clicks a cell
 loadCsvData();
-
 function updateCellCount(rowCode, colCode) {
   const el = document.getElementById('cell-count-number');
   if (!el) return;
   if (!crosscountData) { el.textContent = '…'; return; }
-  const val = crosscountData[rowCode]?.[colCode];
+  const val = crosscountData[rowCode] && crosscountData[rowCode][colCode];
   el.textContent = (val !== undefined && val !== null) ? val : '?';
 }
-
 async function giveUpThisCell() {
   const btn = document.getElementById('give-up-cell-btn');
   if (btn) btn.disabled = true;
-
-  // Make sure CSV is loaded
   await loadCsvData();
-
   if (!crosstabData) {
     alert('Data not loaded yet — please try again in a moment.');
     if (btn) btn.disabled = false;
     return;
   }
-
-  const entry = crosstabData[currentRowCode]?.[currentColCode] || '';
+  const entry = (crosstabData[currentRowCode] && crosstabData[currentRowCode][currentColCode]) || '';
   const allFlags = entry.split('|').map(f => f.trim()).filter(Boolean);
-
-  // Filter out the main flag (case-insensitive) and already-used flags
   const candidates = allFlags.filter(f =>
     f.toLowerCase() !== currentMainFlag.toLowerCase() &&
     !usedFlags.has(f.toLowerCase())
   );
-
-  // Fallback: only exclude main flag if all are used
   const fallback = allFlags.filter(f => f.toLowerCase() !== currentMainFlag.toLowerCase());
-
   const pool = candidates.length ? candidates : fallback;
-
   if (!pool.length) {
     const msg = allFlags.length
       ? 'The only valid flag(s) for this cell are the main flag or already used!'
@@ -3479,32 +3179,21 @@ async function giveUpThisCell() {
     if (btn) btn.disabled = false;
     return;
   }
-
   const chosen = pool[Math.floor(Math.random() * pool.length)];
   closeSearchModal();
-
-  // Mark the cell (currentSearchCell captured before modal closed)
   if (currentSearchCell) {
     markCellGivenUp(currentSearchCell, chosen);
   }
 }
-
 async function markCellGivenUp(cell, flagName) {
-  // Lock the cell immediately
   cell.classList.add('given-up');
   cell.onclick = null;
   cell.style.cursor = 'default';
   cell.innerHTML = '<div class="spinner" style="width:20px;height:20px;border-width:2px;"></div>';
-
-  // Strip bracket country-code prefix for API search
-  // e.g. "[MAR] Western Sahara" → "Western Sahara", "Antigua and Barbuda" → unchanged
   const searchQuery = flagName.replace(/^\[.*?\]\s*/, '') || flagName;
-
   let imgSrc = null;
   try {
-    // Hit the search cache first (user may have already searched this name)
     let results = searchCache.get(searchQuery) || searchCache.get(flagName);
-
     if (!results) {
       const url = 'https://new-databases-012n12.replit.app/searchto355-flags' +
         '?filter=' + encodeURIComponent(searchQuery) +
@@ -3515,25 +3204,18 @@ async function markCellGivenUp(cell, flagName) {
         if (Array.isArray(results)) searchCache.set(searchQuery, results);
       }
     }
-
     if (Array.isArray(results) && results.length) {
-      // Best match: exact full name → exact stripped name → first result
       const match =
         results.find(d => (d.couname || '').toLowerCase() === flagName.toLowerCase()) ||
         results.find(d => (d.couname || '').toLowerCase() === searchQuery.toLowerCase()) ||
         results[0];
-
-      // Mirror markCellCorrect: thumbUrl on HDFlag (handles Wikipedia resize),
-      // plain Flag URL as onerror fallback
       const hdSrc = thumbUrl(match.HDFlag, 640);
       const fbSrc = match.Flag || '';
       imgSrc = { primary: hdSrc || fbSrc, fallback: fbSrc };
     }
-  } catch(e) { /* silent — name-only fallback below */ }
-
+  } catch(e) { /* silent */ }
   usedFlags.add(flagName.toLowerCase());
   cell.innerHTML = '';
-
   if (imgSrc && imgSrc.primary) {
     const img = document.createElement('img');
     img.className = 'given-up-flag-img';
@@ -3550,13 +3232,20 @@ async function markCellGivenUp(cell, flagName) {
     };
     cell.appendChild(img);
   }
-
   const nameEl = document.createElement('span');
   nameEl.className = 'given-up-flag-name';
   nameEl.textContent = flagName;
   cell.appendChild(nameEl);
-
   filledCells++;
+  if (lastZone === 'campaign') {
+    const elapsed = Math.floor((Date.now() - gameStartTime) / 1000);
+    setProgressFor(currentMainFlag, {
+      filled: filledCells,
+      total: totalCells,
+      time: elapsed,
+      guesses: totalGuesses
+    });
+  }
   if (filledCells >= totalCells) {
     setTimeout(showCompletion, 400);
   }
@@ -3564,3 +3253,10 @@ async function markCellGivenUp(cell, flagName) {
 </script>
 </body>
 </html>
+
+							<script>
+                            	
+							</script>
+                        </body>
+                        </html>
+                    

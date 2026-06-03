@@ -1,0 +1,562 @@
+[
+  {
+    "Difficulty": "medium",
+    "Country": "[·] Antarctica",
+    "Num_Items": 6,
+    "Num_Cols": 3,
+    "Num_Rows": 3,
+    "Total_Squares": 9
+  },
+  {
+    "Difficulty": "medium",
+    "Country": "[·] Buddhist Flag",
+    "Num_Items": 12,
+    "Num_Cols": 6,
+    "Num_Rows": 6,
+    "Total_Squares": 36
+  },
+  {
+    "Difficulty": "medium",
+    "Country": "Zambia",
+    "Num_Items": 12,
+    "Num_Cols": 6,
+    "Num_Rows": 6,
+    "Total_Squares": 36
+  },
+  {
+    "Difficulty": "medium",
+    "Country": "Afghanistan",
+    "Num_Items": 13,
+    "Num_Cols": 6,
+    "Num_Rows": 7,
+    "Total_Squares": 42
+  },
+  {
+    "Difficulty": "medium",
+    "Country": "[·] Progress Pride Flag",
+    "Num_Items": 14,
+    "Num_Cols": 6,
+    "Num_Rows": 8,
+    "Total_Squares": 48
+  },
+  {
+    "Difficulty": "medium",
+    "Country": "Palau",
+    "Num_Items": 14,
+    "Num_Cols": 6,
+    "Num_Rows": 8,
+    "Total_Squares": 48
+  },
+  {
+    "Difficulty": "medium",
+    "Country": "[AUS] Australian Naval Ensign",
+    "Num_Items": 15,
+    "Num_Cols": 6,
+    "Num_Rows": 9,
+    "Total_Squares": 54
+  },
+  {
+    "Difficulty": "medium",
+    "Country": "[CHI] Hong Kong",
+    "Num_Items": 15,
+    "Num_Cols": 6,
+    "Num_Rows": 9,
+    "Total_Squares": 54
+  },
+  {
+    "Difficulty": "medium",
+    "Country": "[CHI] Macau",
+    "Num_Items": 15,
+    "Num_Cols": 6,
+    "Num_Rows": 9,
+    "Total_Squares": 54
+  },
+  {
+    "Difficulty": "medium",
+    "Country": "[CHI] Tibet",
+    "Num_Items": 15,
+    "Num_Cols": 6,
+    "Num_Rows": 9,
+    "Total_Squares": 54
+  },
+  {
+    "Difficulty": "medium",
+    "Country": "Ivory Coast",
+    "Num_Items": 16,
+    "Num_Cols": 6,
+    "Num_Rows": 10,
+    "Total_Squares": 60
+  },
+  {
+    "Difficulty": "medium",
+    "Country": "South Korea",
+    "Num_Items": 16,
+    "Num_Cols": 6,
+    "Num_Rows": 10,
+    "Total_Squares": 60
+  },
+  {
+    "Difficulty": "medium",
+    "Country": "[CAN] Quebec",
+    "Num_Items": 17,
+    "Num_Cols": 6,
+    "Num_Rows": 11,
+    "Total_Squares": 66
+  },
+  {
+    "Difficulty": "medium",
+    "Country": "Chile",
+    "Num_Items": 17,
+    "Num_Cols": 6,
+    "Num_Rows": 11,
+    "Total_Squares": 66
+  },
+  {
+    "Difficulty": "medium",
+    "Country": "Guyana",
+    "Num_Items": 17,
+    "Num_Cols": 6,
+    "Num_Rows": 11,
+    "Total_Squares": 66
+  },
+  {
+    "Difficulty": "medium",
+    "Country": "Morocco",
+    "Num_Items": 17,
+    "Num_Cols": 6,
+    "Num_Rows": 11,
+    "Total_Squares": 66
+  },
+  {
+    "Difficulty": "medium",
+    "Country": "Saudi Arabia",
+    "Num_Items": 17,
+    "Num_Cols": 6,
+    "Num_Rows": 11,
+    "Total_Squares": 66
+  },
+  {
+    "Difficulty": "medium",
+    "Country": "Timor-Leste",
+    "Num_Items": 17,
+    "Num_Cols": 6,
+    "Num_Rows": 11,
+    "Total_Squares": 66
+  },
+  {
+    "Difficulty": "medium",
+    "Country": "Tunisia",
+    "Num_Items": 17,
+    "Num_Cols": 6,
+    "Num_Rows": 11,
+    "Total_Squares": 66
+  },
+  {
+    "Difficulty": "medium",
+    "Country": "Greenland",
+    "Num_Items": 18,
+    "Num_Cols": 6,
+    "Num_Rows": 12,
+    "Total_Squares": 72
+  },
+  {
+    "Difficulty": "medium",
+    "Country": "Malawi",
+    "Num_Items": 18,
+    "Num_Cols": 6,
+    "Num_Rows": 12,
+    "Total_Squares": 72
+  },
+  {
+    "Difficulty": "medium",
+    "Country": "Mali",
+    "Num_Items": 18,
+    "Num_Cols": 6,
+    "Num_Rows": 12,
+    "Total_Squares": 72
+  },
+  {
+    "Difficulty": "medium",
+    "Country": "Micronesia",
+    "Num_Items": 18,
+    "Num_Cols": 6,
+    "Num_Rows": 12,
+    "Total_Squares": 72
+  },
+  {
+    "Difficulty": "medium",
+    "Country": "Palestine",
+    "Num_Items": 18,
+    "Num_Cols": 6,
+    "Num_Rows": 12,
+    "Total_Squares": 72
+  },
+  {
+    "Difficulty": "medium",
+    "Country": "Sierra Leone",
+    "Num_Items": 18,
+    "Num_Cols": 6,
+    "Num_Rows": 12,
+    "Total_Squares": 72
+  },
+  {
+    "Difficulty": "medium",
+    "Country": "Angola",
+    "Num_Items": 19,
+    "Num_Cols": 6,
+    "Num_Rows": 13,
+    "Total_Squares": 78
+  },
+  {
+    "Difficulty": "medium",
+    "Country": "Martinique",
+    "Num_Items": 19,
+    "Num_Cols": 6,
+    "Num_Rows": 13,
+    "Total_Squares": 78
+  },
+  {
+    "Difficulty": "medium",
+    "Country": "Nepal",
+    "Num_Items": 19,
+    "Num_Cols": 6,
+    "Num_Rows": 13,
+    "Total_Squares": 78
+  },
+  {
+    "Difficulty": "medium",
+    "Country": "Saba",
+    "Num_Items": 19,
+    "Num_Cols": 6,
+    "Num_Rows": 13,
+    "Total_Squares": 78
+  },
+  {
+    "Difficulty": "medium",
+    "Country": "Somalia",
+    "Num_Items": 19,
+    "Num_Cols": 6,
+    "Num_Rows": 13,
+    "Total_Squares": 78
+  },
+  {
+    "Difficulty": "medium",
+    "Country": "Sri Lanka",
+    "Num_Items": 19,
+    "Num_Cols": 6,
+    "Num_Rows": 13,
+    "Total_Squares": 78
+  },
+  {
+    "Difficulty": "medium",
+    "Country": "Bahrain",
+    "Num_Items": 20,
+    "Num_Cols": 6,
+    "Num_Rows": 14,
+    "Total_Squares": 84
+  },
+  {
+    "Difficulty": "medium",
+    "Country": "Guernsey",
+    "Num_Items": 20,
+    "Num_Cols": 6,
+    "Num_Rows": 14,
+    "Total_Squares": 84
+  },
+  {
+    "Difficulty": "medium",
+    "Country": "Norfolk Island",
+    "Num_Items": 20,
+    "Num_Cols": 6,
+    "Num_Rows": 14,
+    "Total_Squares": 84
+  },
+  {
+    "Difficulty": "medium",
+    "Country": "Saint Vincent and the Grenadines",
+    "Num_Items": 20,
+    "Num_Cols": 6,
+    "Num_Rows": 14,
+    "Total_Squares": 84
+  },
+  {
+    "Difficulty": "medium",
+    "Country": "Senegal",
+    "Num_Items": 20,
+    "Num_Cols": 6,
+    "Num_Rows": 14,
+    "Total_Squares": 84
+  },
+  {
+    "Difficulty": "medium",
+    "Country": "Tuvalu",
+    "Num_Items": 20,
+    "Num_Cols": 6,
+    "Num_Rows": 14,
+    "Total_Squares": 84
+  },
+  {
+    "Difficulty": "medium",
+    "Country": "Cocos Islands",
+    "Num_Items": 21,
+    "Num_Cols": 6,
+    "Num_Rows": 15,
+    "Total_Squares": 90
+  },
+  {
+    "Difficulty": "medium",
+    "Country": "Grenada",
+    "Num_Items": 21,
+    "Num_Cols": 6,
+    "Num_Rows": 15,
+    "Total_Squares": 90
+  },
+  {
+    "Difficulty": "medium",
+    "Country": "Ireland",
+    "Num_Items": 21,
+    "Num_Cols": 6,
+    "Num_Rows": 15,
+    "Total_Squares": 90
+  },
+  {
+    "Difficulty": "medium",
+    "Country": "Kenya",
+    "Num_Items": 21,
+    "Num_Cols": 6,
+    "Num_Rows": 15,
+    "Total_Squares": 90
+  },
+  {
+    "Difficulty": "medium",
+    "Country": "Laos",
+    "Num_Items": 21,
+    "Num_Cols": 6,
+    "Num_Rows": 15,
+    "Total_Squares": 90
+  },
+  {
+    "Difficulty": "medium",
+    "Country": "Qatar",
+    "Num_Items": 21,
+    "Num_Cols": 6,
+    "Num_Rows": 15,
+    "Total_Squares": 90
+  },
+  {
+    "Difficulty": "medium",
+    "Country": "Trinidad and Tobago",
+    "Num_Items": 21,
+    "Num_Cols": 6,
+    "Num_Rows": 15,
+    "Total_Squares": 90
+  },
+  {
+    "Difficulty": "medium",
+    "Country": "Central African Republic",
+    "Num_Items": 22,
+    "Num_Cols": 6,
+    "Num_Rows": 16,
+    "Total_Squares": 96
+  },
+  {
+    "Difficulty": "medium",
+    "Country": "Kuwait",
+    "Num_Items": 22,
+    "Num_Cols": 6,
+    "Num_Rows": 16,
+    "Total_Squares": 96
+  },
+  {
+    "Difficulty": "medium",
+    "Country": "Mauritania",
+    "Num_Items": 22,
+    "Num_Cols": 6,
+    "Num_Rows": 16,
+    "Total_Squares": 96
+  },
+  {
+    "Difficulty": "medium",
+    "Country": "Niue",
+    "Num_Items": 22,
+    "Num_Cols": 6,
+    "Num_Rows": 16,
+    "Total_Squares": 96
+  },
+  {
+    "Difficulty": "medium",
+    "Country": "Bahamas",
+    "Num_Items": 23,
+    "Num_Cols": 6,
+    "Num_Rows": 17,
+    "Total_Squares": 102
+  },
+  {
+    "Difficulty": "medium",
+    "Country": "Democratic Republic Of The Congo",
+    "Num_Items": 23,
+    "Num_Cols": 6,
+    "Num_Rows": 17,
+    "Total_Squares": 102
+  },
+  {
+    "Difficulty": "medium",
+    "Country": "Haiti",
+    "Num_Items": 23,
+    "Num_Cols": 6,
+    "Num_Rows": 17,
+    "Total_Squares": 102
+  },
+  {
+    "Difficulty": "medium",
+    "Country": "Guam",
+    "Num_Items": 24,
+    "Num_Cols": 6,
+    "Num_Rows": 18,
+    "Total_Squares": 108
+  },
+  {
+    "Difficulty": "medium",
+    "Country": "India",
+    "Num_Items": 24,
+    "Num_Cols": 6,
+    "Num_Rows": 18,
+    "Total_Squares": 108
+  },
+  {
+    "Difficulty": "medium",
+    "Country": "Jordan",
+    "Num_Items": 24,
+    "Num_Cols": 6,
+    "Num_Rows": 18,
+    "Total_Squares": 108
+  },
+  {
+    "Difficulty": "medium",
+    "Country": "Mayotte",
+    "Num_Items": 24,
+    "Num_Cols": 6,
+    "Num_Rows": 18,
+    "Total_Squares": 108
+  },
+  {
+    "Difficulty": "medium",
+    "Country": "New Caledonia",
+    "Num_Items": 24,
+    "Num_Cols": 6,
+    "Num_Rows": 18,
+    "Total_Squares": 108
+  },
+  {
+    "Difficulty": "medium",
+    "Country": "Antigua and Barbuda",
+    "Num_Items": 25,
+    "Num_Cols": 6,
+    "Num_Rows": 19,
+    "Total_Squares": 114
+  },
+  {
+    "Difficulty": "medium",
+    "Country": "Eswatini",
+    "Num_Items": 25,
+    "Num_Cols": 6,
+    "Num_Rows": 19,
+    "Total_Squares": 114
+  },
+  {
+    "Difficulty": "medium",
+    "Country": "Mongolia",
+    "Num_Items": 25,
+    "Num_Cols": 6,
+    "Num_Rows": 19,
+    "Total_Squares": 114
+  },
+  {
+    "Difficulty": "medium",
+    "Country": "Nicaragua",
+    "Num_Items": 25,
+    "Num_Cols": 6,
+    "Num_Rows": 19,
+    "Total_Squares": 114
+  },
+  {
+    "Difficulty": "medium",
+    "Country": "Puerto Rico",
+    "Num_Items": 26,
+    "Num_Cols": 6,
+    "Num_Rows": 20,
+    "Total_Squares": 120
+  },
+  {
+    "Difficulty": "medium",
+    "Country": "Aruba",
+    "Num_Items": 27,
+    "Num_Cols": 6,
+    "Num_Rows": 21,
+    "Total_Squares": 126
+  },
+  {
+    "Difficulty": "medium",
+    "Country": "Myanmar",
+    "Num_Items": 27,
+    "Num_Cols": 6,
+    "Num_Rows": 21,
+    "Total_Squares": 126
+  },
+  {
+    "Difficulty": "medium",
+    "Country": "Northern Ireland",
+    "Num_Items": 27,
+    "Num_Cols": 6,
+    "Num_Rows": 21,
+    "Total_Squares": 126
+  },
+  {
+    "Difficulty": "medium",
+    "Country": "Vanuatu",
+    "Num_Items": 27,
+    "Num_Cols": 6,
+    "Num_Rows": 21,
+    "Total_Squares": 126
+  },
+  {
+    "Difficulty": "medium",
+    "Country": "Dominica",
+    "Num_Items": 28,
+    "Num_Cols": 6,
+    "Num_Rows": 22,
+    "Total_Squares": 132
+  },
+  {
+    "Difficulty": "medium",
+    "Country": "Paraguay",
+    "Num_Items": 28,
+    "Num_Cols": 6,
+    "Num_Rows": 22,
+    "Total_Squares": 132
+  },
+  {
+    "Difficulty": "medium",
+    "Country": "Equatorial Guinea",
+    "Num_Items": 30,
+    "Num_Cols": 6,
+    "Num_Rows": 24,
+    "Total_Squares": 144
+  },
+  {
+    "Difficulty": "medium",
+    "Country": "Belize",
+    "Num_Items": 32,
+    "Num_Cols": 6,
+    "Num_Rows": 26,
+    "Total_Squares": 156
+  },
+  {
+    "Difficulty": "medium",
+    "Country": "Ecuador",
+    "Num_Items": 33,
+    "Num_Cols": 6,
+    "Num_Rows": 27,
+    "Total_Squares": 162
+  }
+]

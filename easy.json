@@ -1,0 +1,1098 @@
+[
+  {
+    "Difficulty": "easy",
+    "Country": "Albania",
+    "Num_Items": 13,
+    "Num_Cols": 6,
+    "Num_Rows": 7,
+    "Total_Squares": 42
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Bangladesh",
+    "Num_Items": 13,
+    "Num_Cols": 6,
+    "Num_Rows": 7,
+    "Total_Squares": 42
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Kyrgyzstan",
+    "Num_Items": 13,
+    "Num_Cols": 6,
+    "Num_Rows": 7,
+    "Total_Squares": 42
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Turkey",
+    "Num_Items": 13,
+    "Num_Cols": 6,
+    "Num_Rows": 7,
+    "Total_Squares": 42
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Vietnam",
+    "Num_Items": 13,
+    "Num_Cols": 6,
+    "Num_Rows": 7,
+    "Total_Squares": 42
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "[·] Chequered Flag",
+    "Num_Items": 6,
+    "Num_Cols": 3,
+    "Num_Rows": 3,
+    "Total_Squares": 9
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "[JPN] Osaka",
+    "Num_Items": 10,
+    "Num_Cols": 5,
+    "Num_Rows": 5,
+    "Total_Squares": 25
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Denmark",
+    "Num_Items": 14,
+    "Num_Cols": 6,
+    "Num_Rows": 8,
+    "Total_Squares": 48
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Finland",
+    "Num_Items": 14,
+    "Num_Cols": 6,
+    "Num_Rows": 8,
+    "Total_Squares": 48
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Poland",
+    "Num_Items": 14,
+    "Num_Cols": 6,
+    "Num_Rows": 8,
+    "Total_Squares": 48
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Bosnia and Herzegovina",
+    "Num_Items": 15,
+    "Num_Cols": 6,
+    "Num_Rows": 9,
+    "Total_Squares": 54
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Cyprus",
+    "Num_Items": 15,
+    "Num_Cols": 6,
+    "Num_Rows": 9,
+    "Total_Squares": 54
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Maldives",
+    "Num_Items": 15,
+    "Num_Cols": 6,
+    "Num_Rows": 9,
+    "Total_Squares": 54
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Costa Rica",
+    "Num_Items": 16,
+    "Num_Cols": 6,
+    "Num_Rows": 10,
+    "Total_Squares": 60
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "England",
+    "Num_Items": 16,
+    "Num_Cols": 6,
+    "Num_Rows": 10,
+    "Total_Squares": 60
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Georgia",
+    "Num_Items": 16,
+    "Num_Cols": 6,
+    "Num_Rows": 10,
+    "Total_Squares": 60
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Guinea",
+    "Num_Items": 16,
+    "Num_Cols": 6,
+    "Num_Rows": 10,
+    "Total_Squares": 60
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Kosovo",
+    "Num_Items": 16,
+    "Num_Cols": 6,
+    "Num_Rows": 10,
+    "Total_Squares": 60
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Madagascar",
+    "Num_Items": 16,
+    "Num_Cols": 6,
+    "Num_Rows": 10,
+    "Total_Squares": 60
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "North Macedonia",
+    "Num_Items": 16,
+    "Num_Cols": 6,
+    "Num_Rows": 10,
+    "Total_Squares": 60
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Sweden",
+    "Num_Items": 16,
+    "Num_Cols": 6,
+    "Num_Rows": 10,
+    "Total_Squares": 60
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Switzerland",
+    "Num_Items": 16,
+    "Num_Cols": 6,
+    "Num_Rows": 10,
+    "Total_Squares": 60
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Benin",
+    "Num_Items": 17,
+    "Num_Cols": 6,
+    "Num_Rows": 11,
+    "Total_Squares": 66
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Congo",
+    "Num_Items": 17,
+    "Num_Cols": 6,
+    "Num_Rows": 11,
+    "Total_Squares": 66
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Czech Republic",
+    "Num_Items": 17,
+    "Num_Cols": 6,
+    "Num_Rows": 11,
+    "Total_Squares": 66
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Iceland",
+    "Num_Items": 17,
+    "Num_Cols": 6,
+    "Num_Rows": 11,
+    "Total_Squares": 66
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Indonesia",
+    "Num_Items": 17,
+    "Num_Cols": 6,
+    "Num_Rows": 11,
+    "Total_Squares": 66
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Aland",
+    "Num_Items": 18,
+    "Num_Cols": 6,
+    "Num_Rows": 12,
+    "Total_Squares": 72
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Armenia",
+    "Num_Items": 18,
+    "Num_Cols": 6,
+    "Num_Rows": 12,
+    "Total_Squares": 72
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Colombia",
+    "Num_Items": 18,
+    "Num_Cols": 6,
+    "Num_Rows": 12,
+    "Total_Squares": 72
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Gambia",
+    "Num_Items": 18,
+    "Num_Cols": 6,
+    "Num_Rows": 12,
+    "Total_Squares": 72
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Hungary",
+    "Num_Items": 18,
+    "Num_Cols": 6,
+    "Num_Rows": 12,
+    "Total_Squares": 72
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Netherlands",
+    "Num_Items": 18,
+    "Num_Cols": 6,
+    "Num_Rows": 12,
+    "Total_Squares": 72
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "New Zealand",
+    "Num_Items": 18,
+    "Num_Cols": 6,
+    "Num_Rows": 12,
+    "Total_Squares": 72
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Norway",
+    "Num_Items": 18,
+    "Num_Cols": 6,
+    "Num_Rows": 12,
+    "Total_Squares": 72
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Peru",
+    "Num_Items": 18,
+    "Num_Cols": 6,
+    "Num_Rows": 12,
+    "Total_Squares": 72
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Taiwan",
+    "Num_Items": 18,
+    "Num_Cols": 6,
+    "Num_Rows": 12,
+    "Total_Squares": 72
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Bolivia",
+    "Num_Items": 19,
+    "Num_Cols": 6,
+    "Num_Rows": 13,
+    "Total_Squares": 78
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Dominican Republic",
+    "Num_Items": 19,
+    "Num_Cols": 6,
+    "Num_Rows": 13,
+    "Total_Squares": 78
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Estonia",
+    "Num_Items": 19,
+    "Num_Cols": 6,
+    "Num_Rows": 13,
+    "Total_Squares": 78
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "France",
+    "Num_Items": 19,
+    "Num_Cols": 6,
+    "Num_Rows": 13,
+    "Total_Squares": 78
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Gabon",
+    "Num_Items": 19,
+    "Num_Cols": 6,
+    "Num_Rows": 13,
+    "Total_Squares": 78
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Greece",
+    "Num_Items": 19,
+    "Num_Cols": 6,
+    "Num_Rows": 13,
+    "Total_Squares": 78
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Italy",
+    "Num_Items": 19,
+    "Num_Cols": 6,
+    "Num_Rows": 13,
+    "Total_Squares": 78
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Japan",
+    "Num_Items": 19,
+    "Num_Cols": 6,
+    "Num_Rows": 13,
+    "Total_Squares": 78
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Kazakhstan",
+    "Num_Items": 19,
+    "Num_Cols": 6,
+    "Num_Rows": 13,
+    "Total_Squares": 78
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Latvia",
+    "Num_Items": 19,
+    "Num_Cols": 6,
+    "Num_Rows": 13,
+    "Total_Squares": 78
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Lebanon",
+    "Num_Items": 19,
+    "Num_Cols": 6,
+    "Num_Rows": 13,
+    "Total_Squares": 78
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Liberia",
+    "Num_Items": 19,
+    "Num_Cols": 6,
+    "Num_Rows": 13,
+    "Total_Squares": 78
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Monaco",
+    "Num_Items": 19,
+    "Num_Cols": 6,
+    "Num_Rows": 13,
+    "Total_Squares": 78
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Rwanda",
+    "Num_Items": 19,
+    "Num_Cols": 6,
+    "Num_Rows": 13,
+    "Total_Squares": 78
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Sudan",
+    "Num_Items": 19,
+    "Num_Cols": 6,
+    "Num_Rows": 13,
+    "Total_Squares": 78
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Tanzania",
+    "Num_Items": 19,
+    "Num_Cols": 6,
+    "Num_Rows": 13,
+    "Total_Squares": 78
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Ukraine",
+    "Num_Items": 19,
+    "Num_Cols": 6,
+    "Num_Rows": 13,
+    "Total_Squares": 78
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "United Kingdom",
+    "Num_Items": 19,
+    "Num_Cols": 6,
+    "Num_Rows": 13,
+    "Total_Squares": 78
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Botswana",
+    "Num_Items": 20,
+    "Num_Cols": 6,
+    "Num_Rows": 14,
+    "Total_Squares": 84
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Bulgaria",
+    "Num_Items": 20,
+    "Num_Cols": 6,
+    "Num_Rows": 14,
+    "Total_Squares": 84
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Burkina Faso",
+    "Num_Items": 20,
+    "Num_Cols": 6,
+    "Num_Rows": 14,
+    "Total_Squares": 84
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Chad",
+    "Num_Items": 20,
+    "Num_Cols": 6,
+    "Num_Rows": 14,
+    "Total_Squares": 84
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Cuba",
+    "Num_Items": 20,
+    "Num_Cols": 6,
+    "Num_Rows": 14,
+    "Total_Squares": 84
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Germany",
+    "Num_Items": 20,
+    "Num_Cols": 6,
+    "Num_Rows": 14,
+    "Total_Squares": 84
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Gibraltar",
+    "Num_Items": 20,
+    "Num_Cols": 6,
+    "Num_Rows": 14,
+    "Total_Squares": 84
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Jamaica",
+    "Num_Items": 20,
+    "Num_Cols": 6,
+    "Num_Rows": 14,
+    "Total_Squares": 84
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Lesotho",
+    "Num_Items": 20,
+    "Num_Cols": 6,
+    "Num_Rows": 14,
+    "Total_Squares": 84
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Mauritius",
+    "Num_Items": 20,
+    "Num_Cols": 6,
+    "Num_Rows": 14,
+    "Total_Squares": 84
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Nigeria",
+    "Num_Items": 20,
+    "Num_Cols": 6,
+    "Num_Rows": 14,
+    "Total_Squares": 84
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Slovakia",
+    "Num_Items": 20,
+    "Num_Cols": 6,
+    "Num_Rows": 14,
+    "Total_Squares": 84
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "St Pierre et Miquelon",
+    "Num_Items": 20,
+    "Num_Cols": 6,
+    "Num_Rows": 14,
+    "Total_Squares": 84
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Syria",
+    "Num_Items": 20,
+    "Num_Cols": 6,
+    "Num_Rows": 14,
+    "Total_Squares": 84
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Thailand",
+    "Num_Items": 20,
+    "Num_Cols": 6,
+    "Num_Rows": 14,
+    "Total_Squares": 84
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Togo",
+    "Num_Items": 20,
+    "Num_Cols": 6,
+    "Num_Rows": 14,
+    "Total_Squares": 84
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Uruguay",
+    "Num_Items": 20,
+    "Num_Cols": 6,
+    "Num_Rows": 14,
+    "Total_Squares": 84
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Yemen",
+    "Num_Items": 20,
+    "Num_Cols": 6,
+    "Num_Rows": 14,
+    "Total_Squares": 84
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Austria",
+    "Num_Items": 21,
+    "Num_Cols": 6,
+    "Num_Rows": 15,
+    "Total_Squares": 90
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Belarus",
+    "Num_Items": 21,
+    "Num_Cols": 6,
+    "Num_Rows": 15,
+    "Total_Squares": 90
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Belgium",
+    "Num_Items": 21,
+    "Num_Cols": 6,
+    "Num_Rows": 15,
+    "Total_Squares": 90
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Brazil",
+    "Num_Items": 21,
+    "Num_Cols": 6,
+    "Num_Rows": 15,
+    "Total_Squares": 90
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Burundi",
+    "Num_Items": 21,
+    "Num_Cols": 6,
+    "Num_Rows": 15,
+    "Total_Squares": 90
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Cameroon",
+    "Num_Items": 21,
+    "Num_Cols": 6,
+    "Num_Rows": 15,
+    "Total_Squares": 90
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Canada",
+    "Num_Items": 21,
+    "Num_Cols": 6,
+    "Num_Rows": 15,
+    "Total_Squares": 90
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "China",
+    "Num_Items": 21,
+    "Num_Cols": 6,
+    "Num_Rows": 15,
+    "Total_Squares": 90
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Faroe Islands",
+    "Num_Items": 21,
+    "Num_Cols": 6,
+    "Num_Rows": 15,
+    "Total_Squares": 90
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Ghana",
+    "Num_Items": 21,
+    "Num_Cols": 6,
+    "Num_Rows": 15,
+    "Total_Squares": 90
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Honduras",
+    "Num_Items": 21,
+    "Num_Cols": 6,
+    "Num_Rows": 15,
+    "Total_Squares": 90
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Liechtenstein",
+    "Num_Items": 21,
+    "Num_Cols": 6,
+    "Num_Rows": 15,
+    "Total_Squares": 90
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Lithuania",
+    "Num_Items": 21,
+    "Num_Cols": 6,
+    "Num_Rows": 15,
+    "Total_Squares": 90
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "North Korea",
+    "Num_Items": 21,
+    "Num_Cols": 6,
+    "Num_Rows": 15,
+    "Total_Squares": 90
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Pakistan",
+    "Num_Items": 21,
+    "Num_Cols": 6,
+    "Num_Rows": 15,
+    "Total_Squares": 90
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Romania",
+    "Num_Items": 21,
+    "Num_Cols": 6,
+    "Num_Rows": 15,
+    "Total_Squares": 90
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Russia",
+    "Num_Items": 21,
+    "Num_Cols": 6,
+    "Num_Rows": 15,
+    "Total_Squares": 90
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Scotland",
+    "Num_Items": 21,
+    "Num_Cols": 6,
+    "Num_Rows": 15,
+    "Total_Squares": 90
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Seychelles",
+    "Num_Items": 21,
+    "Num_Cols": 6,
+    "Num_Rows": 15,
+    "Total_Squares": 90
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "South Africa",
+    "Num_Items": 21,
+    "Num_Cols": 6,
+    "Num_Rows": 15,
+    "Total_Squares": 90
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Tajikistan",
+    "Num_Items": 21,
+    "Num_Cols": 6,
+    "Num_Rows": 15,
+    "Total_Squares": 90
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "United States",
+    "Num_Items": 21,
+    "Num_Cols": 6,
+    "Num_Rows": 15,
+    "Total_Squares": 90
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Luxembourg",
+    "Num_Items": 22,
+    "Num_Cols": 6,
+    "Num_Rows": 16,
+    "Total_Squares": 96
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Malaysia",
+    "Num_Items": 22,
+    "Num_Cols": 6,
+    "Num_Rows": 16,
+    "Total_Squares": 96
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Philippines",
+    "Num_Items": 22,
+    "Num_Cols": 6,
+    "Num_Rows": 16,
+    "Total_Squares": 96
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Portugal",
+    "Num_Items": 22,
+    "Num_Cols": 6,
+    "Num_Rows": 16,
+    "Total_Squares": 96
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Barbados",
+    "Num_Items": 23,
+    "Num_Cols": 6,
+    "Num_Rows": 17,
+    "Total_Squares": 102
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Comoros",
+    "Num_Items": 23,
+    "Num_Cols": 6,
+    "Num_Rows": 17,
+    "Total_Squares": 102
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Iraq",
+    "Num_Items": 23,
+    "Num_Cols": 6,
+    "Num_Rows": 17,
+    "Total_Squares": 102
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Mozambique",
+    "Num_Items": 23,
+    "Num_Cols": 6,
+    "Num_Rows": 17,
+    "Total_Squares": 102
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Oman",
+    "Num_Items": 23,
+    "Num_Cols": 6,
+    "Num_Rows": 17,
+    "Total_Squares": 102
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Suriname",
+    "Num_Items": 23,
+    "Num_Cols": 6,
+    "Num_Rows": 17,
+    "Total_Squares": 102
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Uzbekistan",
+    "Num_Items": 23,
+    "Num_Cols": 6,
+    "Num_Rows": 17,
+    "Total_Squares": 102
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Vatican City",
+    "Num_Items": 23,
+    "Num_Cols": 6,
+    "Num_Rows": 17,
+    "Total_Squares": 102
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Venezuela",
+    "Num_Items": 23,
+    "Num_Cols": 6,
+    "Num_Rows": 17,
+    "Total_Squares": 102
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Wales",
+    "Num_Items": 23,
+    "Num_Cols": 6,
+    "Num_Rows": 17,
+    "Total_Squares": 102
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Afghanistan (2013-2021)",
+    "Num_Items": 24,
+    "Num_Cols": 6,
+    "Num_Rows": 18,
+    "Total_Squares": 108
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Algeria",
+    "Num_Items": 24,
+    "Num_Cols": 6,
+    "Num_Rows": 18,
+    "Total_Squares": 108
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Argentina",
+    "Num_Items": 24,
+    "Num_Cols": 6,
+    "Num_Rows": 18,
+    "Total_Squares": 108
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Curaçao",
+    "Num_Items": 24,
+    "Num_Cols": 6,
+    "Num_Rows": 18,
+    "Total_Squares": 108
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Iran",
+    "Num_Items": 24,
+    "Num_Cols": 6,
+    "Num_Rows": 18,
+    "Total_Squares": 108
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Papua New Guinea",
+    "Num_Items": 24,
+    "Num_Cols": 6,
+    "Num_Rows": 18,
+    "Total_Squares": 108
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Uganda",
+    "Num_Items": 24,
+    "Num_Cols": 6,
+    "Num_Rows": 18,
+    "Total_Squares": 108
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Brunei",
+    "Num_Items": 25,
+    "Num_Cols": 6,
+    "Num_Rows": 19,
+    "Total_Squares": 114
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Libya",
+    "Num_Items": 25,
+    "Num_Cols": 6,
+    "Num_Rows": 19,
+    "Total_Squares": 114
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "South Sudan",
+    "Num_Items": 25,
+    "Num_Cols": 6,
+    "Num_Rows": 19,
+    "Total_Squares": 114
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Turkmenistan",
+    "Num_Items": 25,
+    "Num_Cols": 6,
+    "Num_Rows": 19,
+    "Total_Squares": 114
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "United Arab Emirates",
+    "Num_Items": 25,
+    "Num_Cols": 6,
+    "Num_Rows": 19,
+    "Total_Squares": 114
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Andorra",
+    "Num_Items": 26,
+    "Num_Cols": 6,
+    "Num_Rows": 20,
+    "Total_Squares": 120
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Azerbaijan",
+    "Num_Items": 26,
+    "Num_Cols": 6,
+    "Num_Rows": 20,
+    "Total_Squares": 120
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Ethiopia",
+    "Num_Items": 26,
+    "Num_Cols": 6,
+    "Num_Rows": 20,
+    "Total_Squares": 120
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Singapore",
+    "Num_Items": 26,
+    "Num_Cols": 6,
+    "Num_Rows": 20,
+    "Total_Squares": 120
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Egypt",
+    "Num_Items": 27,
+    "Num_Cols": 6,
+    "Num_Rows": 21,
+    "Total_Squares": 126
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Kiribati",
+    "Num_Items": 27,
+    "Num_Cols": 6,
+    "Num_Rows": 21,
+    "Total_Squares": 126
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Montenegro",
+    "Num_Items": 27,
+    "Num_Cols": 6,
+    "Num_Rows": 21,
+    "Total_Squares": 126
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Slovenia",
+    "Num_Items": 27,
+    "Num_Cols": 6,
+    "Num_Rows": 21,
+    "Total_Squares": 126
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Zimbabwe",
+    "Num_Items": 27,
+    "Num_Cols": 6,
+    "Num_Rows": 21,
+    "Total_Squares": 126
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Serbia",
+    "Num_Items": 28,
+    "Num_Cols": 6,
+    "Num_Rows": 22,
+    "Total_Squares": 132
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Christmas Island",
+    "Num_Items": 29,
+    "Num_Cols": 6,
+    "Num_Rows": 23,
+    "Total_Squares": 138
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "San Marino",
+    "Num_Items": 30,
+    "Num_Cols": 6,
+    "Num_Rows": 24,
+    "Total_Squares": 144
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Spain",
+    "Num_Items": 30,
+    "Num_Cols": 6,
+    "Num_Rows": 24,
+    "Total_Squares": 144
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Malta",
+    "Num_Items": 32,
+    "Num_Cols": 6,
+    "Num_Rows": 26,
+    "Total_Squares": 156
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Mexico",
+    "Num_Items": 33,
+    "Num_Cols": 6,
+    "Num_Rows": 27,
+    "Total_Squares": 162
+  },
+  {
+    "Difficulty": "easy",
+    "Country": "Moldova",
+    "Num_Items": 35,
+    "Num_Cols": 6,
+    "Num_Rows": 29,
+    "Total_Squares": 174
+  }
+]

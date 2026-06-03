@@ -1,0 +1,634 @@
+[
+  {
+    "Difficulty": "hard",
+    "Country": "[·] Olympic Flag",
+    "Num_Items": 6,
+    "Num_Cols": 3,
+    "Num_Rows": 3,
+    "Total_Squares": 9
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "[·] Jolly Roger",
+    "Num_Items": 7,
+    "Num_Cols": 4,
+    "Num_Rows": 3,
+    "Total_Squares": 12
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "[·] European Union",
+    "Num_Items": 8,
+    "Num_Cols": 4,
+    "Num_Rows": 4,
+    "Total_Squares": 16
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "[·] United Nations",
+    "Num_Items": 8,
+    "Num_Cols": 4,
+    "Num_Rows": 4,
+    "Total_Squares": 16
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "[LIB] Libya (1977-2011)",
+    "Num_Items": 8,
+    "Num_Cols": 4,
+    "Num_Rows": 4,
+    "Total_Squares": 16
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "[ANT] French Southern and Antarctic Lands",
+    "Num_Items": 9,
+    "Num_Cols": 5,
+    "Num_Rows": 4,
+    "Total_Squares": 20
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "[·] Seto People",
+    "Num_Items": 10,
+    "Num_Cols": 5,
+    "Num_Rows": 5,
+    "Total_Squares": 25
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "[USA] Alaska",
+    "Num_Items": 10,
+    "Num_Cols": 5,
+    "Num_Rows": 5,
+    "Total_Squares": 25
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "[GEO] Borjomi Municipality",
+    "Num_Items": 13,
+    "Num_Cols": 6,
+    "Num_Rows": 7,
+    "Total_Squares": 42
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "[JPN] Kyoto",
+    "Num_Items": 13,
+    "Num_Cols": 6,
+    "Num_Rows": 7,
+    "Total_Squares": 42
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "Tonga",
+    "Num_Items": 13,
+    "Num_Cols": 6,
+    "Num_Rows": 7,
+    "Total_Squares": 42
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "Wallis and Futuna",
+    "Num_Items": 13,
+    "Num_Cols": 6,
+    "Num_Rows": 7,
+    "Total_Squares": 42
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "[·] Pride Flag",
+    "Num_Items": 14,
+    "Num_Cols": 6,
+    "Num_Rows": 8,
+    "Total_Squares": 48
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "Panama",
+    "Num_Items": 14,
+    "Num_Cols": 6,
+    "Num_Rows": 8,
+    "Total_Squares": 48
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "[ITA] Sardinia",
+    "Num_Items": 15,
+    "Num_Cols": 6,
+    "Num_Rows": 9,
+    "Total_Squares": 54
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "[RUS] Bryansk Oblast",
+    "Num_Items": 15,
+    "Num_Cols": 6,
+    "Num_Rows": 9,
+    "Total_Squares": 54
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "[SCO] Orkney",
+    "Num_Items": 15,
+    "Num_Cols": 6,
+    "Num_Rows": 9,
+    "Total_Squares": 54
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "[USA] Minnesota",
+    "Num_Items": 15,
+    "Num_Cols": 6,
+    "Num_Rows": 9,
+    "Total_Squares": 54
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "Samoa",
+    "Num_Items": 15,
+    "Num_Cols": 6,
+    "Num_Rows": 9,
+    "Total_Squares": 54
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "[ESP] Tenerife",
+    "Num_Items": 16,
+    "Num_Cols": 6,
+    "Num_Rows": 10,
+    "Total_Squares": 60
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "[ESP] Valencian Community",
+    "Num_Items": 16,
+    "Num_Cols": 6,
+    "Num_Rows": 10,
+    "Total_Squares": 60
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "[MHL] Ebon Atoll",
+    "Num_Items": 16,
+    "Num_Cols": 6,
+    "Num_Rows": 10,
+    "Total_Squares": 60
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "[GEO] South Ossetia",
+    "Num_Items": 17,
+    "Num_Cols": 6,
+    "Num_Rows": 11,
+    "Total_Squares": 66
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "[CHL] [ANT] Magallanes",
+    "Num_Items": 18,
+    "Num_Cols": 6,
+    "Num_Rows": 12,
+    "Total_Squares": 72
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "[ESP] Basque Country",
+    "Num_Items": 18,
+    "Num_Cols": 6,
+    "Num_Rows": 12,
+    "Total_Squares": 72
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "[GER] Berlin",
+    "Num_Items": 18,
+    "Num_Cols": 6,
+    "Num_Rows": 12,
+    "Total_Squares": 72
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "[PAK] Azad Kashmir",
+    "Num_Items": 18,
+    "Num_Cols": 6,
+    "Num_Rows": 12,
+    "Total_Squares": 72
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "Australia",
+    "Num_Items": 18,
+    "Num_Cols": 6,
+    "Num_Rows": 12,
+    "Total_Squares": 72
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "Cook Islands",
+    "Num_Items": 18,
+    "Num_Cols": 6,
+    "Num_Rows": 12,
+    "Total_Squares": 72
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "Saint Lucia",
+    "Num_Items": 18,
+    "Num_Cols": 6,
+    "Num_Rows": 12,
+    "Total_Squares": 72
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "[NED] Amsterdam",
+    "Num_Items": 19,
+    "Num_Cols": 6,
+    "Num_Rows": 13,
+    "Total_Squares": 78
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "British Virgin Islands",
+    "Num_Items": 19,
+    "Num_Cols": 6,
+    "Num_Rows": 13,
+    "Total_Squares": 78
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "Cambodia",
+    "Num_Items": 19,
+    "Num_Cols": 6,
+    "Num_Rows": 13,
+    "Total_Squares": 78
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "Guinea-Bissau",
+    "Num_Items": 19,
+    "Num_Cols": 6,
+    "Num_Rows": 13,
+    "Total_Squares": 78
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "Pitcairn Islands",
+    "Num_Items": 19,
+    "Num_Cols": 6,
+    "Num_Rows": 13,
+    "Total_Squares": 78
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "Reunion",
+    "Num_Items": 19,
+    "Num_Cols": 6,
+    "Num_Rows": 13,
+    "Total_Squares": 78
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "[BGR] Bulgaria Naval Jack",
+    "Num_Items": 20,
+    "Num_Cols": 6,
+    "Num_Rows": 14,
+    "Total_Squares": 84
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "[POR] Azores",
+    "Num_Items": 20,
+    "Num_Cols": 6,
+    "Num_Rows": 14,
+    "Total_Squares": 84
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "[USA] California",
+    "Num_Items": 20,
+    "Num_Cols": 6,
+    "Num_Rows": 14,
+    "Total_Squares": 84
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "Isle of Man",
+    "Num_Items": 20,
+    "Num_Cols": 6,
+    "Num_Rows": 14,
+    "Total_Squares": 84
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "Niger",
+    "Num_Items": 20,
+    "Num_Cols": 6,
+    "Num_Rows": 14,
+    "Total_Squares": 84
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "[SRB] Yugoslavia (1946-1992)",
+    "Num_Items": 21,
+    "Num_Cols": 6,
+    "Num_Rows": 15,
+    "Total_Squares": 90
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "[UKR] Donetsk Oblast",
+    "Num_Items": 21,
+    "Num_Cols": 6,
+    "Num_Rows": 15,
+    "Total_Squares": 90
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "Anguilla",
+    "Num_Items": 21,
+    "Num_Cols": 6,
+    "Num_Rows": 15,
+    "Total_Squares": 90
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "Eritrea",
+    "Num_Items": 21,
+    "Num_Cols": 6,
+    "Num_Rows": 15,
+    "Total_Squares": 90
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "Montserrat",
+    "Num_Items": 21,
+    "Num_Cols": 6,
+    "Num_Rows": 15,
+    "Total_Squares": 90
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "Turks and Caicos Islands",
+    "Num_Items": 21,
+    "Num_Cols": 6,
+    "Num_Rows": 15,
+    "Total_Squares": 90
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "Namibia",
+    "Num_Items": 22,
+    "Num_Cols": 6,
+    "Num_Rows": 16,
+    "Total_Squares": 96
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "Nauru",
+    "Num_Items": 22,
+    "Num_Cols": 6,
+    "Num_Rows": 16,
+    "Total_Squares": 96
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "Sao Tome and Príncipe",
+    "Num_Items": 22,
+    "Num_Cols": 6,
+    "Num_Rows": 16,
+    "Total_Squares": 96
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "[ESP] Canary Islands",
+    "Num_Items": 23,
+    "Num_Cols": 6,
+    "Num_Rows": 17,
+    "Total_Squares": 102
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "[USA] North Pole",
+    "Num_Items": 23,
+    "Num_Cols": 6,
+    "Num_Rows": 17,
+    "Total_Squares": 102
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "Djibouti",
+    "Num_Items": 23,
+    "Num_Cols": 6,
+    "Num_Rows": 17,
+    "Total_Squares": 102
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "Guadeloupe",
+    "Num_Items": 23,
+    "Num_Cols": 6,
+    "Num_Rows": 17,
+    "Total_Squares": 102
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "Israel",
+    "Num_Items": 23,
+    "Num_Cols": 6,
+    "Num_Rows": 17,
+    "Total_Squares": 102
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "Marshall Islands",
+    "Num_Items": 23,
+    "Num_Cols": 6,
+    "Num_Rows": 17,
+    "Total_Squares": 102
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "Northern Mariana Islands",
+    "Num_Items": 23,
+    "Num_Cols": 6,
+    "Num_Rows": 17,
+    "Total_Squares": 102
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "Saint Barthélemy",
+    "Num_Items": 23,
+    "Num_Cols": 6,
+    "Num_Rows": 17,
+    "Total_Squares": 102
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "United States Virgin Islands",
+    "Num_Items": 23,
+    "Num_Cols": 6,
+    "Num_Rows": 17,
+    "Total_Squares": 102
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "Bonaire",
+    "Num_Items": 24,
+    "Num_Cols": 6,
+    "Num_Rows": 18,
+    "Total_Squares": 108
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "Cape Verde",
+    "Num_Items": 24,
+    "Num_Cols": 6,
+    "Num_Rows": 18,
+    "Total_Squares": 108
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "French Polynesia",
+    "Num_Items": 24,
+    "Num_Cols": 6,
+    "Num_Rows": 18,
+    "Total_Squares": 108
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "Saint Helena",
+    "Num_Items": 24,
+    "Num_Cols": 6,
+    "Num_Rows": 18,
+    "Total_Squares": 108
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "Fiji",
+    "Num_Items": 25,
+    "Num_Cols": 6,
+    "Num_Rows": 19,
+    "Total_Squares": 114
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "French Guiana",
+    "Num_Items": 25,
+    "Num_Cols": 6,
+    "Num_Rows": 19,
+    "Total_Squares": 114
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "Saint Kitts and Nevis",
+    "Num_Items": 25,
+    "Num_Cols": 6,
+    "Num_Rows": 19,
+    "Total_Squares": 114
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "Solomon Islands",
+    "Num_Items": 25,
+    "Num_Cols": 6,
+    "Num_Rows": 19,
+    "Total_Squares": 114
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "American Samoa",
+    "Num_Items": 26,
+    "Num_Cols": 6,
+    "Num_Rows": 20,
+    "Total_Squares": 120
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "Bermuda",
+    "Num_Items": 26,
+    "Num_Cols": 6,
+    "Num_Rows": 20,
+    "Total_Squares": 120
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "Bhutan",
+    "Num_Items": 26,
+    "Num_Cols": 6,
+    "Num_Rows": 20,
+    "Total_Squares": 120
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "Jersey",
+    "Num_Items": 26,
+    "Num_Cols": 6,
+    "Num_Rows": 20,
+    "Total_Squares": 120
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "Guatemala",
+    "Num_Items": 27,
+    "Num_Cols": 6,
+    "Num_Rows": 21,
+    "Total_Squares": 126
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "Sint Eustatius",
+    "Num_Items": 27,
+    "Num_Cols": 6,
+    "Num_Rows": 21,
+    "Total_Squares": 126
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "Cayman Islands",
+    "Num_Items": 29,
+    "Num_Cols": 6,
+    "Num_Rows": 23,
+    "Total_Squares": 138
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "El Salvador",
+    "Num_Items": 29,
+    "Num_Cols": 6,
+    "Num_Rows": 23,
+    "Total_Squares": 138
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "Sint Maarten",
+    "Num_Items": 29,
+    "Num_Cols": 6,
+    "Num_Rows": 23,
+    "Total_Squares": 138
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "British Indian Ocean Territory",
+    "Num_Items": 30,
+    "Num_Cols": 6,
+    "Num_Rows": 24,
+    "Total_Squares": 144
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "Falkland Islands",
+    "Num_Items": 30,
+    "Num_Cols": 6,
+    "Num_Rows": 24,
+    "Total_Squares": 144
+  },
+  {
+    "Difficulty": "hard",
+    "Country": "Croatia",
+    "Num_Items": 33,
+    "Num_Cols": 6,
+    "Num_Rows": 27,
+    "Total_Squares": 162
+  }
+]
